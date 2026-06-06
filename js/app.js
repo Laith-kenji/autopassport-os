@@ -28,7 +28,7 @@ var I18N = {
     /* Dashboard */
     dash_title:'Today at Al-Rawabi Auto Care',
     dash_new_booking:'New Booking', dash_start_intake:'Start Intake',
-    stat_arrivals:'Arrivals', stat_inprogress:'In Progress', stat_awaiting:'Awaiting',
+    stat_arrivals:'New Arrivals', stat_inprogress:'In Progress', stat_awaiting:'Awaiting',
     stat_ready:'Ready for Delivery', stat_revenue:'Revenue (today)',
     stat_delayed:'Delayed Jobs', stat_bays:'Bay Utilization', stat_photo:'Photo Compliance',
     more_kpis:'More KPIs', hide_kpis:'Hide KPIs',
@@ -145,7 +145,7 @@ var I18N = {
     /* Dashboard */
     dash_title:'اليوم في مركز الرواب للسيارات',
     dash_new_booking:'حجز جديد', dash_start_intake:'بدء الاستلام',
-    stat_arrivals:'الوصول', stat_inprogress:'قيد التنفيذ', stat_awaiting:'انتظار',
+    stat_arrivals:'وصول جديد', stat_inprogress:'قيد التنفيذ', stat_awaiting:'انتظار',
     stat_ready:'جاهزة للتسليم', stat_revenue:'الإيرادات (اليوم)',
     stat_delayed:'وظائف متأخرة', stat_bays:'استخدام الأبواب', stat_photo:'امتثال الصور',
     more_kpis:'مؤشرات إضافية', hide_kpis:'إخفاء المؤشرات',
