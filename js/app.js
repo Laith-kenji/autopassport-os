@@ -1272,3 +1272,118 @@ document.querySelectorAll('.filter-bar select, .filter-bar input[type="date"]').
   el.style.removeProperty('border-radius');
 });
 
+
+/* ══════════════════════════════════════════════════════════════════════════
+   AUTOPASSPORT OS — Phase 3: Login screen + final interaction polish
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Login screen ── */
+function enterApp(e){
+  if(e) e.preventDefault();
+  var ls = document.getElementById('login-screen');
+  if(!ls) return;
+  ls.classList.add('hidden');
+  setTimeout(function(){ ls.style.display = 'none'; }, 420);
+  /* Trigger card entrance animations by re-adding active class */
+  var dash = document.getElementById('screen-dashboard');
+  if(dash){
+    dash.classList.remove('active');
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        dash.classList.add('active');
+        setTimeout(animateStatCounters, 180);
+      });
+    });
+  }
+}
+
+/* Show login screen on load (unless previously dismissed in this session) */
+(function(){
+  var ls = document.getElementById('login-screen');
+  if(!ls) return;
+  /* Always show on fresh load */
+  ls.style.display = 'flex';
+  ls.style.opacity = '1';
+  ls.style.transform = '';
+})();
+
+/* Login theme button label sync */
+function updateLoginLangBtn(){
+  var btn = document.getElementById('loginThemeBtn');
+  if(btn) btn.textContent = document.documentElement.classList.contains('dark') ? '☀️ Light mode' : '🌙 Dark mode';
+}
+
+/* Override toggleTheme to keep login theme button synced */
+var _origToggleTheme = typeof toggleTheme === 'function' ? toggleTheme : null;
+toggleTheme = function(){
+  if(_origToggleTheme) _origToggleTheme();
+  updateLoginLangBtn();
+};
+updateLoginLangBtn();
+
+/* ── Improved toast (centered bottom, no inline-start) ── */
+var _origShowToast = typeof showToast === 'function' ? showToast : null;
+showToast = function(msg, icon){
+  var t = document.getElementById('toast');
+  if(!t){
+    if(_origShowToast) _origShowToast(msg);
+    return;
+  }
+  t.innerHTML = (icon ? icon + ' ' : '✓ ') + msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(function(){ t.classList.remove('show'); }, 3200);
+};
+
+/* ── Animate KPI bars on screen entry ── */
+function animateBars(){
+  document.querySelectorAll('.bar > i').forEach(function(bar){
+    var w = bar.style.width;
+    bar.style.width = '0';
+    requestAnimationFrame(function(){
+      setTimeout(function(){ bar.style.width = w; }, 50);
+    });
+  });
+}
+
+/* Trigger bar animation on screen transitions */
+var _origNavFn = typeof nav === 'function' ? nav : null;
+nav = function(el){
+  if(_origNavFn) _origNavFn(el);
+  setTimeout(animateBars, 60);
+};
+
+/* Run bars on initial load */
+setTimeout(animateBars, 400);
+
+/* ── Button loading state helper ── */
+function setButtonLoading(btn, loading){
+  if(loading){
+    btn.classList.add('loading');
+    btn.disabled = true;
+  } else {
+    btn.classList.remove('loading');
+    btn.disabled = false;
+  }
+}
+
+/* ── Auto-hide login if on dark mode, update button ── */
+document.addEventListener('DOMContentLoaded', function(){
+  updateLoginLangBtn();
+});
+
+/* ── Keyboard: Enter on login screen ── */
+document.addEventListener('keydown', function(e){
+  var ls = document.getElementById('login-screen');
+  if(!ls || ls.style.display === 'none') return;
+  if(e.key === 'Enter'){
+    var focusedInput = document.activeElement;
+    if(focusedInput && focusedInput.closest('#login-screen')){
+      enterApp(e);
+    }
+  }
+  if(e.key === 'Escape' && ls && ls.style.display !== 'none'){
+    enterApp(e);
+  }
+}, {capture: true});
+

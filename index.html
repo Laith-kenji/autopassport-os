@@ -22,6 +22,44 @@
   <div class="bg-orb bg-orb-1"></div>
   <div class="bg-orb bg-orb-2"></div>
   <div class="bg-orb bg-orb-3"></div>
+  <div class="bg-grain"></div>
+</div>
+
+<!-- ============ LOGIN SCREEN ============ -->
+<div id="login-screen" role="dialog" aria-label="Sign in to AutoPassport OS">
+  <div class="login-bg" aria-hidden="true">
+    <div class="login-orb login-orb-1"></div>
+    <div class="login-orb login-orb-2"></div>
+    <div class="login-orb login-orb-3"></div>
+  </div>
+  <div class="login-card">
+    <div class="login-brand">
+      <div class="mark">A</div>
+      <div>AutoPassport <small>OS</small></div>
+    </div>
+    <div class="login-tagline">Run your automotive business from one connected workspace.</div>
+    <div class="login-sub">Manage bookings, vehicles, service history, approvals, invoices, and daily workshop operations with clarity.</div>
+    <form class="login-form" onsubmit="enterApp(event)">
+      <input class="login-input" type="email" placeholder="your@workshop.com" autocomplete="email" aria-label="Email address"/>
+      <input class="login-input" type="password" placeholder="••••••••" autocomplete="current-password" aria-label="Password"/>
+      <div class="login-row">
+        <label class="login-check"><input type="checkbox" style="accent-color:var(--accent-2)"/> Remember me</label>
+        <a href="#" class="login-forgot" onclick="return false">Forgot password?</a>
+      </div>
+      <button type="submit" class="btn login-btn">Sign In</button>
+      <button type="button" class="btn login-demo-btn" onclick="enterApp(event)">
+        <span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-settings"/></svg></span>
+        Enter Demo (no login required) →
+      </button>
+    </form>
+    <div class="login-footer">
+      <button onclick="toggleTheme()" id="loginThemeBtn">🌙 Dark mode</button>
+      <span style="opacity:.3">·</span>
+      <button onclick="toggleLang();updateLoginLangBtn()">EN / ع</button>
+      <span style="opacity:.3">·</span>
+      <span>v2.0 prototype</span>
+    </div>
+  </div>
 </div>
 
 <!-- ============ SVG SPRITE ============ -->
