@@ -77,34 +77,48 @@
     <div>AutoPassport <small>OS</small></div>
   </div>
 
-  <div class="search-wrap">
-    <span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-search"/></svg></span>
-    <input class="search" data-i18n="search_ph" data-i18n-target="placeholder" placeholder="VIN, plate or customer…"/>
+  <!-- Universal search -->
+  <div class="search-wrap" style="flex:1;max-width:440px;" onclick="openSearchOverlay()">
+    <span class="ic ic-sm" style="position:absolute;inset-inline-start:10px;color:var(--muted);pointer-events:none"><svg viewBox="0 0 24 24"><use href="#ic-search"/></svg></span>
+    <input class="search" readonly data-i18n="search_ph" data-i18n-target="placeholder" placeholder="Search customer, VIN, vehicle, booking…" style="cursor:pointer;" aria-label="Open universal search"/>
+    <span class="search-shortcut" aria-hidden="true">⌘K</span>
   </div>
 
-  <div class="topbar-spacer"></div>
+  <!-- Branch selector -->
+  <button class="tb-branch" onclick="showToast('Branch switching — concept')" aria-label="Current branch">
+    <span class="ic ic-sm"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
+    <span>Al-Rawabi Main</span>
+    <span class="ic ic-sm" style="opacity:.5"><svg viewBox="0 0 24 24"><use href="#ic-chevron-down"/></svg></span>
+  </button>
 
-  <!-- Sync indicator -->
-  <div id="syncIndicator" title="Click to simulate connection state" onclick="cycleSyncState()">
-    <div class="dot"></div><span id="syncLabel">Online · Synced</span>
+  <!-- Sync indicator (compact) -->
+  <div id="syncIndicator" title="Click to simulate connection state" onclick="cycleSyncState()" style="font-size:11px;">
+    <div class="dot"></div><span id="syncLabel">Online</span>
   </div>
 
-  <div class="tb-control">
-    <label>Vertical</label>
-    <select class="vert vert-select-sync" id="vertSelect" onchange="setVertical(this.value)">
-      <option value="workshop" data-i18n="vert_workshop">Workshop</option>
-      <option value="detailing" data-i18n="vert_detailing">Detailing</option>
-      <option value="wash" data-i18n="vert_wash">Car Wash</option>
-      <option value="tire" data-i18n="vert_tire">Tire &amp; Battery</option>
-      <option value="mobile" data-i18n="vert_mobile">Mobile Service</option>
-    </select>
-  </div>
+  <!-- Notifications -->
+  <button class="tb-icon-btn" id="notifBtn" onclick="toggleNotifPanel()" aria-label="Notifications">
+    <span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-bell"/></svg></span>
+    <span class="notif-dot"></span>
+  </button>
 
-  <button class="toggle-btn" onclick="toggleTheme()" id="themeBtn" aria-label="Switch to dark mode"><span class="ic ic-sm theme-icon-slot"><svg viewBox="0 0 24 24"><use href="#ic-moon"/></svg></span> <span class="theme-label-slot">Dark</span></button>
-  <button class="toggle-btn" id="langBtn" onclick="toggleLang()" aria-label="Toggle language"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-globe"/></svg></span> EN / ع</button>
-  <button class="toggle-btn" onclick="openTechApp()" aria-label="Tech App"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-wrench"/></svg></span><span class="tb-btn-label"> Tech App</span></button>
-  <button class="toggle-btn" onclick="openApp()" aria-label="Customer App"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-phone"/></svg></span><span class="tb-btn-label"> Customer App</span></button>
-  <div class="avatar">RA</div>
+  <!-- Theme toggle -->
+  <button class="toggle-btn tb-icon-btn" onclick="toggleTheme()" id="themeBtn" aria-label="Switch to dark mode">
+    <span class="ic ic-sm theme-icon-slot"><svg viewBox="0 0 24 24"><use href="#ic-moon"/></svg></span>
+  </button>
+
+  <!-- Language toggle -->
+  <button class="toggle-btn" id="langBtn" onclick="toggleLang()" aria-label="Toggle language" style="width:auto;padding:0 10px;font-size:12px;font-weight:700;">
+    <span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-globe"/></svg></span> EN / ع
+  </button>
+
+  <!-- Demo controls -->
+  <button class="tb-demo-btn" onclick="openDemoDrawer()" aria-label="Demo controls" title="Prototype demo controls">
+    <span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-settings"/></svg></span>
+    <span class="tb-btn-label">Demo</span>
+  </button>
+
+  <div class="avatar" onclick="showToast('Profile — Rami Al-Ahmad · Reception Advisor')" title="Rami Al-Ahmad" aria-label="User profile">RA</div>
 </div>
 
 <!-- ============ MOBILE HEADER ============ -->
@@ -131,12 +145,24 @@
 
   <!-- ---------- SIDEBAR ---------- -->
   <nav id="sidebar">
-    <!-- Role selector -->
+
+    <!-- Role badge -->
+    <div class="sb-role-badge">
+      <div class="sb-role-icon">
+        <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+      </div>
+      <div>
+        <div class="sb-role-name" id="sbRoleName">Reception Advisor</div>
+        <div class="sb-role-sub">Al-Rawabi Main</div>
+      </div>
+    </div>
+
+    <!-- Role selector (inside sb-role, still functional) -->
     <div class="sb-role">
-      <select class="role-select-sync" onchange="setRole(this.value)" aria-label="Role">
+      <select class="role-select-sync" onchange="setRole(this.value)" aria-label="Switch role">
         <option value="owner" data-i18n="role_owner">Owner / GM</option>
         <option value="branch" data-i18n="role_branch">Branch Manager</option>
-        <option value="reception" data-i18n="role_reception">Reception Advisor</option>
+        <option value="reception" selected data-i18n="role_reception">Reception Advisor</option>
         <option value="tech" data-i18n="role_tech">Technician</option>
         <option value="acct" data-i18n="role_acct">Accountant</option>
       </select>
@@ -145,50 +171,88 @@
     <!-- Nav body -->
     <div class="sb-nav">
 
-      <!-- Level 1: Daily Work -->
-      <div class="nav-group open" id="navg-daily">
-        <button class="nav-group-hd" onclick="toggleNavGroup(this)" aria-expanded="true">
-          <span data-i18n="nav_daily">Daily Work</span>
-          <svg class="chev" viewBox="0 0 24 24"><use href="#ic-chevron-right"/></svg>
-        </button>
-        <div class="nav-group-body">
-          <div class="nav-item active" data-screen="dashboard" onclick="nav(this)" aria-label="Dashboard"><span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-dashboard"/></svg></span><span class="nav-label" data-i18n="nav_dashboard">Dashboard</span></div>
-          <div class="nav-item" role="button" tabindex="0" data-screen="techworkspace" onclick="nav(this)" aria-label="My Workspace"><span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-tools"/></svg></span><span class="nav-label" data-i18n="nav_techworkspace">My Workspace</span></div>
-          <div class="nav-item" role="button" tabindex="0" data-screen="calendar" onclick="nav(this)" aria-label="Calendar &amp; Queue"><span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-calendar"/></svg></span><span class="nav-label" data-i18n="nav_calendar">Calendar &amp; Queue</span><span class="nav-badge">7</span></div>
-          <div class="nav-item" role="button" tabindex="0" data-screen="customers" onclick="nav(this)" aria-label="Customers &amp; Vehicles"><span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-car"/></svg></span><span class="nav-label" data-i18n="nav_customers">Customers &amp; Vehicles</span></div>
-          <div class="nav-item" role="button" tabindex="0" data-screen="intake" onclick="nav(this)" aria-label="Intake &amp; Evidence"><span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-camera"/></svg></span><span class="nav-label" data-i18n="nav_intake">Intake &amp; Evidence</span></div>
-          <div class="nav-item" role="button" tabindex="0" data-screen="workorder" onclick="nav(this)" aria-label="Work Orders"><span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-tools"/></svg></span><span class="nav-label" data-i18n="nav_workorder">Work Orders</span></div>
-          <div class="nav-item" role="button" tabindex="0" data-screen="estimate" onclick="nav(this)" aria-label="Estimates &amp; Approvals"><span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-file-text"/></svg></span><span class="nav-label" data-i18n="nav_estimate">Estimates &amp; Approvals</span></div>
-          <div class="nav-item" role="button" tabindex="0" data-screen="invoices" onclick="nav(this)" aria-label="Invoices &amp; Payments"><span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-credit-card"/></svg></span><span class="nav-label" data-i18n="nav_invoices">Invoices &amp; Payments</span></div>
-          <div class="nav-item" role="button" tabindex="0" data-screen="aftercare" onclick="nav(this)" aria-label="Aftercare"><span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-bell"/></svg></span><span class="nav-label" data-i18n="nav_aftercare">Aftercare</span></div>
-        </div>
+      <!-- Today's Work -->
+      <div class="nav-section-new">Today</div>
+      <div class="nav-item active" data-screen="dashboard" onclick="nav(this)" role="button" tabindex="0" aria-label="Dashboard">
+        <span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-dashboard"/></svg></span>
+        <span class="nav-label">Dashboard</span>
+      </div>
+      <div class="nav-item" role="button" tabindex="0" data-screen="calendar" onclick="nav(this)" aria-label="Calendar & Queue">
+        <span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-calendar"/></svg></span>
+        <span class="nav-label">Calendar &amp; Queue</span>
+        <span class="nav-badge">7</span>
+      </div>
+      <div class="nav-item" role="button" tabindex="0" data-screen="techworkspace" onclick="nav(this)" aria-label="My Workspace" data-roles="tech">
+        <span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-tools"/></svg></span>
+        <span class="nav-label">My Workspace</span>
       </div>
 
-      <!-- Level 2: Management -->
-      <div class="nav-group open" id="navg-mgmt">
-        <button class="nav-group-hd" onclick="toggleNavGroup(this)" aria-expanded="true">
-          <span data-i18n="nav_mgmt">Management</span>
-          <svg class="chev" viewBox="0 0 24 24"><use href="#ic-chevron-right"/></svg>
-        </button>
-        <div class="nav-group-body">
-          <div class="nav-item" role="button" tabindex="0" data-screen="inventory" onclick="nav(this)" aria-label="Inventory &amp; Purchasing"><span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-package"/></svg></span><span class="nav-label" data-i18n="nav_inventory">Inventory &amp; Purchasing</span></div>
-          <div class="nav-item" role="button" tabindex="0" data-screen="team" onclick="nav(this)" aria-label="Team &amp; Bays"><span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-users"/></svg></span><span class="nav-label" data-i18n="nav_team">Team &amp; Bays</span></div>
-          <div class="nav-item" role="button" tabindex="0" data-screen="pickup" onclick="nav(this)" aria-label="Pickup &amp; Mobile Jobs"><span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-truck"/></svg></span><span class="nav-label" data-i18n="nav_pickup">Pickup &amp; Mobile Jobs</span></div>
-          <div class="nav-item" role="button" tabindex="0" data-screen="memberships" onclick="nav(this)" aria-label="Memberships &amp; Loyalty"><span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-star"/></svg></span><span class="nav-label" data-i18n="nav_memberships">Memberships &amp; Loyalty</span></div>
-          <div class="nav-item" role="button" tabindex="0" data-screen="reports" onclick="nav(this)" aria-label="Reports"><span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-bar-chart"/></svg></span><span class="nav-label" data-i18n="nav_reports">Reports</span></div>
-        </div>
+      <!-- Service -->
+      <div class="nav-section-new">Service</div>
+      <div class="nav-item" role="button" tabindex="0" data-screen="customers" onclick="nav(this)" aria-label="Customers & Vehicles">
+        <span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-car"/></svg></span>
+        <span class="nav-label">Customers &amp; Vehicles</span>
+      </div>
+      <div class="nav-item" role="button" tabindex="0" data-screen="intake" onclick="nav(this)" aria-label="Check-In & Photos">
+        <span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-camera"/></svg></span>
+        <span class="nav-label">Check-In &amp; Photos</span>
+      </div>
+      <div class="nav-item" role="button" tabindex="0" data-screen="workorder" onclick="nav(this)" aria-label="Work Orders">
+        <span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-tools"/></svg></span>
+        <span class="nav-label">Work Orders</span>
+      </div>
+      <div class="nav-item" role="button" tabindex="0" data-screen="estimate" onclick="nav(this)" aria-label="Customer Approvals">
+        <span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-check-circle"/></svg></span>
+        <span class="nav-label">Customer Approvals</span>
+      </div>
+      <div class="nav-item" role="button" tabindex="0" data-screen="invoices" onclick="nav(this)" aria-label="Invoices & Payments">
+        <span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-credit-card"/></svg></span>
+        <span class="nav-label">Invoices &amp; Payments</span>
       </div>
 
-      <!-- Level 3: Platform -->
-      <div class="nav-group" id="navg-platform">
+      <!-- Management (collapsible) -->
+      <div class="nav-group" id="navg-mgmt">
         <button class="nav-group-hd" onclick="toggleNavGroup(this)" aria-expanded="false">
-          <span data-i18n="nav_platform">Platform</span>
+          <span>More</span>
           <svg class="chev" viewBox="0 0 24 24"><use href="#ic-chevron-right"/></svg>
         </button>
         <div class="nav-group-body">
-          <div class="nav-item" role="button" tabindex="0" data-screen="compliance" onclick="nav(this)" aria-label="Compliance Center"><span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-shield"/></svg></span><span class="nav-label" data-i18n="nav_compliance">Compliance Center</span></div>
-          <div class="nav-item" role="button" tabindex="0" data-screen="integrations" onclick="nav(this)" aria-label="Integrations"><span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-plug"/></svg></span><span class="nav-label" data-i18n="nav_integrations">Integrations</span></div>
-          <div class="nav-item" role="button" tabindex="0" data-screen="settings" onclick="nav(this)" aria-label="Settings"><span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-settings"/></svg></span><span class="nav-label" data-i18n="nav_settings">Settings</span></div>
+          <div class="nav-item" role="button" tabindex="0" data-screen="aftercare" onclick="nav(this)" aria-label="Aftercare & Follow-Up">
+            <span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-bell"/></svg></span>
+            <span class="nav-label">Aftercare &amp; Follow-Up</span>
+          </div>
+          <div class="nav-item" role="button" tabindex="0" data-screen="inventory" onclick="nav(this)" aria-label="Inventory & Parts">
+            <span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-package"/></svg></span>
+            <span class="nav-label">Inventory &amp; Parts</span>
+          </div>
+          <div class="nav-item" role="button" tabindex="0" data-screen="team" onclick="nav(this)" aria-label="Team & Bays">
+            <span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-users"/></svg></span>
+            <span class="nav-label">Team &amp; Bays</span>
+          </div>
+          <div class="nav-item" role="button" tabindex="0" data-screen="pickup" onclick="nav(this)" aria-label="Pickup & Mobile Jobs">
+            <span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-truck"/></svg></span>
+            <span class="nav-label">Pickup &amp; Mobile</span>
+          </div>
+          <div class="nav-item" role="button" tabindex="0" data-screen="memberships" onclick="nav(this)" aria-label="Memberships & Loyalty">
+            <span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-star"/></svg></span>
+            <span class="nav-label">Memberships &amp; Loyalty</span>
+          </div>
+          <div class="nav-item" role="button" tabindex="0" data-screen="reports" onclick="nav(this)" aria-label="Reports">
+            <span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-bar-chart"/></svg></span>
+            <span class="nav-label">Reports</span>
+          </div>
+          <div class="nav-item" role="button" tabindex="0" data-screen="compliance" onclick="nav(this)" aria-label="Tax & Legal">
+            <span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-shield"/></svg></span>
+            <span class="nav-label">Tax &amp; Legal</span>
+          </div>
+          <div class="nav-item" role="button" tabindex="0" data-screen="integrations" onclick="nav(this)" aria-label="Integrations">
+            <span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-plug"/></svg></span>
+            <span class="nav-label">Integrations</span>
+          </div>
+          <div class="nav-item" role="button" tabindex="0" data-screen="settings" onclick="nav(this)" aria-label="Settings">
+            <span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-settings"/></svg></span>
+            <span class="nav-label">Settings</span>
+          </div>
         </div>
       </div>
 
@@ -200,13 +264,6 @@
         <span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-globe"/></svg></span>
         <span class="btn-lbl" id="sbLangLbl">EN / ع</span>
       </button>
-      <select class="sb-foot-btn vert-select-sync" onchange="setVertical(this.value)" style="border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);color:#7a9ab8;font-size:11px;font-weight:600;font-family:inherit;border-radius:8px;padding:6px 8px;cursor:pointer;flex:2;min-width:0;">
-        <option value="workshop" data-i18n="vert_workshop">Workshop</option>
-        <option value="detailing" data-i18n="vert_detailing">Detailing</option>
-        <option value="wash" data-i18n="vert_wash">Car Wash</option>
-        <option value="tire" data-i18n="vert_tire">Tire &amp; Battery</option>
-        <option value="mobile" data-i18n="vert_mobile">Mobile Service</option>
-      </select>
     </div>
 
     <!-- Compact toggle -->
@@ -220,34 +277,69 @@
 
     <!-- ===== DASHBOARD ===== -->
     <section class="screen active" id="screen-dashboard">
-      <div class="page-head">
+
+      <!-- Welcome header -->
+      <div class="dash-welcome">
         <div>
-          <h1>Today at Al-Rawabi Auto Care</h1>
-          <div class="sub" id="vertTagline">Workshop · Thursday, 4 June 2026</div>
+          <div class="dash-greeting">Good morning, Rami</div>
+          <div class="dash-sub" id="vertTagline">Al-Rawabi Auto Care · Workshop · Thursday, 4 June 2026</div>
         </div>
-        <div class="head-actions">
-          <button class="btn" onclick="openBookingWizard()"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-calendar"/></svg></span><span data-i18n="dash_new_booking"> New Booking</span></button>
-          <button class="btn primary" onclick="go('intake')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-camera"/></svg></span><span data-i18n="dash_start_intake"> Start Intake</span></button>
+        <div class="dash-head-actions">
+          <button class="btn" onclick="openBookingWizard()"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-calendar"/></svg></span> New Booking</button>
+          <button class="btn primary" onclick="go('intake')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-camera"/></svg></span> Check In Vehicle</button>
         </div>
+      </div>
+
+      <!-- Quick action cards -->
+      <div class="quick-actions">
+        <div class="qa-card" onclick="openBookingWizard()" role="button" tabindex="0" aria-label="Create new booking">
+          <div class="qa-icon"><svg viewBox="0 0 24 24"><use href="#ic-calendar"/></svg></div>
+          <div><div class="qa-label">New Booking</div><div class="qa-sub">Schedule a service visit</div></div>
+        </div>
+        <div class="qa-card" onclick="go('intake')" role="button" tabindex="0" aria-label="Check in a vehicle">
+          <div class="qa-icon teal"><svg viewBox="0 0 24 24"><use href="#ic-camera"/></svg></div>
+          <div><div class="qa-label">Check In Vehicle</div><div class="qa-sub">Capture photos &amp; condition</div></div>
+        </div>
+        <div class="qa-card" onclick="openSearchOverlay()" role="button" tabindex="0" aria-label="Find a customer or vehicle">
+          <div class="qa-icon amber"><svg viewBox="0 0 24 24"><use href="#ic-search"/></svg></div>
+          <div><div class="qa-label">Find Customer</div><div class="qa-sub">Search by name, plate, or VIN</div></div>
+        </div>
+        <div class="qa-card" onclick="go('workorder')" role="button" tabindex="0" aria-label="Open active job">
+          <div class="qa-icon green"><svg viewBox="0 0 24 24"><use href="#ic-tools"/></svg></div>
+          <div><div class="qa-label">Open Active Job</div><div class="qa-sub">5 jobs in progress today</div></div>
+        </div>
+      </div>
+
+      <!-- Live status strip -->
+      <div class="ops-status-strip">
+        <span class="ops-status-item active"><span class="osdot"></span> 9 checked in today</span>
+        <span class="ops-sep"></span>
+        <span class="ops-status-item active"><span class="osdot"></span> 5 in service</span>
+        <span class="ops-sep"></span>
+        <span class="ops-status-item warn"><span class="osdot"></span> 3 awaiting approval</span>
+        <span class="ops-sep"></span>
+        <span class="ops-status-item active"><span class="osdot"></span> 4 ready for pickup</span>
+        <span class="ops-sep"></span>
+        <span class="ops-status-item bad"><span class="osdot"></span> 2 delayed</span>
       </div>
 
       <!-- Glass filter bar -->
       <div class="filter-bar">
         <span class="ic ic-sm" style="color:var(--muted)"><svg viewBox="0 0 24 24"><use href="#ic-filter"/></svg></span>
-        <input type="date" class="filter-bar" style="border:1px solid var(--line);border-radius:8px;padding:5px 9px;font-size:12px;background:var(--card);color:var(--ink);" value="2026-06-04"/>
+        <input type="date" style="border:1px solid var(--line);border-radius:8px;padding:5px 9px;font-size:12px;background:var(--card);color:var(--ink);" value="2026-06-04"/>
         <select style="border:1px solid var(--line);background:var(--card);border-radius:8px;padding:5px 9px;font-size:12px;color:var(--ink);font-family:inherit;">
-          <option data-i18n="filter_all">All Branches</option><option>Al-Rawabi Main</option><option>Al-Rawabi North</option>
+          <option>All Branches</option><option>Al-Rawabi Main</option><option>Al-Rawabi North</option>
         </select>
         <select style="border:1px solid var(--line);background:var(--card);border-radius:8px;padding:5px 9px;font-size:12px;color:var(--ink);font-family:inherit;">
-          <option data-i18n="filter_all">All Bays</option><option>Bay 1</option><option>Bay 2</option><option>Bay 3</option><option>Bay 4</option>
+          <option>All Bays</option><option>Bay 1</option><option>Bay 2</option><option>Bay 3</option><option>Bay 4</option>
         </select>
         <select style="border:1px solid var(--line);background:var(--card);border-radius:8px;padding:5px 9px;font-size:12px;color:var(--ink);font-family:inherit;">
-          <option data-i18n="filter_all">All Technicians</option><option>Samir H.</option><option>Omar F.</option><option>Feras N.</option>
+          <option>All Technicians</option><option>Samir H.</option><option>Omar F.</option><option>Feras N.</option>
         </select>
         <select style="border:1px solid var(--line);background:var(--card);border-radius:8px;padding:5px 9px;font-size:12px;color:var(--ink);font-family:inherit;">
-          <option data-i18n="filter_all">All Statuses</option><option>Booked</option><option>Checked In</option><option>In Service</option><option>Approval</option><option>QC</option><option>Ready</option>
+          <option>All Statuses</option><option>Booked</option><option>Checked In</option><option>In Service</option><option>Approval</option><option>QC</option><option>Ready</option>
         </select>
-        <button class="reset-btn" onclick="resetFilters()" data-i18n="filter_reset" style="margin-inline-start:auto;border:none;background:transparent;color:var(--muted);font-size:12px;font-weight:600;cursor:pointer;padding:4px 8px;border-radius:7px;">Reset</button>
+        <button class="reset-btn" onclick="resetFilters()" style="margin-inline-start:auto;border:none;background:transparent;color:var(--muted);font-size:12px;font-weight:600;cursor:pointer;padding:4px 8px;border-radius:7px;">Reset</button>
       </div>
 
       <!-- Attention panel -->
@@ -256,121 +348,230 @@
           <div class="ap-title"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-alert-triangle"/></svg></span><span data-i18n="alerts_title">Attention Required</span></div>
           <button class="ap-view" onclick="showToast('Full alert log (concept)')" data-i18n="view_all">View All</button>
         </div>
-        <div class="alert-row"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-clock"/></svg></span><span data-i18n="alert_approval">Approval pending 32 min — Land Cruiser EST-558</span><button class="btn sm" style="margin-inline-start:auto" onclick="go('estimate')">Review</button></div>
-        <div class="alert-row"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-alert-triangle"/></svg></span><span data-i18n="alert_late">Late completion — Lexus RX · promised 13:00</span><button class="btn sm" style="margin-inline-start:auto" onclick="go('workorder')">Open</button></div>
-        <div class="alert-row"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-camera"/></svg></span><span data-i18n="alert_photo">Missing intake photos — Patrol WO-2043</span><button class="btn sm" style="margin-inline-start:auto" onclick="go('intake')">Capture</button></div>
-        <div class="alert-row"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-package"/></svg></span><span data-i18n="alert_stock">Low stock — Brake pads C200 (4 units)</span><button class="btn sm" style="margin-inline-start:auto" onclick="go('inventory')">Order</button></div>
-        <div class="alert-row"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-shield"/></svg></span><span data-i18n="alert_warranty">Warranty expiring — Ceramic coating Aug 2026</span></div>
+        <div class="alert-row">
+          <span class="alert-priority high"></span>
+          <span class="ic ic-sm" style="color:var(--warn)"><svg viewBox="0 0 24 24"><use href="#ic-clock"/></svg></span>
+          <span style="flex:1">Customer approval waiting <strong>32 minutes</strong> — Land Cruiser EST-558</span>
+          <button class="btn sm primary" onclick="go('estimate')">Review Now</button>
+        </div>
+        <div class="alert-row">
+          <span class="alert-priority high"></span>
+          <span class="ic ic-sm" style="color:var(--bad)"><svg viewBox="0 0 24 24"><use href="#ic-alert-triangle"/></svg></span>
+          <span style="flex:1">Job running late — Lexus RX · promised by 13:00</span>
+          <button class="btn sm" onclick="go('workorder')">Open Job</button>
+        </div>
+        <div class="alert-row">
+          <span class="alert-priority med"></span>
+          <span class="ic ic-sm" style="color:var(--warn)"><svg viewBox="0 0 24 24"><use href="#ic-camera"/></svg></span>
+          <span style="flex:1">Missing check-in photos — Nissan Patrol · 5 of 7 captured</span>
+          <button class="btn sm" onclick="go('intake')">Add Photos</button>
+        </div>
+        <div class="alert-row">
+          <span class="alert-priority med"></span>
+          <span class="ic ic-sm" style="color:var(--warn)"><svg viewBox="0 0 24 24"><use href="#ic-package"/></svg></span>
+          <span style="flex:1">Low stock — Brake pads C200 · only 4 units left</span>
+          <button class="btn sm" onclick="go('inventory')">Reorder</button>
+        </div>
+        <div class="alert-row">
+          <span class="alert-priority low"></span>
+          <span class="ic ic-sm" style="color:var(--muted)"><svg viewBox="0 0 24 24"><use href="#ic-shield"/></svg></span>
+          <span style="flex:1">Warranty expiring soon — Ceramic coating · Aug 2026</span>
+          <button class="btn sm" onclick="openVehicle()">View</button>
+        </div>
       </div>
 
-      <!-- Summary stats -->
+      <!-- Summary stats (improved) -->
       <div class="summary-row">
-        <div class="stat"><span class="stat-ic ic-lg"><svg viewBox="0 0 24 24"><use href="#ic-car"/></svg></span><div class="k" data-i18n="stat_arrivals">New Arrivals</div><div class="v">9</div><div class="d">+2 vs avg</div></div>
-        <div class="stat"><span class="stat-ic ic-lg"><svg viewBox="0 0 24 24"><use href="#ic-tools"/></svg></span><div class="k" data-i18n="stat_inprogress">In Progress</div><div class="v">5</div><div class="d">on track</div></div>
-        <div class="stat"><span class="stat-ic ic-lg"><svg viewBox="0 0 24 24"><use href="#ic-clock"/></svg></span><div class="k" data-i18n="stat_awaiting">Awaiting</div><div class="v" style="color:var(--warn)">3</div><div class="d" style="color:var(--warn)">2 over 30 min</div></div>
-        <div class="stat"><span class="stat-ic ic-lg"><svg viewBox="0 0 24 24"><use href="#ic-check-circle"/></svg></span><div class="k" data-i18n="stat_ready">Ready for Delivery</div><div class="v">4</div><div class="d">notify owners</div></div>
-        <div class="stat"><span class="stat-ic ic-lg"><svg viewBox="0 0 24 24"><use href="#ic-dollar"/></svg></span><div class="k" data-i18n="stat_revenue">Revenue (today)</div><div class="v" style="font-size:20px">JOD 1,840</div><div class="d">+18%</div></div>
+        <div class="stat">
+          <div class="stat-top">
+            <div><div class="k">New Arrivals</div><div class="v">9</div></div>
+            <div class="stat-ic-wrap teal"><svg viewBox="0 0 24 24"><use href="#ic-car"/></svg></div>
+          </div>
+          <div class="d up">↑ +2 vs daily average</div>
+        </div>
+        <div class="stat">
+          <div class="stat-top">
+            <div><div class="k">In Service</div><div class="v">5</div></div>
+            <div class="stat-ic-wrap"><svg viewBox="0 0 24 24"><use href="#ic-tools"/></svg></div>
+          </div>
+          <div class="d">3 of 4 bays active</div>
+        </div>
+        <div class="stat">
+          <div class="stat-top">
+            <div><div class="k">Awaiting Approval</div><div class="v" style="color:var(--warn)">3</div></div>
+            <div class="stat-ic-wrap amber"><svg viewBox="0 0 24 24"><use href="#ic-clock"/></svg></div>
+          </div>
+          <div class="d warn">2 waiting over 30 min</div>
+        </div>
+        <div class="stat">
+          <div class="stat-top">
+            <div><div class="k">Ready for Pickup</div><div class="v">4</div></div>
+            <div class="stat-ic-wrap green"><svg viewBox="0 0 24 24"><use href="#ic-check-circle"/></svg></div>
+          </div>
+          <div class="d">Notify owners</div>
+        </div>
+        <div class="stat">
+          <div class="stat-top">
+            <div><div class="k">Revenue Today</div><div class="v" style="font-size:22px">JOD 1,840</div></div>
+            <div class="stat-ic-wrap green"><svg viewBox="0 0 24 24"><use href="#ic-dollar"/></svg></div>
+          </div>
+          <div class="d up">↑ +18% vs yesterday</div>
+        </div>
       </div>
       <!-- More KPIs toggle -->
       <button class="more-kpis-toggle" id="moreKpisBtn" onclick="toggleMoreKpis()">
         <span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-chevron-down"/></svg></span>
-        <span data-i18n="more_kpis">More KPIs</span>
+        <span>More KPIs</span>
       </button>
       <div class="more-kpis" id="moreKpis">
-        <div class="stat"><span class="stat-ic ic-lg"><svg viewBox="0 0 24 24"><use href="#ic-alert-triangle"/></svg></span><div class="k" data-i18n="stat_delayed">Delayed Jobs</div><div class="v" style="color:var(--bad)">2</div><div class="d">needs attention</div></div>
-        <div class="stat"><span class="stat-ic ic-lg"><svg viewBox="0 0 24 24"><use href="#ic-bar-chart"/></svg></span><div class="k" data-i18n="stat_bays">Bay Utilization</div><div class="v">74%</div><div class="d">3 of 4 active</div></div>
-        <div class="stat"><span class="stat-ic ic-lg"><svg viewBox="0 0 24 24"><use href="#ic-camera"/></svg></span><div class="k" data-i18n="stat_photo">Photo Compliance</div><div class="v" style="color:var(--warn)">86%</div><div class="d">2 jobs missing</div></div>
+        <div class="stat">
+          <div class="stat-top">
+            <div><div class="k">Delayed Jobs</div><div class="v" style="color:var(--bad)">2</div></div>
+            <div class="stat-ic-wrap red"><svg viewBox="0 0 24 24"><use href="#ic-alert-triangle"/></svg></div>
+          </div>
+          <div class="d down">Needs immediate attention</div>
+        </div>
+        <div class="stat">
+          <div class="stat-top">
+            <div><div class="k">Bay Utilization</div><div class="v">74%</div></div>
+            <div class="stat-ic-wrap"><svg viewBox="0 0 24 24"><use href="#ic-bar-chart"/></svg></div>
+          </div>
+          <div class="d">3 of 4 bays active</div>
+        </div>
+        <div class="stat">
+          <div class="stat-top">
+            <div><div class="k">Photo Compliance</div><div class="v" style="color:var(--warn)">86%</div></div>
+            <div class="stat-ic-wrap amber"><svg viewBox="0 0 24 24"><use href="#ic-camera"/></svg></div>
+          </div>
+          <div class="d warn">2 jobs missing photos</div>
+        </div>
       </div>
 
       <!-- Today Board (kanban) -->
       <div class="card" style="margin-bottom:16px;">
-        <h3 id="boardTitle">Today Board <span class="card-sub">— drag-free concept view</span></h3>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <h3 style="margin:0" id="boardTitle">Today's Jobs <span class="card-sub">· live overview</span></h3>
+          <div style="display:flex;gap:6px;">
+            <button class="btn sm ghost" onclick="showToast('Full board view (concept)')">Expand</button>
+          </div>
+        </div>
         <div class="kanban">
           <!-- Booked -->
-          <div class="kcol"><h4 data-i18n="col_booked">Booked <span>2</span></h4>
-            <div class="kcard kcard-priority" onclick="openVehicle()">
+          <div class="kcol"><h4>Booked <span>2</span></h4>
+            <div class="kcard" onclick="openVehicle()">
               <div class="car">Toyota Land Cruiser 2023</div>
               <div class="kcard-plate">22-41-988</div>
-              <div class="meta">Khalid Mansour</div>
-              <div class="kcard-footer">
-                <div><div class="kcard-times">10:30 → 12:30</div><div class="kcard-tech"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-users"/></svg></span>Samir H.</div></div>
-                <div class="tagrow"><span class="pill blue">VIP</span></div>
-                <div class="kcard-menu-wrap"><button class="kcard-menu-btn" onclick="event.stopPropagation();toggleKcardMenu(this)">⋯</button><div class="kcard-menu"><button onclick="openVehicle()"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-file-text"/></svg></span>Open Job</button><button onclick="openVehicle()"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-shield"/></svg></span>Vehicle Passport</button><div class="kcard-menu-sep"></div><button onclick="go('intake')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-camera"/></svg></span>Start Intake</button><button onclick="showToast('Tech assigned (concept)')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-users"/></svg></span>Assign Technician</button><button onclick="showToast('Status moved (concept)')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-chevron-right"/></svg></span>Move Status</button><div class="kcard-menu-sep"></div><button onclick="showToast('Calling +962 79 555 0142 (concept)')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-phone"/></svg></span>Call Customer</button><button onclick="showToast('WhatsApp update sent (concept)')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-message"/></svg></span>Send WhatsApp</button></div></div>
+              <div class="meta">Khalid Mansour · 10:30</div>
+              <div class="kcard-action">
+                <button class="kcard-primary-btn" onclick="event.stopPropagation();go('intake')">
+                  <span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-camera"/></svg></span> Check In
+                </button>
+                <div class="kcard-menu-wrap"><button class="kcard-menu-btn" onclick="event.stopPropagation();toggleKcardMenu(this)">⋯</button><div class="kcard-menu"><button onclick="openVehicle()"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-car"/></svg></span>Vehicle Passport</button><button onclick="showToast('Tech assigned (concept)')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-users"/></svg></span>Assign Tech</button><div class="kcard-menu-sep"></div><button onclick="showToast('WhatsApp update sent (concept)')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-message"/></svg></span>Send WhatsApp</button></div></div>
               </div>
             </div>
             <div class="kcard" onclick="go('customers')">
               <div class="car">Kia Sportage 2021</div>
               <div class="kcard-plate">44-21-007</div>
-              <div class="meta">Rami Aziz</div>
-              <div class="kcard-footer">
-                <div><div class="kcard-times">11:15 → 12:45</div><div class="kcard-tech"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-tools"/></svg></span>AC Check</div></div>
-                <div class="kcard-menu-wrap"><button class="kcard-menu-btn" onclick="event.stopPropagation();toggleKcardMenu(this)">⋯</button><div class="kcard-menu"><button onclick="go('customers')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-file-text"/></svg></span>Open Job</button><button onclick="showToast('Status moved')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-chevron-right"/></svg></span>Move Status</button><button onclick="showToast('WhatsApp sent')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-message"/></svg></span>Send WhatsApp</button></div></div>
+              <div class="meta">Rami Aziz · 11:15</div>
+              <div class="kcard-action">
+                <button class="kcard-primary-btn" onclick="event.stopPropagation();go('intake')">
+                  <span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-camera"/></svg></span> Check In
+                </button>
+                <div class="kcard-menu-wrap"><button class="kcard-menu-btn" onclick="event.stopPropagation();toggleKcardMenu(this)">⋯</button><div class="kcard-menu"><button onclick="go('customers')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-file-text"/></svg></span>View Details</button><button onclick="showToast('WhatsApp sent')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-message"/></svg></span>Send WhatsApp</button></div></div>
               </div>
             </div>
           </div>
           <!-- Checked In -->
-          <div class="kcol"><h4 data-i18n="col_checkedin">Checked In <span>2</span></h4>
+          <div class="kcol"><h4>Checked In <span>2</span></h4>
             <div class="kcard" onclick="go('intake')">
               <div class="car">Nissan Patrol 2022</div>
               <div class="kcard-plate">18-90-441</div>
               <div class="meta">Saeed Al-Otaibi</div>
-              <div class="kcard-footer">
-                <div><div class="kcard-times">09:00 →</div><div class="tagrow"><span class="pill warn">Photos 5/7</span></div></div>
-                <div class="kcard-menu-wrap"><button class="kcard-menu-btn" onclick="event.stopPropagation();toggleKcardMenu(this)">⋯</button><div class="kcard-menu"><button onclick="go('intake')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-camera"/></svg></span>Start Intake</button><button onclick="showToast('Tech assigned')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-users"/></svg></span>Assign Technician</button><button onclick="showToast('WhatsApp sent')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-message"/></svg></span>Send WhatsApp</button></div></div>
+              <div class="kcard-action">
+                <button class="kcard-primary-btn warn" onclick="event.stopPropagation();go('intake')" style="background:var(--warn)">
+                  <span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-camera"/></svg></span> Add Photos
+                </button>
+                <div class="kcard-menu-wrap"><button class="kcard-menu-btn" onclick="event.stopPropagation();toggleKcardMenu(this)">⋯</button><div class="kcard-menu"><button onclick="showToast('Tech assigned')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-users"/></svg></span>Assign Tech</button><button onclick="showToast('WhatsApp sent')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-message"/></svg></span>Send WhatsApp</button></div></div>
               </div>
             </div>
             <div class="kcard" onclick="go('intake')">
               <div class="car">Hyundai Tucson 2020</div>
               <div class="kcard-plate">55-33-812</div>
-              <div class="meta">Hana Darwish</div>
-              <div class="kcard-footer"><div><div class="kcard-times">10:00 →</div><div class="kcard-tech">Awaiting bay</div></div></div>
+              <div class="meta">Hana Darwish · Awaiting bay</div>
+              <div class="kcard-action">
+                <button class="kcard-primary-btn teal" onclick="event.stopPropagation();go('intake')">
+                  Start Intake
+                </button>
+                <div class="kcard-menu-wrap"><button class="kcard-menu-btn" onclick="event.stopPropagation();toggleKcardMenu(this)">⋯</button><div class="kcard-menu"><button onclick="showToast('Bay assigned')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-tools"/></svg></span>Assign Bay</button></div></div>
+              </div>
             </div>
           </div>
           <!-- In Service -->
-          <div class="kcol"><h4 data-i18n="col_inservice">In Service <span>2</span></h4>
+          <div class="kcol"><h4>In Service <span>2</span></h4>
             <div class="kcard" onclick="go('workorder')">
               <div class="car">Mercedes C200 2019</div>
               <div class="kcard-plate">31-77-204</div>
-              <div class="meta">Lara Haddad</div>
-              <div class="kcard-footer">
-                <div><div class="kcard-times">08:30 → 12:00</div><div class="kcard-tech"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-users"/></svg></span>Samir H. · Brakes</div></div>
-                <div class="kcard-menu-wrap"><button class="kcard-menu-btn" onclick="event.stopPropagation();toggleKcardMenu(this)">⋯</button><div class="kcard-menu"><button onclick="go('workorder')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-file-text"/></svg></span>Open Job</button><button onclick="showToast('Status moved')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-chevron-right"/></svg></span>Move Status</button><button onclick="showToast('WhatsApp sent')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-message"/></svg></span>Send WhatsApp</button></div></div>
+              <div class="meta">Lara Haddad · Samir H.</div>
+              <div class="kcard-action">
+                <button class="kcard-primary-btn teal" onclick="event.stopPropagation();go('workorder')">
+                  Open Job
+                </button>
+                <div class="kcard-menu-wrap"><button class="kcard-menu-btn" onclick="event.stopPropagation();toggleKcardMenu(this)">⋯</button><div class="kcard-menu"><button onclick="showToast('WhatsApp sent')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-message"/></svg></span>Message Customer</button><button onclick="go('estimate')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-file-text"/></svg></span>Request Approval</button></div></div>
               </div>
             </div>
-            <div class="kcard kcard-late" onclick="go('workorder')">
+            <div class="kcard kcard-late" onclick="go('workorder')" style="border-color:var(--bad);">
               <div class="car">Ford Ranger 2023</div>
               <div class="kcard-plate">40-12-665</div>
-              <div class="meta">Tariq Nawfal</div>
-              <div class="kcard-footer">
-                <div><div class="kcard-times">09:00 → 11:00</div><div class="tagrow"><span class="pill bad">Late</span></div></div>
-                <div class="kcard-menu-wrap"><button class="kcard-menu-btn" onclick="event.stopPropagation();toggleKcardMenu(this)">⋯</button><div class="kcard-menu"><button onclick="go('workorder')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-file-text"/></svg></span>Open Job</button><button onclick="showToast('WhatsApp sent')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-message"/></svg></span>Send WhatsApp</button></div></div>
+              <div class="meta">Tariq Nawfal · <span style="color:var(--bad);font-weight:700">Late</span></div>
+              <div class="kcard-action">
+                <button class="kcard-primary-btn" style="background:var(--bad)" onclick="event.stopPropagation();go('workorder')">
+                  Open Job
+                </button>
+                <div class="kcard-menu-wrap"><button class="kcard-menu-btn" onclick="event.stopPropagation();toggleKcardMenu(this)">⋯</button><div class="kcard-menu"><button onclick="showToast('WhatsApp sent')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-message"/></svg></span>Message Customer</button></div></div>
               </div>
             </div>
           </div>
           <!-- Approval -->
-          <div class="kcol"><h4 data-i18n="col_approval">Approval <span>1</span></h4>
-            <div class="kcard kcard-priority" onclick="go('estimate')">
+          <!-- Approval -->
+          <div class="kcol"><h4>Approval Needed <span>1</span></h4>
+            <div class="kcard" onclick="go('estimate')" style="border-color:rgba(217,119,6,.35);">
               <div class="car">Toyota Land Cruiser 2023</div>
               <div class="kcard-plate">22-41-988</div>
-              <div class="kcard-footer"><div><div class="kcard-times">EST-558</div><div class="tagrow"><span class="pill warn">JOD 420 · Pending</span></div></div></div>
+              <div class="meta">Khalid Mansour · EST-558</div>
+              <div class="kcard-action">
+                <button class="kcard-primary-btn" style="background:var(--warn)" onclick="event.stopPropagation();go('estimate')">
+                  Review Approval
+                </button>
+                <div class="kcard-menu-wrap"><button class="kcard-menu-btn" onclick="event.stopPropagation();toggleKcardMenu(this)">⋯</button><div class="kcard-menu"><button onclick="showToast('Reminder sent')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-message"/></svg></span>Send Reminder</button></div></div>
+              </div>
             </div>
           </div>
           <!-- QC -->
-          <div class="kcol"><h4 data-i18n="col_qc">QC <span>1</span></h4>
+          <div class="kcol"><h4>Quality Check <span>1</span></h4>
             <div class="kcard" onclick="go('workorder')">
               <div class="car">Lexus RX 2022</div>
               <div class="kcard-plate">33-08-219</div>
-              <div class="meta">Dana Ziadeh</div>
-              <div class="kcard-footer"><div><div class="kcard-tech">Final inspection</div><div class="tagrow"><span class="pill blue">After photos</span></div></div></div>
+              <div class="meta">Dana Ziadeh · Final inspection</div>
+              <div class="kcard-action">
+                <button class="kcard-primary-btn teal" onclick="event.stopPropagation();go('workorder')">
+                  <span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-camera"/></svg></span> Add Photo
+                </button>
+                <div class="kcard-menu-wrap"><button class="kcard-menu-btn" onclick="event.stopPropagation();toggleKcardMenu(this)">⋯</button><div class="kcard-menu"><button onclick="go('workorder')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-check-circle"/></svg></span>Complete Inspection</button></div></div>
+              </div>
             </div>
           </div>
           <!-- Ready -->
-          <div class="kcol"><h4 data-i18n="col_ready">Ready <span>1</span></h4>
+          <div class="kcol"><h4>Ready for Pickup <span>1</span></h4>
             <div class="kcard" onclick="go('invoices')">
               <div class="car">Honda Accord 2021</div>
               <div class="kcard-plate">27-55-310</div>
-              <div class="meta">Maya Khalil</div>
-              <div class="kcard-footer"><div><div class="tagrow"><span class="pill good">Paid · Pickup</span></div></div></div>
+              <div class="meta">Maya Khalil · Paid</div>
+              <div class="kcard-action">
+                <button class="kcard-primary-btn good" onclick="event.stopPropagation();showToast('WhatsApp pickup notification sent to Maya Khalil')">
+                  Notify Customer
+                </button>
+                <div class="kcard-menu-wrap"><button class="kcard-menu-btn" onclick="event.stopPropagation();toggleKcardMenu(this)">⋯</button><div class="kcard-menu"><button onclick="go('invoices')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-credit-card"/></svg></span>Collect Payment</button><button onclick="openVehicle()"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-car"/></svg></span>Open Passport</button></div></div>
+              </div>
             </div>
           </div>
         </div>
@@ -415,16 +616,25 @@
 
       <!-- Sample vehicle cards -->
       <div class="card">
-        <h3>Sample Vehicles <span class="card-sub">— click to open passport</span></h3>
-        <div class="veh-grid" id="vehGridDash" style="margin-top:8px;"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <h3 style="margin:0">Vehicles Active Today</h3>
+          <button class="btn sm" onclick="go('customers')">View All</button>
+        </div>
+        <div class="veh-grid" id="vehGridDash" style="margin-top:0;"></div>
       </div>
     </section>
 
     <!-- ===== CUSTOMERS & VEHICLES ===== -->
     <section class="screen" id="screen-customers">
       <div class="page-head">
-        <div><h1>Customers &amp; Vehicles</h1><div class="sub">6 active vehicles · click any card to open the passport</div></div>
-        <div class="head-actions"><button class="btn primary">＋ Add Vehicle</button></div>
+        <div>
+          <h1>Customers &amp; Vehicles</h1>
+          <div class="sub">6 vehicles in the system · click any to open the Vehicle Record</div>
+        </div>
+        <div class="head-actions">
+          <button class="btn" onclick="openSearchOverlay()"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-search"/></svg></span> Search</button>
+          <button class="btn primary" onclick="showToast('Add Vehicle flow — concept')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-plus"/></svg></span> Add Vehicle</button>
+        </div>
       </div>
       <div class="veh-grid" id="vehGrid"></div>
     </section>
@@ -471,12 +681,12 @@
         </div>
       </div>
 
-      <!-- Passport trust score (improved) -->
+      <!-- Vehicle Record Quality (formerly Passport Trust Score) -->
       <div class="trust-score" style="margin-bottom:14px;">
-        <div class="trust-ring">86</div>
+        <div class="record-quality-ring"><div class="record-quality-ring-inner">86</div></div>
         <div class="trust-meta">
-          <div class="score-label">Passport Trust Score <span class="trust-tip" data-i18n="trust_tip" data-i18n-target="data-tip" data-tip="Trust score is a prototype metric based on verified evidence completeness.">?</span></div>
-          <div class="score-title">Strong · Persistent Vehicle Record</div>
+          <div class="score-label">Vehicle Record Quality <span class="trust-tip" data-i18n="trust_tip" data-i18n-target="data-tip" data-tip="Record Quality shows how complete and verified this vehicle's service history is.">?</span></div>
+          <div class="score-title">Strong · 7 verified service events on record</div>
           <div class="trust-break">
             <div class="tb-item"><div class="tb-v">7</div><div class="tb-k">Verified Events</div></div>
             <div class="tb-item"><div class="tb-v">2</div><div class="tb-k">Imported Docs</div></div>
@@ -583,10 +793,10 @@
 
       <!-- Evidence tab -->
       <div class="tabpane" data-pane="ev">
-        <!-- Chain of custody summary -->
+        <!-- Photo Evidence History (formerly Media Chain of Custody) -->
         <div class="card" style="margin-bottom:14px;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-            <h3 style="margin:0">Media Chain of Custody</h3>
+            <h3 style="margin:0">Photo Evidence History <span class="card-sub">· verified &amp; timestamped</span></h3>
             <span class="record-badge shop" style="font-size:9px;">🔒 Shop Private Record</span>
           </div>
           <div class="custody-grid">
@@ -613,11 +823,11 @@
           </div>
         </div>
 
-        <!-- AI Delta panel -->
+        <!-- Before & After Review -->
         <div class="card" style="margin-bottom:14px;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-            <h3 style="margin:0">AI Delta Analysis</h3>
-            <span class="beta-label">✦ Simulated Beta · Not real CV</span>
+            <h3 style="margin:0">Before &amp; After Review</h3>
+            <span class="beta-label">✦ Simulated · concept only</span>
           </div>
           <div class="delta-compare">
             <div class="delta-slot"><div class="dsl">BEFORE</div>📷 Intake photo placeholder</div>
@@ -689,7 +899,7 @@
       <div class="tabpane" data-pane="declined">
         <div class="card">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
-            <h3 style="margin:0">Declined Work Wallet</h3>
+            <h3 style="margin:0">Recommended Work Not Done</h3>
             <span class="beta-label" style="background:var(--warn-soft);color:#9a6713">Budget planner active</span>
           </div>
 
@@ -725,7 +935,7 @@
       <div class="tabpane" data-pane="resale">
         <div class="card">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-            <h3 style="margin:0">Resale Transfer Dossier <span class="record-badge customer" style="margin-inline-start:6px;font-size:9px;">🌐 Buyer Shareable</span></h3>
+            <h3 style="margin:0">Resale Report <span class="record-badge customer" style="margin-inline-start:6px;font-size:9px;">🌐 Buyer Shareable</span></h3>
             <span class="pill good" style="padding:6px 12px">📋 74% ready</span>
           </div>
 
@@ -1664,7 +1874,7 @@
 
     <!-- ===== COMPLIANCE CENTER ===== -->
     <section class="screen" id="screen-compliance">
-      <div class="page-head"><div><h1>Compliance Center</h1><div class="sub">Country-specific tax, e-invoicing &amp; regulatory configuration · prototype examples only</div></div></div>
+      <div class="page-head"><div><h1>Tax &amp; Legal Settings</h1><div class="sub">Country-specific tax, e-invoicing &amp; regulatory configuration · prototype examples only</div></div></div>
 
       <div class="card" style="margin-bottom:4px;background:var(--warn-soft);border-color:#f3dcc4;">
         <strong>⚠️ Prototype only</strong> — These are configuration examples. All country-specific legal, tax and accounting rules require validation with licensed advisors in each jurisdiction before production use.
@@ -2446,6 +2656,170 @@
 
 <!-- ============ TOAST ============ -->
 <div id="toast" role="status" aria-live="polite" aria-atomic="true"></div>
+
+<!-- ============ UNIVERSAL SEARCH OVERLAY ============ -->
+<div id="search-overlay" onclick="if(event.target===this)closeSearchOverlay()" role="dialog" aria-modal="true" aria-label="Universal search">
+  <div class="search-modal">
+    <div class="search-modal-bar">
+      <span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-search"/></svg></span>
+      <input class="search-modal-input" id="searchModalInput" placeholder="Search customer, vehicle, VIN, plate, booking, invoice…" autocomplete="off" oninput="filterSearchResults(this.value)" aria-label="Search"/>
+      <span class="search-modal-esc" aria-hidden="true">Esc</span>
+    </div>
+    <div class="search-results-wrap" id="searchResultsWrap">
+      <!-- Recent searches (default state) -->
+      <div id="searchDefaultState">
+        <div class="search-group-label" style="padding:10px 16px 4px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);">Recent Searches</div>
+        <div class="search-recent" onclick="fillSearch('Khalid Mansour')">
+          <span class="ic ic-sm" style="color:var(--muted)"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+          Khalid Mansour
+        </div>
+        <div class="search-recent" onclick="fillSearch('Land Cruiser 22-41-988')">
+          <span class="ic ic-sm" style="color:var(--muted)"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+          Land Cruiser 22-41-988
+        </div>
+        <div class="search-recent" onclick="fillSearch('INV-3082')">
+          <span class="ic ic-sm" style="color:var(--muted)"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+          INV-3082
+        </div>
+        <div style="padding:10px 16px 4px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--muted);">Quick Access</div>
+        <div class="search-result" onclick="openVehicle();closeSearchOverlay()">
+          <div class="sr-icon"><svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:var(--accent);fill:none;stroke-width:1.7;stroke-linecap:round"><use href="#ic-car"/></svg></div>
+          <div class="sr-main"><div class="sr-title">Toyota Land Cruiser 2023</div><div class="sr-sub">22-41-988 · Khalid Mansour · Approval pending</div></div>
+          <span class="sr-badge pill warn">Approval</span>
+        </div>
+        <div class="search-result" onclick="go('workorder');closeSearchOverlay()">
+          <div class="sr-icon" style="background:var(--blue-soft)"><svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:var(--accent-2);fill:none;stroke-width:1.7;stroke-linecap:round"><use href="#ic-tools"/></svg></div>
+          <div class="sr-main"><div class="sr-title">WO-2041 · Mercedes C200</div><div class="sr-sub">Lara Haddad · In Service · Samir H.</div></div>
+          <span class="sr-badge pill teal">Active</span>
+        </div>
+        <div class="search-result" onclick="go('invoices');closeSearchOverlay()">
+          <div class="sr-icon" style="background:var(--good-soft)"><svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:var(--good);fill:none;stroke-width:1.7;stroke-linecap:round"><use href="#ic-credit-card"/></svg></div>
+          <div class="sr-main"><div class="sr-title">INV-3082 · Mercedes C200</div><div class="sr-sub">JOD 299 · Lara Haddad · Payment pending</div></div>
+          <span class="sr-badge pill warn">Pending</span>
+        </div>
+        <div style="padding:12px 16px;border-top:1px solid var(--line-2);text-align:center;">
+          <span style="font-size:11.5px;color:var(--muted)">Type to search customers, vehicles, VINs, plates, invoices, or jobs</span>
+        </div>
+      </div>
+      <div id="searchLiveResults" style="display:none;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ DEMO CONTROLS DRAWER ============ -->
+<div id="demo-drawer-overlay" onclick="closeDemoDrawer()"></div>
+<div id="demo-drawer" role="dialog" aria-label="Demo controls">
+  <div class="demo-drawer-head">
+    <div class="demo-drawer-title">
+      <span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-settings"/></svg></span>
+      Demo Controls <span class="dd-badge">PROTOTYPE</span>
+    </div>
+    <button class="demo-drawer-close" onclick="closeDemoDrawer()" aria-label="Close demo controls">
+      <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="demo-drawer-body">
+    <div class="demo-section">
+      <div class="demo-section-label">Switch Role View</div>
+      <div class="demo-desc">Change which navigation items are visible, simulating different staff roles.</div>
+      <select class="field-input role-select-sync" onchange="setRole(this.value); updateSidebarRoleBadge(this.value);" aria-label="Select role">
+        <option value="owner">Owner / GM — full access</option>
+        <option value="branch">Branch Manager</option>
+        <option value="reception" selected>Reception Advisor</option>
+        <option value="tech">Technician</option>
+        <option value="acct">Accountant</option>
+      </select>
+    </div>
+    <div class="demo-section">
+      <div class="demo-section-label">Business Vertical</div>
+      <div class="demo-desc">Switch the business type to see how content and labels adapt.</div>
+      <select class="field-input vert-select-sync" onchange="setVertical(this.value)" aria-label="Select vertical">
+        <option value="workshop">Workshop / Mechanic</option>
+        <option value="detailing">Detailing &amp; Polishing</option>
+        <option value="wash">Car Wash</option>
+        <option value="tire">Tire &amp; Battery</option>
+        <option value="mobile">Mobile Service</option>
+      </select>
+    </div>
+    <div class="demo-section">
+      <div class="demo-section-label">App Previews</div>
+      <div class="demo-desc">Open simulated views of the mobile apps.</div>
+      <div class="demo-row">
+        <button class="btn sm" onclick="openTechApp()" style="flex:1">
+          <span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-wrench"/></svg></span> Technician App
+        </button>
+        <button class="btn sm" onclick="openApp()" style="flex:1">
+          <span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-phone"/></svg></span> Customer App
+        </button>
+      </div>
+    </div>
+    <div class="demo-section">
+      <div class="demo-section-label">Connection State</div>
+      <div class="demo-desc">Simulate online, weak, or offline connection.</div>
+      <button class="btn sm" onclick="cycleSyncState()" style="width:100%">
+        <span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-sync"/></svg></span> Cycle Sync State
+      </button>
+    </div>
+  </div>
+  <div class="demo-drawer-foot">
+    AutoPassport OS — Prototype · No backend connected<br/>All data is simulated for demonstration only
+  </div>
+</div>
+
+<!-- ============ NOTIFICATIONS PANEL ============ -->
+<div id="notif-panel" role="dialog" aria-label="Notifications">
+  <div class="notif-head">
+    <div class="notif-head-title">Notifications</div>
+    <button class="notif-mark-read" onclick="showToast('All marked as read')">Mark all read</button>
+  </div>
+  <div class="notif-group-label">Needs Action Now</div>
+  <div class="notif-item unread" onclick="go('estimate');toggleNotifPanel()">
+    <div class="notif-dot-wrap urgent"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round"><use href="#ic-clock"/></svg></div>
+    <div class="notif-text">
+      <div class="notif-title">Customer approval waiting 32 min</div>
+      <div class="notif-meta">Land Cruiser EST-558 · Khalid Mansour</div>
+      <div class="notif-cta">Review approval →</div>
+    </div>
+  </div>
+  <div class="notif-item unread" onclick="go('workorder');toggleNotifPanel()">
+    <div class="notif-dot-wrap urgent"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round"><use href="#ic-alert-triangle"/></svg></div>
+    <div class="notif-text">
+      <div class="notif-title">Job running late — Lexus RX</div>
+      <div class="notif-meta">Promised by 13:00 · Dana Ziadeh</div>
+      <div class="notif-cta">Open job →</div>
+    </div>
+  </div>
+  <div class="notif-group-label">Today</div>
+  <div class="notif-item" onclick="go('intake');toggleNotifPanel()">
+    <div class="notif-dot-wrap warn"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round"><use href="#ic-camera"/></svg></div>
+    <div class="notif-text">
+      <div class="notif-title">Missing check-in photos</div>
+      <div class="notif-meta">Nissan Patrol · 5 of 7 captured</div>
+      <div class="notif-cta">Add photos →</div>
+    </div>
+  </div>
+  <div class="notif-item" onclick="go('invoices');toggleNotifPanel()">
+    <div class="notif-dot-wrap good"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round"><use href="#ic-check-circle"/></svg></div>
+    <div class="notif-text">
+      <div class="notif-title">Vehicle ready for pickup</div>
+      <div class="notif-meta">Honda Accord · Maya Khalil · Invoice paid</div>
+    </div>
+  </div>
+  <div class="notif-group-label">This Week</div>
+  <div class="notif-item" onclick="openVehicle();toggleNotifPanel()">
+    <div class="notif-dot-wrap warn"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round"><use href="#ic-shield"/></svg></div>
+    <div class="notif-text">
+      <div class="notif-title">Warranty expiring soon</div>
+      <div class="notif-meta">Ceramic coating · Land Cruiser · Aug 2026</div>
+    </div>
+  </div>
+  <div style="padding:12px 16px;text-align:center;border-top:1px solid var(--line-2);">
+    <button class="btn sm ghost" onclick="showToast('Full notification log — concept')">View all notifications</button>
+  </div>
+</div>
+
+<!-- ============ HELP BUTTON ============ -->
+<button id="help-btn" onclick="showToast('Help center — keyboard shortcuts: ⌘K search · Esc close · Tab navigate')" aria-label="Help and keyboard shortcuts" title="Help & Shortcuts">?</button>
 
 <script src="js/app.js"></script>
 

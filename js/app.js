@@ -426,6 +426,8 @@ function setRole(role){
   /* sync role selects */
   document.querySelectorAll('.role-select-sync').forEach(function(s){ if(s.value!==role) s.value=role; });
   showToast(t('role_'+role) + (LANG==='ar' ? ' — تم تفعيل العرض' : ' — view activated'));
+  /* update sidebar role badge */
+  if(typeof updateSidebarRoleBadge === 'function') updateSidebarRoleBadge(role);
 }
 
 /* ── Generic 3-dot row menu ── */
@@ -929,3 +931,188 @@ function initAccessibility(){
     if(e.target === this) closeBookingWizard();
   });
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   AUTOPASSPORT OS — Premium UX Overhaul: JS additions
+   Phase 6: Search overlay, demo drawer, notifications, role-based nav, shortcuts
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Role badge labels (keys must match ROLE_NAV above) ── */
+var ROLE_LABELS = {
+  owner:'Owner / GM',
+  branch:'Branch Manager',
+  reception:'Reception Advisor',
+  tech:'Technician',
+  acct:'Accountant'
+};
+
+function updateSidebarRoleBadge(role){
+  var el = document.getElementById('sbRoleName');
+  if(el) el.textContent = ROLE_LABELS[role] || role;
+  /* Sync all demo-drawer role selects */
+  document.querySelectorAll('.role-select-sync').forEach(function(sel){
+    if(sel.value !== role) sel.value = role;
+  });
+}
+
+/* ── Search overlay ── */
+function openSearchOverlay(){
+  var overlay = document.getElementById('search-overlay');
+  var input = document.getElementById('searchModalInput');
+  if(!overlay) return;
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  if(input) setTimeout(function(){ input.focus(); }, 60);
+}
+
+function closeSearchOverlay(){
+  var overlay = document.getElementById('search-overlay');
+  if(!overlay) return;
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+  var input = document.getElementById('searchModalInput');
+  if(input) input.value = '';
+  var live = document.getElementById('searchLiveResults');
+  var def = document.getElementById('searchDefaultState');
+  if(live) live.style.display = 'none';
+  if(def) def.style.display = '';
+}
+
+function fillSearch(val){
+  var input = document.getElementById('searchModalInput');
+  if(input){ input.value = val; filterSearchResults(val); input.focus(); }
+}
+
+/* Simple live search against sample data */
+var SEARCH_DATA = [
+  {type:'customer',icon:'ic-users',title:'Khalid Mansour',sub:'VIP · Land Cruiser 2023 · +962 79 555 0142',badge:'VIP',badgeC:'blue',action:function(){openVehicle();}},
+  {type:'customer',icon:'ic-users',title:'Lara Haddad',sub:'Mercedes C200 2019 · +962 79 412 8833',badge:'In Service',badgeC:'teal',action:function(){go('workorder');}},
+  {type:'customer',icon:'ic-users',title:'Maya Khalil',sub:'Honda Accord 2021 · +962 77 822 1100',badge:'Ready',badgeC:'good',action:function(){go('invoices');}},
+  {type:'vehicle',icon:'ic-car',title:'Toyota Land Cruiser 2023',sub:'22-41-988 · Khalid Mansour · VIN: JTMHV05J…204871',badge:'Approval',badgeC:'warn',action:function(){openVehicle();}},
+  {type:'vehicle',icon:'ic-car',title:'Mercedes C200 2019',sub:'31-77-204 · Lara Haddad · WO-2041',badge:'In Service',badgeC:'teal',action:function(){go('workorder');}},
+  {type:'vehicle',icon:'ic-car',title:'Nissan Patrol 2022',sub:'18-90-441 · Saeed Al-Otaibi · Photos 5/7',badge:'Check-In',badgeC:'warn',action:function(){go('intake');}},
+  {type:'job',icon:'ic-tools',title:'WO-2041 · Mercedes C200',sub:'Brake overhaul · Samir H. · In Service',badge:'Active',badgeC:'teal',action:function(){go('workorder');}},
+  {type:'job',icon:'ic-tools',title:'WO-2043 · Nissan Patrol',sub:'AC Check · Omar F. · Checked In',badge:'Pending',badgeC:'warn',action:function(){go('intake');}},
+  {type:'invoice',icon:'ic-credit-card',title:'INV-3082 · Mercedes C200',sub:'JOD 299 · Lara Haddad · Payment pending',badge:'Pending',badgeC:'warn',action:function(){go('invoices');}},
+  {type:'invoice',icon:'ic-credit-card',title:'INV-3081 · Land Cruiser',sub:'JOD 335 · Khalid Mansour · Paid',badge:'Paid',badgeC:'good',action:function(){go('invoices');}},
+];
+
+function filterSearchResults(q){
+  var live = document.getElementById('searchLiveResults');
+  var def = document.getElementById('searchDefaultState');
+  if(!q || q.trim().length < 1){
+    if(live) live.style.display = 'none';
+    if(def) def.style.display = '';
+    return;
+  }
+  if(live) live.style.display = '';
+  if(def) def.style.display = 'none';
+  var ql = q.toLowerCase();
+  var matches = SEARCH_DATA.filter(function(d){
+    return d.title.toLowerCase().indexOf(ql)!==-1 || d.sub.toLowerCase().indexOf(ql)!==-1;
+  });
+  if(!matches.length){
+    live.innerHTML = '<div class="search-empty"><div class="se-icon">🔍</div><p>No results for "<strong>'+q+'</strong>"</p><p>Try a customer name, plate number, VIN, or invoice number</p></div>';
+    return;
+  }
+  var groups = {customer:[],vehicle:[],job:[],invoice:[]};
+  matches.forEach(function(m){ if(groups[m.type]) groups[m.type].push(m); });
+  var labels = {customer:'Customers',vehicle:'Vehicles',job:'Active Jobs',invoice:'Invoices'};
+  var html = '';
+  Object.keys(groups).forEach(function(type){
+    if(!groups[type].length) return;
+    html += '<div class="search-group"><div class="search-group-label">'+labels[type]+'</div>';
+    groups[type].forEach(function(item){
+      html += '<div class="search-result" onclick="(function(){'+item.action.toString().replace(/\n/g,' ')+'})();closeSearchOverlay()">';
+      html += '<div class="sr-icon"><svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:var(--accent);fill:none;stroke-width:1.7;stroke-linecap:round"><use href="#'+item.icon+'"/></svg></div>';
+      html += '<div class="sr-main"><div class="sr-title">'+item.title+'</div><div class="sr-sub">'+item.sub+'</div></div>';
+      html += '<span class="sr-badge pill '+item.badgeC+'">'+item.badge+'</span>';
+      html += '</div>';
+    });
+    html += '</div>';
+  });
+  live.innerHTML = html;
+}
+
+/* ── Demo drawer ── */
+function openDemoDrawer(){
+  var ov = document.getElementById('demo-drawer-overlay');
+  var dr = document.getElementById('demo-drawer');
+  if(ov) ov.classList.add('open');
+  if(dr) dr.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeDemoDrawer(){
+  var ov = document.getElementById('demo-drawer-overlay');
+  var dr = document.getElementById('demo-drawer');
+  if(ov) ov.classList.remove('open');
+  if(dr) dr.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ── Notifications panel ── */
+function toggleNotifPanel(){
+  var panel = document.getElementById('notif-panel');
+  if(!panel) return;
+  panel.classList.toggle('open');
+}
+/* Close notif panel on outside click */
+document.addEventListener('click',function(e){
+  var panel = document.getElementById('notif-panel');
+  var btn = document.getElementById('notifBtn');
+  if(!panel || !btn) return;
+  if(panel.classList.contains('open') && !panel.contains(e.target) && !btn.contains(e.target)){
+    panel.classList.remove('open');
+  }
+});
+
+/* ── Keyboard shortcuts ── */
+document.addEventListener('keydown',function(e){
+  /* ⌘K or Ctrl+K → open search */
+  if((e.metaKey || e.ctrlKey) && e.key === 'k'){
+    e.preventDefault();
+    var overlay = document.getElementById('search-overlay');
+    if(overlay && overlay.classList.contains('open')){
+      closeSearchOverlay();
+    } else {
+      openSearchOverlay();
+    }
+    return;
+  }
+  /* / key → open search (when not in input) */
+  if(e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA' && document.activeElement.tagName !== 'SELECT'){
+    e.preventDefault();
+    openSearchOverlay();
+    return;
+  }
+  /* Escape → close search, demo drawer */
+  if(e.key === 'Escape'){
+    closeSearchOverlay();
+    closeDemoDrawer();
+  }
+});
+
+/* ── Search input in topbar → open overlay instead ── */
+var topbarSearch = document.querySelector('#topbar .search');
+if(topbarSearch){
+  topbarSearch.addEventListener('focus', function(e){
+    e.preventDefault();
+    this.blur();
+    openSearchOverlay();
+  });
+  topbarSearch.addEventListener('click', function(e){
+    e.preventDefault();
+    openSearchOverlay();
+  });
+}
+
+/* ── Quick action cards — keyboard support ── */
+document.querySelectorAll('.qa-card').forEach(function(card){
+  card.addEventListener('keydown',function(e){
+    if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); this.click(); }
+  });
+});
+
+/* ── Apply role nav + badge on init ── */
+if(typeof updateSidebarRoleBadge === 'function') updateSidebarRoleBadge('reception');
+
