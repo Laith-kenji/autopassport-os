@@ -17,6 +17,13 @@
 </head>
 <body>
 
+<!-- ============ ANIMATED BACKGROUND LAYER ============ -->
+<div id="bg-layer" aria-hidden="true">
+  <div class="bg-orb bg-orb-1"></div>
+  <div class="bg-orb bg-orb-2"></div>
+  <div class="bg-orb bg-orb-3"></div>
+</div>
+
 <!-- ============ SVG SPRITE ============ -->
 <svg style="display:none" xmlns="http://www.w3.org/2000/svg">
   <symbol id="ic-dashboard" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></symbol>
@@ -681,7 +688,7 @@
         </div>
       </div>
 
-      <!-- Vehicle Record Quality (formerly Passport Trust Score) -->
+      <!-- Vehicle Record Quality (formerly Vehicle Record Quality) -->
       <div class="trust-score" style="margin-bottom:14px;">
         <div class="record-quality-ring"><div class="record-quality-ring-inner">86</div></div>
         <div class="trust-meta">
@@ -717,24 +724,12 @@
         </div>
       </div>
 
-      <!-- Vehicle profile tabs (simplified + scrollable) -->
+      <!-- Vehicle profile tabs — 3 top-level only -->
       <div class="veh-tabs-wrap">
         <div class="tabs" id="vehTabs" style="border-bottom:none;">
           <div class="tab active" data-tab="ov" onclick="vehTab(this)">Overview</div>
-          <div class="tab" data-tab="tl" onclick="vehTab(this)">Timeline</div>
-          <div class="tab" data-tab="ev" onclick="vehTab(this)">Evidence</div>
-          <div class="tab" data-tab="war" onclick="vehTab(this)">Warranties</div>
-          <div class="tab" data-tab="declined" onclick="vehTab(this)">Declined Work</div>
-          <div class="tab" data-tab="resale" onclick="vehTab(this)">Resale Dossier</div>
-          <div class="tabs-more-wrap">
-            <button class="tabs-more-btn" onclick="toggleMoreTabs(this)">More <span style="font-size:10px">▾</span></button>
-            <div class="tabs-more-dd">
-              <button class="tab-dd-item" onclick="selectMoreTab(this,'doc')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-file"/></svg></span> Documents</button>
-              <button class="tab-dd-item" onclick="selectMoreTab(this,'tire')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-tools"/></svg></span> Tires</button>
-              <button class="tab-dd-item" onclick="selectMoreTab(this,'acc')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-users"/></svg></span> Ownership &amp; Access</button>
-              <button class="tab-dd-item" onclick="selectMoreTab(this,'audit')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-shield"/></svg></span> Audit Summary</button>
-            </div>
-          </div>
+          <div class="tab" data-tab="tl" onclick="vehTab(this)">History &amp; Documents</div>
+          <div class="tab" data-tab="adv" onclick="vehTab(this)">Advanced</div>
         </div>
       </div>
 
@@ -895,7 +890,7 @@
         </div>
       </div>
 
-      <!-- Declined Work tab -->
+      <!-- Recommended Work tab -->
       <div class="tabpane" data-pane="declined">
         <div class="card">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
@@ -931,7 +926,7 @@
         </div>
       </div>
 
-      <!-- Resale Dossier tab -->
+      <!-- Resale Report tab -->
       <div class="tabpane" data-pane="resale">
         <div class="card">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
@@ -941,7 +936,7 @@
 
           <div class="grid" style="grid-template-columns:1fr 1fr;margin-bottom:14px;">
             <div>
-              <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">Include in dossier</div>
+              <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">Include in resale report</div>
               <div class="field"><div class="check-list">
                 <label><input type="checkbox" checked> ✅ Verified service events (7)</label>
                 <label><input type="checkbox" checked> ✅ Imported documents (2)</label>
@@ -957,7 +952,7 @@
             <div>
               <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">Dossier readiness</div>
               <div class="kpi" style="margin-bottom:10px;"><div class="v" style="font-size:22px">74%</div><div class="k">Service history completeness</div><div class="bar"><i style="width:74%"></i></div></div>
-              <div class="kpi" style="margin-bottom:10px;"><div class="v" style="font-size:22px">86</div><div class="k">Passport trust score</div><div class="bar"><i style="width:86%"></i></div></div>
+              <div class="kpi" style="margin-bottom:10px;"><div class="v" style="font-size:22px">86</div><div class="k">Vehicle Record Quality</div><div class="bar"><i style="width:86%"></i></div></div>
               <div class="kpi"><div class="v" style="font-size:22px">7</div><div class="k">Verified events</div><div class="bar"><i style="width:70%"></i></div></div>
             </div>
           </div>
@@ -1012,17 +1007,77 @@
         </div>
       </div>
 
-      <!-- Audit Summary tab -->
-      <div class="tabpane" data-pane="audit">
-        <div class="card">
-          <h3>Audit Summary — Vehicle VH-1042</h3>
+      <!-- Advanced tab (3rd top-level tab) -->
+      <div class="tabpane" data-pane="adv">
+        <!-- Sub-navigation inside Advanced -->
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+          <button class="btn sm" onclick="showAdvSub('adv-resale',this)">Resale Report</button>
+          <button class="btn sm" onclick="showAdvSub('adv-declined',this)">Recommended Work</button>
+          <button class="btn sm" onclick="showAdvSub('adv-tires',this)">Tires &amp; Wheels</button>
+          <button class="btn sm" onclick="showAdvSub('adv-access',this)">Ownership &amp; Access</button>
+          <button class="btn sm" onclick="showAdvSub('adv-audit',this)">Audit History</button>
+        </div>
+        <!-- Resale Report sub-section (reuse existing content inline) -->
+        <div id="adv-resale" class="adv-sub">
+          <div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+              <h3 style="margin:0">Resale Report <span class="record-badge customer" style="margin-inline-start:6px;font-size:9px;">🌐 Buyer Shareable</span></h3>
+              <button class="btn sm primary" onclick="showToast('PDF preview generated (concept)')">📄 Generate PDF</button>
+            </div>
+            <div class="kpi-row" style="margin-bottom:16px;">
+              <div class="kpi"><div class="v" style="color:var(--accent-2)">74%</div><div class="k">History completeness</div><div class="bar"><i style="width:74%"></i></div></div>
+              <div class="kpi"><div class="v">86</div><div class="k">Vehicle Record Quality</div><div class="bar"><i style="width:86%"></i></div></div>
+              <div class="kpi"><div class="v">7</div><div class="k">Verified events</div><div class="bar"><i style="width:70%"></i></div></div>
+              <div class="kpi"><div class="v" style="color:var(--good)">3</div><div class="k">Active warranties</div><div class="bar"><i style="width:75%"></i></div></div>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="btn teal" onclick="showToast('Buyer invitation sent (concept)')">📨 Send buyer invitation</button>
+              <button class="btn" onclick="openShareModal()"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-link"/></svg></span> Generate buyer link</button>
+              <button class="btn" onclick="showToast('Ownership transfer initiated (concept)')">🔄 Transfer ownership</button>
+            </div>
+          </div>
+        </div>
+        <!-- Recommended Work sub-section -->
+        <div id="adv-declined" class="adv-sub" style="display:none">
+          <div class="card">
+            <h3>Recommended Work Not Completed</h3>
+            <div class="declined-item">
+              <div class="di-head"><div><div class="di-name">Wheel Alignment</div><div class="di-meta">Recommended: 12 Mar 2026 · WO-2042</div></div><span class="pill warn">Safety · Recommended soon</span></div>
+              <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
+                <button class="btn sm primary" onclick="showToast('Booking opened (concept)')">📅 Convert to booking</button>
+                <button class="btn sm" onclick="showToast('WhatsApp sent')">Send reminder</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Tires sub-section -->
+        <div id="adv-tires" class="adv-sub" style="display:none">
+          <div class="card"><h3>Tire &amp; Wheel Record</h3>
+          <table class="tbl"><thead><tr><th>Position</th><th>Brand</th><th>Size</th><th>Tread (mm)</th><th>Installed</th><th>Status</th></tr></thead><tbody>
+            <tr><td>Front Left</td><td>Michelin LTX M/S2</td><td>265/70 R17</td><td>6.8</td><td>Jan 2024</td><td><span class="pill good">Active</span></td></tr>
+            <tr><td>Front Right</td><td>Michelin LTX M/S2</td><td>265/70 R17</td><td>6.6</td><td>Jan 2024</td><td><span class="pill good">Active</span></td></tr>
+            <tr><td>Rear Left</td><td>Michelin LTX M/S2</td><td>265/70 R17</td><td>7.1</td><td>Jan 2024</td><td><span class="pill good">Active</span></td></tr>
+            <tr><td>Rear Right</td><td>Michelin LTX M/S2</td><td>265/70 R17</td><td>7.0</td><td>Jan 2024</td><td><span class="pill good">Active</span></td></tr>
+          </tbody></table></div>
+        </div>
+        <!-- Ownership sub-section -->
+        <div id="adv-access" class="adv-sub" style="display:none">
+          <div class="card"><h3>Ownership &amp; Access Control</h3>
+          <table class="tbl"><thead><tr><th>Granted to</th><th>Scope</th><th>Expiry</th><th>Status</th></tr></thead><tbody>
+            <tr><td>Khalid Mansour (owner)</td><td>Full</td><td>Permanent</td><td><span class="pill good">Active</span></td></tr>
+            <tr><td>Prospective buyer link #1</td><td>Service timeline, warranties</td><td>7 days</td><td><span class="pill good">Active</span></td></tr>
+          </tbody></table></div>
+        </div>
+        <!-- Audit sub-section -->
+        <div id="adv-audit" class="adv-sub" style="display:none">
+          <div class="card"><h3>Audit History — Vehicle VH-1042</h3>
           <div class="audit-row"><span class="aa">Rami A.</span><span class="am">Generated passport buyer link · Al-Rawabi Main</span><span style="margin-inline-start:auto;font-size:11px;color:var(--muted)">4 Jun 2026 09:14</span></div>
           <div class="audit-row"><span class="aa">Samir H.</span><span class="am">Evidence added · WO-2042 · 3 during-service photos</span><span style="margin-inline-start:auto;font-size:11px;color:var(--muted)">12 Mar 2026 11:35</span></div>
           <div class="audit-row"><span class="aa">Rami A.</span><span class="am">Intake override approved · photo 7 missing · reason logged</span><span style="margin-inline-start:auto;font-size:11px;color:var(--muted)">12 Mar 2026 08:51</span></div>
           <div class="audit-row"><span class="aa">Khalid M. (owner)</span><span class="am">Estimate approved via WhatsApp link · signed digitally</span><span style="margin-inline-start:auto;font-size:11px;color:var(--muted)">12 Mar 2026 09:36</span></div>
           <div class="audit-row"><span class="aa">System</span><span class="am">Warranty claim opened · Ceramic coating · WO-2015</span><span style="margin-inline-start:auto;font-size:11px;color:var(--muted)">20 Aug 2025 14:00</span></div>
-        </div>
-      </div>
+        </div></div><!-- /adv-audit -->
+      </div><!-- /tabpane adv -->
     </section>
 
     <!-- ===== INTAKE & EVIDENCE ===== -->
@@ -1036,7 +1091,7 @@
         <span class="vpill warn">Intake in progress</span>
       </div>
       <div class="page-head">
-        <div><h1>Intake &amp; Evidence</h1><div class="sub">Nissan Patrol 2022 · check-in capture</div></div>
+        <div><h1>Vehicle Check-In</h1><div class="sub">Nissan Patrol 2022 · check-in capture</div></div>
         <div class="head-actions">
           <span class="pill warn" style="padding:7px 12px;font-size:12px" id="offlineBadge">Photo compliance 6/7</span>
           <button class="btn ghost sm" onclick="showToast('Manager override logged (concept). Reason required + audit entry.')">🔓 Manager override</button>
@@ -1382,7 +1437,7 @@
             <div class="ar-meta">Assigned manager: Rami A. · Resolution pending · Original WO-2038</div>
           </div>
           <div style="display:flex;gap:5px;flex-wrap:wrap;">
-            <button class="btn sm danger" onclick="openComebackModal()"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-alert-triangle"/></svg></span> Comeback Case</button>
+            <button class="btn sm danger" onclick="openComebackModal()"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-alert-triangle"/></svg></span> Returning Issue</button>
             <button class="btn sm" onclick="showToast('Manager notified')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-phone"/></svg></span> Manager</button>
           </div>
         </div>
@@ -2193,7 +2248,7 @@
 <!-- ============ COMEBACK MODAL ============ -->
 <div class="modal-overlay" id="comebackModal" onclick="if(event.target===this)closeComebackModal()">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="comebackModalTitle">
-    <div class="modal-head"><h3 id="comebackModalTitle">Comeback Case</h3><button onclick="closeComebackModal()" aria-label="Close">✕</button></div>
+    <div class="modal-head"><h3 id="comebackModalTitle">Returning Issue</h3><button onclick="closeComebackModal()" aria-label="Close">✕</button></div>
     <div class="modal-body">
       <table class="tbl" style="margin-bottom:12px;">
         <tr><td>Vehicle</td><td>Honda Accord 2021 · Maya Khalil</td></tr>
@@ -2497,7 +2552,7 @@
         </div>
         <div class="wiz-field" style="margin-top:12px"><label data-i18n="wiz_mileage">Current Mileage (km)</label><input type="number" placeholder="68,420"/></div>
         <div style="background:var(--accent-soft);border:1px solid #b8dfe0;border-radius:var(--radius-sm);padding:10px 14px;font-size:12.5px;color:#0a7a80;margin-top:10px">
-          <strong>Existing Passport Found</strong> — Land Cruiser 2023 · 7 verified events · Trust Score 86
+          <strong>Existing Passport Found</strong> — Land Cruiser 2023 · 7 verified events · Record Quality 86
         </div>
       </div>
 
@@ -2600,7 +2655,7 @@
     <div class="mnav-item" role="button" tabindex="0" data-screen="techworkspace" onclick="nav(this)"><span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-tools"/></svg></span><span data-i18n="nav_techworkspace">My Workspace</span></div>
     <div class="mnav-item" role="button" tabindex="0" data-screen="calendar" onclick="nav(this)"><span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-calendar"/></svg></span><span data-i18n="nav_calendar">Calendar &amp; Queue</span><span class="mnav-badge">7</span></div>
     <div class="mnav-item" role="button" tabindex="0" data-screen="customers" onclick="nav(this)"><span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-car"/></svg></span><span data-i18n="nav_customers">Customers &amp; Vehicles</span></div>
-    <div class="mnav-item" role="button" tabindex="0" data-screen="intake" onclick="nav(this)"><span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-camera"/></svg></span><span data-i18n="nav_intake">Intake &amp; Evidence</span></div>
+    <div class="mnav-item" role="button" tabindex="0" data-screen="intake" onclick="nav(this)"><span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-camera"/></svg></span><span data-i18n="nav_intake">Check-In &amp; Photos</span></div>
     <div class="mnav-item" role="button" tabindex="0" data-screen="workorder" onclick="nav(this)"><span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-tools"/></svg></span><span data-i18n="nav_workorder">Work Orders</span></div>
     <div class="mnav-item" role="button" tabindex="0" data-screen="estimate" onclick="nav(this)"><span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-file-text"/></svg></span><span data-i18n="nav_estimate">Estimates &amp; Approvals</span></div>
     <div class="mnav-item" role="button" tabindex="0" data-screen="invoices" onclick="nav(this)"><span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-credit-card"/></svg></span><span data-i18n="nav_invoices">Invoices &amp; Payments</span></div>
@@ -2612,7 +2667,7 @@
     <div class="mnav-item" role="button" tabindex="0" data-screen="memberships" onclick="nav(this)"><span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-star"/></svg></span><span data-i18n="nav_memberships">Memberships &amp; Loyalty</span></div>
     <div class="mnav-item" role="button" tabindex="0" data-screen="reports" onclick="nav(this)"><span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-bar-chart"/></svg></span><span data-i18n="nav_reports">Reports</span></div>
     <div class="mnav-section" data-i18n="nav_platform">Platform</div>
-    <div class="mnav-item" role="button" tabindex="0" data-screen="compliance" onclick="nav(this)"><span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-shield"/></svg></span><span data-i18n="nav_compliance">Compliance Center</span></div>
+    <div class="mnav-item" role="button" tabindex="0" data-screen="compliance" onclick="nav(this)"><span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-shield"/></svg></span><span data-i18n="nav_compliance">Tax &amp; Legal</span></div>
     <div class="mnav-item" role="button" tabindex="0" data-screen="integrations" onclick="nav(this)"><span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-plug"/></svg></span><span data-i18n="nav_integrations">Integrations</span></div>
     <div class="mnav-item" role="button" tabindex="0" data-screen="settings" onclick="nav(this)"><span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-settings"/></svg></span><span data-i18n="nav_settings">Settings</span></div>
   </div>

@@ -1116,3 +1116,159 @@ document.querySelectorAll('.qa-card').forEach(function(card){
 /* ── Apply role nav + badge on init ── */
 if(typeof updateSidebarRoleBadge === 'function') updateSidebarRoleBadge('reception');
 
+
+/* ══════════════════════════════════════════════════════════════════════════
+   AUTOPASSPORT OS — Phase 2: Premium interactions
+   Cursor reactive background · Card tilt · Stats counter · Advanced sub-tabs
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Cursor-reactive background spotlight ── */
+(function() {
+  var bgLayer = document.getElementById('bg-layer');
+  if (!bgLayer) return;
+  var lastX = 0, lastY = 0, rafId;
+  document.addEventListener('mousemove', function(e) {
+    lastX = e.clientX; lastY = e.clientY;
+    if (rafId) return;
+    rafId = requestAnimationFrame(function() {
+      rafId = null;
+      bgLayer.style.setProperty('--cx', lastX + 'px');
+      bgLayer.style.setProperty('--cy', lastY + 'px');
+    });
+  }, {passive: true});
+})();
+
+/* ── Cursor-reactive glow on quick-action cards ── */
+(function() {
+  function attachCardGlow(card) {
+    card.addEventListener('mousemove', function(e) {
+      var rect = this.getBoundingClientRect();
+      var x = e.clientX - rect.left;
+      var y = e.clientY - rect.top;
+      this.style.setProperty('--mx', x + 'px');
+      this.style.setProperty('--my', y + 'px');
+    });
+  }
+  document.querySelectorAll('.qa-card').forEach(attachCardGlow);
+
+  /* Re-attach for dynamically added cards */
+  var obs = new MutationObserver(function(mutations) {
+    mutations.forEach(function(m) {
+      m.addedNodes.forEach(function(n) {
+        if (n.classList && n.classList.contains('qa-card')) attachCardGlow(n);
+        if (n.querySelectorAll) n.querySelectorAll('.qa-card').forEach(attachCardGlow);
+      });
+    });
+  });
+  obs.observe(document.body, {childList: true, subtree: true});
+})();
+
+/* ── Subtle 3D card tilt on quick-action cards ── */
+(function() {
+  function attachTilt(card) {
+    card.addEventListener('mousemove', function(e) {
+      var rect = this.getBoundingClientRect();
+      var cx = rect.left + rect.width / 2;
+      var cy = rect.top + rect.height / 2;
+      var dx = (e.clientX - cx) / (rect.width / 2);
+      var dy = (e.clientY - cy) / (rect.height / 2);
+      this.style.transform = 'translateY(-4px) perspective(800px) rotateY(' + (dx * 4) + 'deg) rotateX(' + (-dy * 4) + 'deg)';
+    });
+    card.addEventListener('mouseleave', function() {
+      this.style.transform = '';
+    });
+  }
+  document.querySelectorAll('.qa-card').forEach(attachTilt);
+})();
+
+/* ── Animated KPI counter on dashboard ── */
+function animateStatCounters() {
+  document.querySelectorAll('.stat .v').forEach(function(el) {
+    var txt = el.textContent.trim();
+    var num = parseFloat(txt.replace(/[^0-9.]/g, ''));
+    if (isNaN(num) || num === 0) return;
+    var prefix = txt.match(/^[^0-9]*/)[0];
+    var suffix = txt.replace(/^[^0-9]*[0-9,.]+/, '');
+    var start = 0;
+    var duration = 600;
+    var startTime = null;
+    function step(ts) {
+      if (!startTime) startTime = ts;
+      var progress = Math.min((ts - startTime) / duration, 1);
+      var eased = 1 - Math.pow(1 - progress, 3);
+      var current = Math.round(eased * num);
+      el.textContent = prefix + current.toLocaleString() + suffix;
+      if (progress < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  });
+}
+
+/* Run counter animation when dashboard becomes active */
+var _origNav = typeof nav === 'function' ? nav : null;
+nav = function(el) {
+  if (_origNav) _origNav(el);
+  if (el && el.dataset && el.dataset.screen === 'dashboard') {
+    setTimeout(animateStatCounters, 80);
+  }
+};
+
+/* Run on initial load if dashboard is active */
+if (document.querySelector('#screen-dashboard.active')) {
+  setTimeout(animateStatCounters, 200);
+}
+
+/* ── Advanced sub-tab switcher (vehicle record) ── */
+function showAdvSub(id, btn) {
+  /* Hide all sub-sections */
+  document.querySelectorAll('.adv-sub').forEach(function(el) { el.style.display = 'none'; });
+  /* Remove active state from all sub-buttons */
+  if (btn && btn.closest) {
+    var wrap = btn.closest('[data-pane="adv"]');
+    if (wrap) wrap.querySelectorAll('button').forEach(function(b) {
+      b.classList.remove('primary');
+    });
+  }
+  /* Show target */
+  var target = document.getElementById(id);
+  if (target) target.style.display = 'block';
+  if (btn) btn.classList.add('primary');
+}
+
+/* ── Returning Issue modal title update ── */
+if (typeof openComebackModal === 'function') {
+  var _origComebackModal = openComebackModal;
+  openComebackModal = function() {
+    _origComebackModal();
+    var t = document.getElementById('comebackModalTitle');
+    if (t) t.textContent = 'Returning Issue';
+  };
+}
+
+/* ── Smooth screen transitions ── */
+var _origGo = typeof go === 'function' ? go : null;
+go = function(id) {
+  if (_origGo) _origGo(id);
+  /* Trigger counter animation for dashboard */
+  if (id === 'dashboard') setTimeout(animateStatCounters, 100);
+};
+
+/* ── Skeleton loader utility ── */
+function showSkeleton(container, rows) {
+  var html = '';
+  for (var i = 0; i < (rows || 3); i++) {
+    html += '<div style="padding:10px 0;border-bottom:1px solid var(--line-2);">';
+    html += '<div class="skeleton" style="height:12px;width:' + (60 + Math.random()*30) + '%;margin-bottom:6px;"></div>';
+    html += '<div class="skeleton" style="height:10px;width:' + (30 + Math.random()*30) + '%;"></div>';
+    html += '</div>';
+  }
+  container.innerHTML = html;
+}
+
+/* ── Filter bar selects glass styling (ensure inline styles get overridden) ── */
+document.querySelectorAll('.filter-bar select, .filter-bar input[type="date"]').forEach(function(el) {
+  el.style.removeProperty('border');
+  el.style.removeProperty('background');
+  el.style.removeProperty('border-radius');
+});
+
