@@ -1124,13 +1124,28 @@ if(typeof updateSidebarRoleBadge === 'function') updateSidebarRoleBadge('recepti
    Cursor reactive background · Card tilt · Stats counter · Advanced sub-tabs
    ══════════════════════════════════════════════════════════════════════════ */
 
-/* ── Cursor-reactive spotlight: throttled to 100ms, skipped on mobile ── */
+/* ── Tab-visibility: pause orb animations & cursor tracking when hidden ── */
 (function() {
-  if (window.matchMedia('(pointer: coarse)').matches) return; // skip on touch
+  var html = document.documentElement;
+  document.addEventListener('visibilitychange', function() {
+    if (document.hidden) {
+      html.classList.add('ap-tab-hidden');
+    } else {
+      html.classList.remove('ap-tab-hidden');
+    }
+  }, {passive: true});
+})();
+
+/* ── Cursor-reactive spotlight: throttled to 100ms, skipped on touch and
+   when the user prefers reduced motion ── */
+(function() {
+  if (window.matchMedia('(pointer: coarse)').matches) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   var bgLayer = document.getElementById('bg-layer');
   if (!bgLayer) return;
   var lastX = 0, lastY = 0, ticking = false;
   document.addEventListener('mousemove', function(e) {
+    if (document.hidden) return; // skip invisible tab
     lastX = e.clientX; lastY = e.clientY;
     if (ticking) return;
     ticking = true;

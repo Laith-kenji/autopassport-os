@@ -193,8 +193,22 @@ var DB = (function () {
     _save();
   }
 
-  function _save() {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(_db)); } catch (e) {}
+  /* Debounced save — batches rapid mutations (button clicks, field changes)
+     into a single localStorage write 400ms after the last call.
+     reset() bypasses the debounce and saves synchronously so DB integrity
+     is guaranteed even when the tab is about to navigate away. */
+  var _saveTimer = null;
+  function _save(immediate) {
+    if (immediate) {
+      if (_saveTimer) { clearTimeout(_saveTimer); _saveTimer = null; }
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(_db)); } catch (e) {}
+      return;
+    }
+    if (_saveTimer) clearTimeout(_saveTimer);
+    _saveTimer = setTimeout(function() {
+      _saveTimer = null;
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(_db)); } catch (e) {}
+    }, 400);
   }
 
   function _emit(type, detail) {
@@ -204,7 +218,7 @@ var DB = (function () {
   /* ── Public API ─────────────────────────────────────────────────── */
   function reset() {
     _db = JSON.parse(JSON.stringify(SEED));
-    _save();
+    _save(true); // immediate — must be durable before reset event fires
     _emit('reset');
   }
 

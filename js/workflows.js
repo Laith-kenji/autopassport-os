@@ -1896,18 +1896,24 @@ intakeNext = function() {
   }
 };
 
-/* ── Enhance existing filterSearchResults with DB data ─────────── */
+/* ── Enhance existing filterSearchResults with DB data (debounced 150ms) ── */
 (function() {
   var _origFilter = typeof filterSearchResults === 'function' ? filterSearchResults : null;
-  filterSearchResults = function(q) {
+  var _cachedIndex = null;   // lazily built once then reused until DB changes
+  var _debounceTimer = null;
+
+  /* Rebuild the index only when the DB actually changes */
+  document.addEventListener('db:change', function() { _cachedIndex = null; }, {passive: true});
+  document.addEventListener('db:reset',  function() { _cachedIndex = null; }, {passive: true});
+
+  function _runFilter(q) {
     if (_origFilter) _origFilter(q);
     if (!q || q.length < 2) return;
-    // Inject dynamic results into the existing search container
     var list = document.querySelector('.search-results-list, #searchResultsList');
     if (!list) return;
-    var idx = buildSearchIndex();
+    if (!_cachedIndex) _cachedIndex = buildSearchIndex();
     var lower = q.toLowerCase();
-    var matches = idx.filter(function(r) {
+    var matches = _cachedIndex.filter(function(r) {
       return r.label.toLowerCase().includes(lower) || (r.sub && r.sub.toLowerCase().includes(lower));
     }).slice(0, 8);
     if (!matches.length) return;
@@ -1919,6 +1925,11 @@ intakeNext = function() {
         '</div>';
     }).join('');
     list.insertAdjacentHTML('afterbegin', extra);
+  }
+
+  filterSearchResults = function(q) {
+    if (_debounceTimer) clearTimeout(_debounceTimer);
+    _debounceTimer = setTimeout(function() { _runFilter(q); }, 150);
   };
 })();
 

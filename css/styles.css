@@ -5286,3 +5286,86 @@ html.dark .tbl-card, html.dark .tbl-card2 {
 /* 11. No transition on large surfaces */
 #sidebar, #topbar, #workspace { transition: none !important; }
 
+/* ══════════════════════════════════════════════════════════════════
+   PERFORMANCE PASS 2 — Surgical additions to reduce GPU overdraw,
+   eliminate scroll jank, and pause invisible work
+   ══════════════════════════════════════════════════════════════════ */
+
+/* P2-1: Kill cardReveal — fires on every dynamic render (50+ cards per
+   screen transition). Perf patch already overrides with !important on
+   animation:none for .card background, but the @keyframes still caused
+   style recalc. This ensures no card runs ANY animation. */
+.card { animation: none !important; }
+
+/* P2-2: Remove backdrop-filter from table toolbar (sticky inside a
+   scrolling container → compositor must re-sample on every scroll frame) */
+.tbl-toolbar2 {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: rgba(255,255,255,.97) !important;
+}
+html.dark .tbl-toolbar2 {
+  background: rgba(18,26,46,.97) !important;
+}
+
+/* P2-3: Contain bg-layer — prevents any repaint inside from propagating
+   to document root; isolate creates a new stacking context so orbs
+   don't bleed into UI compositing layers */
+#bg-layer {
+  contain: strict !important;
+  isolation: isolate !important;
+  overflow: hidden !important;
+}
+
+/* P2-4: Pause orb animations when Page Visibility API hides the tab.
+   The .ap-tab-hidden class is toggled by visibilitychange in app.js */
+.ap-tab-hidden .bg-orb,
+.ap-tab-hidden #bg-layer::after {
+  animation-play-state: paused !important;
+}
+.ap-tab-hidden .bg-calli {
+  opacity: 0 !important;
+  transition: none !important;
+}
+
+/* P2-5: Explicit prefers-reduced-motion — freeze orbs & calligraphy */
+@media (prefers-reduced-motion: reduce) {
+  .bg-orb               { animation: none !important; opacity: .30 !important; }
+  .bg-calli             { display:  none !important; }
+  .screen.active        { animation: none !important; }
+  .modal-overlay        { animation: none !important; }
+}
+
+/* P2-6: Reduce topbar / sidebar blur cost (14px visually identical to 20px
+   at these element sizes; composite area is large so savings are real) */
+#topbar  { backdrop-filter: blur(14px) !important; -webkit-backdrop-filter: blur(14px) !important; }
+#sidebar { backdrop-filter: blur(14px) !important; -webkit-backdrop-filter: blur(14px) !important; }
+
+/* P2-7: Reduce search modal blur (fullscreen overlay — huge composite cost) */
+.search-modal,
+#search-overlay .search-box {
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+}
+
+/* P2-8: Remove backdrop-filter from modal overlay (full-viewport surface;
+   actual visual card below provides the glassy feel) */
+.modal-overlay {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* P2-9: Reduce custom property blur values — applied wherever var(--gl-blur*)
+   is used directly (not already overridden by !important rules above) */
+:root {
+  --gl-blur:    blur(14px) !important;
+  --gl-blur-2:  blur( 8px) !important;
+  --gl-blur-sm: blur( 4px) !important;
+}
+
+/* P2-10: Strip the 3 redundant .screen.active animation declarations
+   (lines 578, 2448, 3399) from the cascade by re-declaring the single
+   canonical rule. This is already handled by Perf Patch rule 10 above,
+   but explicit class specificity avoids any combinator ambiguity. */
+.screen.active { opacity: 1; }
+
