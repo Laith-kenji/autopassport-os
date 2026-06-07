@@ -931,7 +931,7 @@
         <div class="card">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
             <h3 style="margin:0">Documents</h3>
-            <button class="btn sm primary">＋ Upload document</button>
+            <button class="btn sm primary" onclick="showToast('Document upload dialog opened (concept)')">＋ Upload document</button>
           </div>
           <table class="tbl"><thead><tr><th>Document</th><th>Type</th><th>Provenance</th><th>Visibility</th><th>Date</th></tr></thead><tbody>
             <tr><td>📄 Service invoice INV-3081</td><td>Invoice</td><td><span class="prov verified">VERIFIED</span></td><td><span class="pill good">Shared</span></td><td>12 Mar 2026</td></tr>
@@ -947,13 +947,13 @@
         <div class="card">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
             <h3 style="margin:0">Warranty Wallet <span class="record-badge customer" style="margin-inline-start:6px;font-size:9px;">🌐 Customer Visible</span></h3>
-            <button class="btn sm primary">＋ Add warranty</button>
+            <button class="btn sm primary" onclick="showToast('Add warranty dialog opened (concept)')">＋ Add warranty</button>
           </div>
           <table class="tbl"><thead><tr><th>Item</th><th>Provider</th><th>Branch</th><th>Coverage</th><th>Expires</th><th>Days left</th><th>Status</th><th>Action</th></tr></thead><tbody>
             <tr><td>🔋 Battery (Bosch S5)</td><td>Al-Rawabi</td><td>Main</td><td>24 months · replacement</td><td>Nov 2027</td><td>531</td><td><span class="pill good">Active</span></td><td><button class="btn sm" onclick="showToast('Warranty claim filed · ref WRN-' + Math.floor(Math.random()*1000+100))">Claim</button></td></tr>
             <tr><td>✨ Ceramic coating</td><td>Al-Rawabi</td><td>Main</td><td>12 months · re-application</td><td>Aug 2026</td><td>77</td><td><span class="pill warn">Expiring</span></td><td><button class="btn sm" onclick="showToast('Renewal reminder sent')">Renew</button></td></tr>
-            <tr><td>🛑 Brake pads · service promise</td><td>Al-Rawabi</td><td>Main</td><td>6 months · re-service</td><td>Sep 2026</td><td>112</td><td><span class="pill good">Active</span></td><td><button class="btn sm">View</button></td></tr>
-            <tr><td>🛞 Tire warranty (Michelin)</td><td>Michelin MENA</td><td>—</td><td>5 yr / 80k km</td><td>Jan 2028</td><td>578</td><td><span class="pill good">Active</span></td><td><button class="btn sm">View</button></td></tr>
+            <tr><td>🛑 Brake pads · service promise</td><td>Al-Rawabi</td><td>Main</td><td>6 months · re-service</td><td>Sep 2026</td><td>112</td><td><span class="pill good">Active</span></td><td><button class="btn sm" onclick="showToast('Brake pads warranty · active until Sep 2026')">View</button></td></tr>
+            <tr><td>🛞 Tire warranty (Michelin)</td><td>Michelin MENA</td><td>—</td><td>5 yr / 80k km</td><td>Jan 2028</td><td>578</td><td><span class="pill good">Active</span></td><td><button class="btn sm" onclick="showToast('Michelin tire warranty · active until Jan 2028')">View</button></td></tr>
           </tbody></table>
         </div>
       </div>
@@ -1242,7 +1242,7 @@
           <div class="photo-grid" style="grid-template-columns:repeat(3,1fr);">
             <div class="photo-slot filled" onclick="openEvidenceModal('Old brake pads','During','Today 11:20','Samir H.','timestamped')"><div class="stage-tag">DURING</div><span class="lab">Old pads</span></div>
             <div class="photo-slot filled" onclick="openEvidenceModal('Rotor surface','During','Today 11:35','Samir H.','timestamped')"><div class="stage-tag">DURING</div><span class="lab">Rotor</span></div>
-            <div class="photo-slot">＋ add</div>
+            <div class="photo-slot" onclick="WF._addPhoto('During Service');showToast('Photo added to WO-2041')">＋ add</div>
           </div>
           <div style="margin-top:10px;font-size:12px;color:var(--muted)">Photo Evidence History: 2 photos timestamped · 1 pending</div>
         </div>
@@ -1304,44 +1304,9 @@
             <button class="btn sm" onclick="showToast('Exported to accounting (concept)')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-sync"/></svg></span> Sync Xero</button>
           </div>
         </div>
-        <div class="tbl-wrap2" style="overflow-x:auto;">
-          <table class="tbl2"><thead><tr><th>Invoice</th><th>Vehicle</th><th>Customer</th><th>Amount</th><th>Payment</th><th>Status</th><th>Actions</th></tr></thead><tbody>
-            <tr>
-              <td data-label="Invoice" class="td-mono">INV-3081</td>
-              <td data-label="Vehicle" class="td-main">Land Cruiser 2023</td>
-              <td data-label="Customer">Khalid Mansour</td>
-              <td data-label="Amount" style="font-weight:700">JOD 335</td>
-              <td data-label="Payment" class="td-m">Card · Checkout.com</td>
-              <td data-label="Status"><span class="pill good">Paid</span></td>
-              <td><div class="row-act"><button class="btn sm" onclick="showToast('Invoice sent via WhatsApp')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-message"/></svg></span> Send</button><div class="row3-wrap"><button class="row3btn" onclick="toggle3dot(this)">⋯</button><div class="row3-menu"><button onclick="showToast('Viewing invoice')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-file"/></svg></span> View</button><button onclick="showToast('PDF downloaded')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-download"/></svg></span> Download PDF</button><button onclick="openVehicle()"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-car"/></svg></span> Open Passport</button></div></div></div></td>
-            </tr>
-            <tr>
-              <td data-label="Invoice" class="td-mono">INV-3082</td>
-              <td data-label="Vehicle" class="td-main">Mercedes C200</td>
-              <td data-label="Customer">Lara Haddad</td>
-              <td data-label="Amount" style="font-weight:700">JOD 299</td>
-              <td data-label="Payment" class="td-m">—</td>
-              <td data-label="Status"><span class="pill warn">Pending</span></td>
-              <td><div class="row-act"><button class="btn sm primary" onclick="showToast('Payment link sent')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-credit-card"/></svg></span> Collect</button><div class="row3-wrap"><button class="row3btn" onclick="toggle3dot(this)">⋯</button><div class="row3-menu"><button onclick="showToast('Payment reminder sent')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-message"/></svg></span> Send Reminder</button><button onclick="showToast('Invoice voided')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-x"/></svg></span> Void</button></div></div></div></td>
-            </tr>
-            <tr>
-              <td data-label="Invoice" class="td-mono">INV-3079</td>
-              <td data-label="Vehicle" class="td-main">Honda Accord</td>
-              <td data-label="Customer">Maya Khalil</td>
-              <td data-label="Amount" style="font-weight:700">JOD 120</td>
-              <td data-label="Payment" class="td-m">Cash</td>
-              <td data-label="Status"><span class="pill good">Paid</span></td>
-              <td><div class="row-act"><button class="btn sm" onclick="showToast('Viewing')">View</button><div class="row3-wrap"><button class="row3btn" onclick="toggle3dot(this)">⋯</button><div class="row3-menu"><button onclick="showToast('PDF downloaded')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-download"/></svg></span> Download PDF</button><button onclick="openVehicle()"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-car"/></svg></span> Open Passport</button></div></div></div></td>
-            </tr>
-            <tr>
-              <td data-label="Invoice" class="td-mono">INV-3075</td>
-              <td data-label="Vehicle" class="td-main">Lexus RX 2022</td>
-              <td data-label="Customer">Dana Ziadeh</td>
-              <td data-label="Amount" style="font-weight:700">JOD 580</td>
-              <td data-label="Payment" class="td-m">mada</td>
-              <td data-label="Status"><span class="pill good">Paid</span></td>
-              <td><div class="row-act"><button class="btn sm" onclick="showToast('Viewing')">View</button><div class="row3-wrap"><button class="row3btn" onclick="toggle3dot(this)">⋯</button><div class="row3-menu"><button onclick="showToast('PDF downloaded')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-download"/></svg></span> Download PDF</button></div></div></div></td>
-            </tr>
+        <div class="tbl-wrap" style="overflow-x:auto;">
+          <table class="tbl"><thead><tr><th>Invoice</th><th>Customer</th><th>Vehicle</th><th>Date</th><th>Amount</th><th>Status</th><th>Method</th><th>Actions</th></tr></thead><tbody>
+            <tr><td colspan="8" style="text-align:center;padding:24px;color:var(--muted);">Loading invoices…</td></tr>
           </tbody></table>
         </div>
       </div>
@@ -1352,8 +1317,8 @@
       <div class="page-head">
         <div><h1>Pickup &amp; Mobile Jobs</h1><div class="sub">Thursday 4 Jun 2026 · Al-Rawabi Main · concept route board</div></div>
         <div class="head-actions">
-          <button class="btn">📅 Schedule pickup</button>
-          <button class="btn primary">＋ New mobile job</button>
+          <button class="btn" onclick="WF.schedulePickup()">📅 Schedule pickup</button>
+          <button class="btn primary" onclick="openBookingWizard()">＋ New mobile job</button>
         </div>
       </div>
       <div class="grid" style="grid-template-columns:2fr 1fr;margin-bottom:14px;">
@@ -1466,7 +1431,7 @@
         <div><h1>Aftercare &amp; Follow-up</h1><div class="sub">Declined work · comeback tracking · warranty expiry</div></div>
         <div class="head-actions">
           <button class="btn" onclick="showToast('Bulk reminder sent to 3 customers')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-message"/></svg></span> Bulk Reminder</button>
-          <button class="btn primary"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-plus"/></svg></span> New Follow-up</button>
+          <button class="btn primary" onclick="WF.newFollowUp()"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-plus"/></svg></span> New Follow-up</button>
         </div>
       </div>
 
@@ -1575,7 +1540,7 @@
         <div class="tabpane" data-pane="po">
           <div class="card"><table class="tbl"><thead><tr><th>PO #</th><th>Vendor</th><th>Branch</th><th>Order date</th><th>Expected</th><th>Items</th><th>Total</th><th>Status</th><th>Action</th></tr></thead><tbody>
             <tr><td>PO-441</td><td>Al-Faris Parts</td><td>Main</td><td>2 Jun 2026</td><td>5 Jun 2026</td><td>3 SKUs</td><td>JOD 340</td><td><span class="pill blue">Sent</span></td><td><button class="btn sm" onclick="showToast('Receiving stock (concept)')">Receive</button></td></tr>
-            <tr><td>PO-440</td><td>Michelin MENA</td><td>Main</td><td>28 May 2026</td><td>4 Jun 2026</td><td>Tires ×8</td><td>JOD 720</td><td><span class="pill good">Received</span></td><td><button class="btn sm">View</button></td></tr>
+            <tr><td>PO-440</td><td>Michelin MENA</td><td>Main</td><td>28 May 2026</td><td>4 Jun 2026</td><td>Tires ×8</td><td>JOD 720</td><td><span class="pill good">Received</span></td><td><button class="btn sm" onclick="showToast('PO-440 · Michelin MENA · Received')">View</button></td></tr>
             <tr><td>PO-439</td><td>Clean Pro</td><td>Main</td><td>25 May 2026</td><td>3 Jun 2026</td><td>Consumables</td><td>JOD 88</td><td><span class="pill warn">Partial</span></td><td><button class="btn sm" onclick="showToast('Partial receive logged')">Receive</button></td></tr>
           </tbody></table></div>
         </div>
@@ -1918,15 +1883,18 @@
     <!-- ===== REPORTS ===== -->
     <section class="screen" id="screen-reports">
       <div class="page-head"><div><h1>Reports &amp; Analytics</h1><div class="sub">Operational, financial &amp; network KPIs</div></div>
-        <div class="head-actions"><select class="vert"><option>This month</option><option>Last 30 days</option><option>Last 90 days</option></select></div>
+        <div class="head-actions">
+        <select class="vert" id="reportPeriodSelect" onchange="WF.renderReports()"><option value="month">This month</option><option value="30">Last 30 days</option><option value="90">Last 90 days</option></select>
+        <button class="btn sm" onclick="WF.exportReport()"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-download"/></svg></span> Export</button>
+      </div>
       </div>
 
       <!-- Top stats -->
       <div class="summary-row" style="grid-template-columns:repeat(4,1fr);margin-bottom:16px;">
-        <div class="stat"><div class="k">MTD Revenue</div><div class="v" style="font-size:20px">JOD 41k</div><div class="d">+12% vs last month</div></div>
-        <div class="stat"><div class="k">Jobs closed</div><div class="v">312</div><div class="d">+8 this week</div></div>
-        <div class="stat"><div class="k">Avg approval time</div><div class="v" style="font-size:20px">22 min</div><div class="d">↓ 4 min improvement</div></div>
-        <div class="stat"><div class="k">Photo compliance</div><div class="v">89%</div><div class="d">target: 95%</div></div>
+        <div class="stat"><div class="k">MTD Revenue</div><div class="v" style="font-size:20px" id="rep-revenue">JOD 41k</div><div class="d">+12% vs last month</div></div>
+        <div class="stat"><div class="k">Bookings</div><div class="v" id="rep-bookings">312</div><div class="d">+8 this week</div></div>
+        <div class="stat"><div class="k">Jobs complete</div><div class="v" id="rep-complete">22 min</div><div class="d">↓ 4 min improvement</div></div>
+        <div class="stat"><div class="k">Invoices</div><div class="v" id="rep-invoices">89%</div><div class="d">incl. unpaid</div></div>
       </div>
 
       <div class="grid" style="grid-template-columns:1fr 1fr;margin-bottom:16px;">
@@ -2038,11 +2006,11 @@
             <div class="conn-card"><div class="conn-icon"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-credit-card"/></svg></span></div><div class="conn-info"><div class="cn">HyperPay</div><div class="cm">Cards · MENA region</div></div><button class="btn sm primary" onclick="showToast('HyperPay integration opened')">Connect</button></div>
             <div class="conn-card"><div class="conn-icon"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-credit-card"/></svg></span></div><div class="conn-info"><div class="cn">Network International</div><div class="cm">UAE · Oman · Cards</div></div><button class="btn sm" onclick="showToast('NI config opened')">Configure</button></div>
             <div class="conn-card"><div class="conn-icon"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-phone"/></svg></span></div><div class="conn-info"><div class="cn">Paymob</div><div class="cm">Egypt · Jordan</div></div><button class="btn sm primary" onclick="showToast('Paymob connect opened')">Connect</button></div>
-            <div class="conn-card connected"><div class="conn-icon"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-credit-card"/></svg></span></div><div class="conn-info"><div class="cn">mada <span class="pill good">Connected</span></div><div class="cm">Saudi Arabia · domestic cards</div></div><button class="btn sm">Configure</button></div>
+            <div class="conn-card connected"><div class="conn-icon"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-credit-card"/></svg></span></div><div class="conn-info"><div class="cn">mada <span class="pill good">Connected</span></div><div class="cm">Saudi Arabia · domestic cards</div></div><button class="btn sm" onclick="showToast('mada configuration opened')">Configure</button></div>
             <div class="conn-card"><div class="conn-icon"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-phone"/></svg></span></div><div class="conn-info"><div class="cn">stc pay</div><div class="cm">Saudi Arabia · wallet</div></div><button class="btn sm primary" onclick="showToast('stc pay connect opened')">Connect</button></div>
-            <div class="conn-card connected"><div class="conn-icon"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-phone"/></svg></span></div><div class="conn-info"><div class="cn">Apple Pay <span class="pill good">Enabled</span></div><div class="cm">via Checkout.com</div></div><button class="btn sm">Settings</button></div>
+            <div class="conn-card connected"><div class="conn-icon"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-phone"/></svg></span></div><div class="conn-info"><div class="cn">Apple Pay <span class="pill good">Enabled</span></div><div class="cm">via Checkout.com</div></div><button class="btn sm" onclick="showToast('Apple Pay settings opened')">Settings</button></div>
             <div class="conn-card"><div class="conn-icon"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-credit-card"/></svg></span></div><div class="conn-info"><div class="cn">QPAY</div><div class="cm">Qatar · national switch</div></div><button class="btn sm primary" onclick="showToast('QPAY config opened')">Connect</button></div>
-            <div class="conn-card connected"><div class="conn-icon"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-settings"/></svg></span></div><div class="conn-info"><div class="cn">Card terminal <span class="pill good">Connected</span></div><div class="cm">Countertop · Bay terminals</div></div><button class="btn sm">Settings</button></div>
+            <div class="conn-card connected"><div class="conn-icon"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-settings"/></svg></span></div><div class="conn-info"><div class="cn">Card terminal <span class="pill good">Connected</span></div><div class="cm">Countertop · Bay terminals</div></div><button class="btn sm" onclick="showToast('Terminal settings opened')">Settings</button></div>
           </div>
         </div>
 
@@ -2067,9 +2035,9 @@
 
         <div class="tabpane" data-pane="messaging">
           <div class="conn-grid">
-            <div class="conn-card connected"><div class="conn-icon"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-message"/></svg></span></div><div class="conn-info"><div class="cn">WhatsApp Business <span class="pill good">Active</span></div><div class="cm">Templates: approval, reminder, receipt · 340 messages this month</div></div><button class="btn sm">Templates</button></div>
-            <div class="conn-card connected"><div class="conn-icon"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-message"/></svg></span></div><div class="conn-info"><div class="cn">SMS fallback <span class="pill good">Active</span></div><div class="cm">Arabic + English · fallback when WhatsApp unavailable</div></div><button class="btn sm">Settings</button></div>
-            <div class="conn-card connected"><div class="conn-icon"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-download"/></svg></span></div><div class="conn-info"><div class="cn">Email receipts <span class="pill good">Active</span></div><div class="cm">Invoice, estimate &amp; passport share links</div></div><button class="btn sm">Templates</button></div>
+            <div class="conn-card connected"><div class="conn-icon"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-message"/></svg></span></div><div class="conn-info"><div class="cn">WhatsApp Business <span class="pill good">Active</span></div><div class="cm">Templates: approval, reminder, receipt · 340 messages this month</div></div><button class="btn sm" onclick="showToast('WhatsApp template editor opened')">Templates</button></div>
+            <div class="conn-card connected"><div class="conn-icon"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-message"/></svg></span></div><div class="conn-info"><div class="cn">SMS fallback <span class="pill good">Active</span></div><div class="cm">Arabic + English · fallback when WhatsApp unavailable</div></div><button class="btn sm" onclick="showToast('SMS settings opened')">Settings</button></div>
+            <div class="conn-card connected"><div class="conn-icon"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-download"/></svg></span></div><div class="conn-info"><div class="cn">Email receipts <span class="pill good">Active</span></div><div class="cm">Invoice, estimate &amp; passport share links</div></div><button class="btn sm" onclick="showToast('Email template editor opened')">Templates</button></div>
           </div>
         </div>
       </div>
@@ -2148,7 +2116,59 @@
 
       <div id="setPanes">
         <div class="tabpane active" data-pane="general">
-          <div class="card"><div class="placeholder"><div><div class="big"><span class="ic ic-xl"><svg viewBox="0 0 24 24"><use href="#ic-settings"/></svg></span></div><p>Configure required photo angles, approval thresholds,<br>WhatsApp templates, RTL/Arabic and branch profiles.</p></div></div></div>
+          <div class="grid" style="grid-template-columns:1fr 1fr;gap:14px;">
+            <div class="card">
+              <h3 style="margin:0 0 14px">Business Profile</h3>
+              <div style="display:grid;gap:10px;">
+                <label class="form-label">Workshop Name
+                  <input class="form-input" data-setting="workshopName" placeholder="e.g. Al-Rawabi Auto Care"/>
+                </label>
+                <label class="form-label">Legal / Registered Name
+                  <input class="form-input" data-setting="legalName" placeholder="e.g. Al-Rawabi Auto Services LLC"/>
+                </label>
+                <label class="form-label">Registration Number
+                  <input class="form-input" data-setting="regNumber" placeholder="e.g. JO-54321-2019"/>
+                </label>
+                <label class="form-label">Branch
+                  <input class="form-input" data-setting="branch" placeholder="e.g. Amman — Main Branch"/>
+                </label>
+                <label class="form-label">Address
+                  <input class="form-input" data-setting="address" placeholder="Street, City, Country"/>
+                </label>
+              </div>
+            </div>
+            <div class="card">
+              <h3 style="margin:0 0 14px">Contact &amp; Billing</h3>
+              <div style="display:grid;gap:10px;">
+                <label class="form-label">Phone
+                  <input class="form-input" type="tel" data-setting="phone" placeholder="+962 6 555 0100"/>
+                </label>
+                <label class="form-label">Email
+                  <input class="form-input" type="email" data-setting="email" placeholder="ops@example.com"/>
+                </label>
+                <label class="form-label">Currency
+                  <select class="form-input" data-setting="currency">
+                    <option value="JOD">JOD — Jordanian Dinar</option>
+                    <option value="SAR">SAR — Saudi Riyal</option>
+                    <option value="AED">AED — UAE Dirham</option>
+                    <option value="EGP">EGP — Egyptian Pound</option>
+                    <option value="QAR">QAR — Qatari Riyal</option>
+                    <option value="USD">USD — US Dollar</option>
+                  </select>
+                </label>
+                <label class="form-label">Tax Rate (%)
+                  <input class="form-input" type="number" data-setting="taxRate" min="0" max="30" step="0.5" placeholder="16"/>
+                </label>
+                <label class="form-label">Invoice Number Prefix
+                  <input class="form-input" data-setting="invoicePrefix" placeholder="INV-"/>
+                </label>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:flex-end;margin-top:12px;gap:8px;">
+            <button class="btn" onclick="WF.renderSettings()">Reset</button>
+            <button class="btn primary" onclick="WF.saveSettings()">Save Settings</button>
+          </div>
         </div>
 
         <div class="tabpane" data-pane="roles">
@@ -2385,7 +2405,7 @@
             <div class="step-line"><span class="c c-next"></span> Ready for pickup</div>
           </div>
           <div style="margin:6px 0;font-size:11px;color:var(--muted)">Before photos (2) · During (2) · After (pending)</div>
-          <button class="app-btn" style="background:var(--accent);margin-bottom:5px">💬 Message the shop</button>
+          <button class="app-btn" style="background:var(--accent);margin-bottom:5px" onclick="showToast('Opening chat with Al-Rawabi Auto Care…')">💬 Message the shop</button>
           <button class="app-btn" style="background:var(--good)" onclick="showToast('WhatsApp update requested')">📱 WhatsApp update</button>
         </div>
         <!-- Book -->
@@ -2394,7 +2414,7 @@
           <div class="app-progress" style="cursor:pointer" onclick="openBookingWizard()">
             <div style="font-weight:700;font-size:12px">Oil change · 73,000 km</div>
             <div style="color:var(--muted);font-size:11px">Recommended: Aug 2026 · Est: JOD 45</div>
-            <button class="app-btn" style="margin-top:8px">Book now</button>
+            <button class="app-btn" style="margin-top:8px" onclick="closeApp();openBookingWizard()">Book now</button>
           </div>
           <div class="app-progress" style="cursor:pointer;margin-top:6px" onclick="showToast('Pickup booking opened')">
             <div style="font-weight:700;font-size:12px">🚐 Request pickup</div>

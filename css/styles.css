@@ -2387,12 +2387,15 @@ html.dark .kcard:hover{border-color:rgba(14,165,168,.35);box-shadow:0 4px 12px r
 .field-label{
   display:block;font-size:12px;font-weight:600;color:var(--ink-2);margin-bottom:5px;
 }
-.field-input{
+.field-input,
+.form-input{
   width:100%;border:1px solid var(--line);border-radius:9px;
   padding:8px 12px;font-size:13px;font-family:inherit;color:var(--ink);
   background:var(--card);transition:var(--transition-fast);
 }
-.field-input:focus{border-color:var(--accent-2);box-shadow:0 0 0 3px rgba(37,99,235,.1);outline:none;}
+.field-input:focus,
+.form-input:focus{border-color:var(--accent-2);box-shadow:0 0 0 3px rgba(37,99,235,.1);outline:none;}
+textarea.form-input{resize:vertical;min-height:72px;}
 .field-helper{font-size:11.5px;color:var(--muted);margin-top:4px;}
 
 /* ══ EMPTY STATE ══ */
@@ -3914,12 +3917,16 @@ select.field-input, select.wiz-input {
   cursor: pointer !important;
 }
 html.dark .field-input,
+html.dark .form-input,
 html.dark .wiz-input,
 html.dark input[type="text"],
 html.dark input[type="email"],
 html.dark input[type="tel"],
 html.dark input[type="number"],
 html.dark input[type="date"],
+html.dark input[type="datetime-local"],
+html.dark textarea,
+html.dark select.form-input,
 html.dark textarea.field-textarea {
   background: rgba(255,255,255,.07) !important;
   border-color: rgba(255,255,255,.1) !important;

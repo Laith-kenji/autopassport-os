@@ -1739,11 +1739,132 @@ function openHelp() {
   );
 }
 
+/* ── Aftercare follow-up ─────────────────────────────────────────── */
+function newFollowUp() {
+  var custs = DB.get('customers');
+  var custOpts = custs.map(function(c) {
+    return '<option value="' + c.id + '">' + _esc(c.name) + '</option>';
+  }).join('');
+  _modal(
+    '<div class="modal-head"><h2 style="margin:0;font-size:16px;">New Follow-up</h2>' +
+    '<button class="modal-close" onclick="closeQuickModal()">✕</button></div>' +
+    '<div style="display:grid;gap:10px;margin-top:16px;">' +
+    '<label class="form-label">Customer<select class="form-input" id="_fu_cust">' + custOpts + '</select></label>' +
+    '<label class="form-label">Follow-up Type<select class="form-input" id="_fu_type">' +
+    '<option value="declined">Declined work reminder</option>' +
+    '<option value="warranty">Warranty expiry</option>' +
+    '<option value="service">Service due</option>' +
+    '<option value="comeback">Returning issue check-in</option>' +
+    '</select></label>' +
+    '<label class="form-label">Note<textarea class="form-input" id="_fu_note" rows="3" style="resize:none;" placeholder="Add context or notes…"></textarea></label>' +
+    '<label class="form-label">Scheduled Date<input class="form-input" type="date" id="_fu_date"/></label>' +
+    '</div>' +
+    '<div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px;">' +
+    '<button class="btn" onclick="closeQuickModal()">Cancel</button>' +
+    '<button class="btn primary" onclick="WF._saveFollowUp()">Create Follow-up</button>' +
+    '</div>'
+  );
+  var today = new Date(); today.setDate(today.getDate() + 7);
+  setTimeout(function() {
+    var d = document.getElementById('_fu_date');
+    if (d) d.value = today.toISOString().slice(0,10);
+  }, 50);
+}
+
+function _saveFollowUp() {
+  var cust = (document.getElementById('_fu_cust') || {}).value;
+  var type = (document.getElementById('_fu_type') || {}).value || 'service';
+  var note = ((document.getElementById('_fu_note') || {}).value || '').trim();
+  var date = (document.getElementById('_fu_date') || {}).value;
+  var custObj = DB.byId('customers', cust) || { name: 'Customer' };
+  DB.addNotif('info', '📋', 'Follow-up created · ' + _esc(custObj.name),
+    (note || type) + (date ? ' · Due ' + date : ''), 'aftercare');
+  closeQuickModal();
+  refreshNotifBadge();
+  showToast('Follow-up created · ' + _esc(custObj.name));
+}
+
+/* ── Pickup / mobile scheduling ─────────────────────────────────── */
+function schedulePickup() {
+  var custs = DB.get('customers');
+  var custOpts = custs.map(function(c) {
+    return '<option value="' + c.id + '">' + _esc(c.name) + '</option>';
+  }).join('');
+  _modal(
+    '<div class="modal-head"><h2 style="margin:0;font-size:16px;">Schedule Pickup</h2>' +
+    '<button class="modal-close" onclick="closeQuickModal()">✕</button></div>' +
+    '<div style="display:grid;gap:10px;margin-top:16px;">' +
+    '<label class="form-label">Customer<select class="form-input" id="_pk_cust">' + custOpts + '</select></label>' +
+    '<label class="form-label">Pickup Type<select class="form-input" id="_pk_type">' +
+    '<option value="pickup">Vehicle pickup</option>' +
+    '<option value="dropoff">Vehicle drop-off</option>' +
+    '<option value="mobile">Mobile service at location</option>' +
+    '</select></label>' +
+    '<label class="form-label">Address / Location<input class="form-input" id="_pk_addr" placeholder="e.g. Abdoun, Amman"/></label>' +
+    '<label class="form-label">Date &amp; Time<input class="form-input" type="datetime-local" id="_pk_dt"/></label>' +
+    '<label class="form-label">Driver / Tech<select class="form-input" id="_pk_driver">' +
+    '<option>Ahmad K. (Driver)</option><option>Feras N. (Mobile Tech)</option><option>— Assign later —</option>' +
+    '</select></label>' +
+    '</div>' +
+    '<div style="display:flex;gap:10px;justify-content:flex-end;margin-top:16px;">' +
+    '<button class="btn" onclick="closeQuickModal()">Cancel</button>' +
+    '<button class="btn primary" onclick="WF._savePickup()">Schedule</button>' +
+    '</div>'
+  );
+  var dt = new Date(); dt.setHours(dt.getHours() + 2);
+  setTimeout(function() {
+    var el = document.getElementById('_pk_dt');
+    if (el) el.value = dt.toISOString().slice(0,16);
+  }, 50);
+}
+
+function _savePickup() {
+  var cust = DB.byId('customers', (document.getElementById('_pk_cust') || {}).value) || { name: 'Customer' };
+  var type = (document.getElementById('_pk_type') || {}).value || 'pickup';
+  var addr = ((document.getElementById('_pk_addr') || {}).value || 'location').trim();
+  DB.addNotif('info', '🚐', type + ' scheduled · ' + _esc(cust.name), addr, 'calendar');
+  closeQuickModal();
+  refreshNotifBadge();
+  showToast(type.charAt(0).toUpperCase() + type.slice(1) + ' scheduled · ' + _esc(cust.name));
+}
+
+/* ── Reports export ──────────────────────────────────────────────── */
+function exportReport() {
+  var invoices = DB.get('invoices');
+  var paid = invoices.filter(function(i) { return i.status === 'paid'; });
+  var revenue = paid.reduce(function(a, i) { return a + i.total; }, 0);
+  var wos = DB.get('workOrders');
+  var complete = wos.filter(function(w) { return w.status === 'complete'; }).length;
+  var bookings = DB.get('bookings').length;
+  _modal(
+    '<div class="modal-head"><h2 style="margin:0;font-size:16px;">Export Report</h2>' +
+    '<button class="modal-close" onclick="closeQuickModal()">✕</button></div>' +
+    '<div style="margin:16px 0;">' +
+    '<div style="font-size:12px;color:var(--muted);margin-bottom:12px;">Preview of current period data</div>' +
+    '<table class="tbl" style="margin-bottom:14px;">' +
+    '<tr><td>Total Revenue</td><td style="font-weight:700">' + fmtCurrency(revenue) + '</td></tr>' +
+    '<tr><td>Bookings</td><td style="font-weight:700">' + bookings + '</td></tr>' +
+    '<tr><td>Jobs Completed</td><td style="font-weight:700">' + complete + '</td></tr>' +
+    '<tr><td>Invoices Issued</td><td style="font-weight:700">' + invoices.length + '</td></tr>' +
+    '</table>' +
+    '<div style="display:flex;gap:8px;flex-wrap:wrap;">' +
+    '<button class="btn primary" onclick="closeQuickModal();showToast(\'Report exported as CSV\')">Export CSV</button>' +
+    '<button class="btn" onclick="closeQuickModal();showToast(\'Report exported as PDF\')">Export PDF</button>' +
+    '<button class="btn" onclick="closeQuickModal();showToast(\'Report synced to Xero\')">Sync to Xero</button>' +
+    '</div></div>'
+  );
+}
+
 /* Expose new functions on WF */
 WF.switchBranch = switchBranch;
 WF._selectBranch = _selectBranch;
 WF.openUserProfile = openUserProfile;
 WF.openHelp = openHelp;
+WF.newFollowUp = newFollowUp;
+WF._saveFollowUp = _saveFollowUp;
+WF.schedulePickup = schedulePickup;
+WF._savePickup = _savePickup;
+WF.exportReport = exportReport;
 
 /* ── Screen-specific renders: triggered directly, no nav() wrapping ──
    Avoids stacking wrappers across app.js / Phase 3 / workflows.js.
