@@ -1745,44 +1745,20 @@ WF._selectBranch = _selectBranch;
 WF.openUserProfile = openUserProfile;
 WF.openHelp = openHelp;
 
-/* ── Wire nav() to trigger re-renders ──────────────────────────── */
-(function() {
-  var _prevNav = typeof nav === 'function' ? nav : null;
-  nav = function(el) {
-    if (_prevNav) _prevNav(el);
-    var screen = el ? (el.getAttribute ? el.getAttribute('data-screen') : el) : '';
-    setTimeout(function() {
-      if (screen === 'customers') renderCustomerGrid();
-      if (screen === 'inventory') { renderInventory(); _renderInventoryDynamic(); }
-      if (screen === 'team') renderTeam();
-      if (screen === 'reports') renderReports();
-      if (screen === 'intake') renderIntakeStep();
-      if (screen === 'invoices') renderInvoiceList();
-      if (screen === 'settings') renderSettings();
-    }, 60);
-  };
-
-  var _prevGo = typeof go === 'function' ? go : null;
-  go = function(id) {
-    if (_prevGo) _prevGo(id);
-    setTimeout(function() {
-      if (id === 'customers') renderCustomerGrid();
-      if (id === 'inventory') { renderInventory(); _renderInventoryDynamic(); }
-      if (id === 'team') renderTeam();
-      if (id === 'reports') renderReports();
-      if (id === 'intake') renderIntakeStep();
-      if (id === 'invoices') renderInvoiceList();
-      if (id === 'settings') renderSettings();
-      // Show/hide intake confirm button
-      if (id === 'intake') {
-        var nextBtn = document.getElementById('intakeNextBtn');
-        var confBtn = document.getElementById('intakeConfirmBtn');
-        if (nextBtn) nextBtn.style.display = '';
-        if (confBtn) confBtn.style.display = 'none';
-      }
-    }, 60);
-  };
-})();
+/* ── Screen-specific renders: triggered directly, no nav() wrapping ──
+   Avoids stacking wrappers across app.js / Phase 3 / workflows.js.
+   app.js's go() calls showScreen() which fires a custom event we listen to. */
+document.addEventListener('ap:screenchange', function(e) {
+  var id = e.detail && e.detail.id;
+  if (!id) return;
+  if (id === 'customers') renderCustomerGrid();
+  else if (id === 'inventory') { renderInventory(); _renderInventoryDynamic(); }
+  else if (id === 'team') renderTeam();
+  else if (id === 'reports') renderReports();
+  else if (id === 'intake') renderIntakeStep();
+  else if (id === 'invoices') renderInvoiceList();
+  else if (id === 'settings') renderSettings();
+});
 
 /* Show confirm button on last intake step */
 var _origIntakeNext = intakeNext;

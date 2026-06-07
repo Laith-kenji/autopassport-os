@@ -5137,3 +5137,145 @@ html.dark .veh-card {
   letter-spacing: -.03em;
 }
 
+
+/* ══════════════════════════════════════════════════════════════════
+   PERFORMANCE PATCH — eliminates the main lag sources
+   Strategy: keep glass look, kill GPU overdraw
+   ══════════════════════════════════════════════════════════════════ */
+
+/* 1. KILL feTurbulence grain — most expensive filter on the page */
+.bg-grain { display: none !important; }
+
+/* 2. DOWNSIZE orbs + halve their blur — cuts paint area ~75% */
+.bg-orb-1 { width: 420px !important; height: 420px !important; filter: blur(60px) !important; }
+.bg-orb-2 { width: 320px !important; height: 320px !important; filter: blur(50px) !important; }
+.bg-orb-3 { width: 260px !important; height: 260px !important; filter: blur(45px) !important; }
+
+/* 3. STRIP backdrop-filter from regular cards — keep only on topbar/sidebar/overlays/modals */
+.card,
+.stat,
+.kpi,
+.kcard,
+.kcol,
+.qa-card,
+.filter-bar,
+.note-box,
+.photo-slot,
+.veh-card,
+.wiz-step-card,
+.ev .dot,
+.damage-map,
+.veh-hero,
+#stepBody,
+.tbl-card,
+.tbl-card2 {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Give cards a solid-ish background instead of blur glass */
+.card {
+  background: rgba(255,255,255,.88) !important;
+  border: 1px solid rgba(220,226,240,.7) !important;
+}
+html.dark .card {
+  background: rgba(22,30,50,.92) !important;
+  border: 1px solid rgba(255,255,255,.07) !important;
+}
+.stat {
+  background: rgba(255,255,255,.88) !important;
+  border: 1px solid rgba(220,226,240,.6) !important;
+}
+html.dark .stat {
+  background: rgba(22,30,50,.92) !important;
+  border: 1px solid rgba(255,255,255,.07) !important;
+}
+.kcard {
+  background: rgba(255,255,255,.92) !important;
+  border: 1px solid rgba(220,226,240,.5) !important;
+}
+html.dark .kcard {
+  background: rgba(20,28,48,.94) !important;
+  border: 1px solid rgba(255,255,255,.07) !important;
+}
+.kcol {
+  background: rgba(244,246,252,.7) !important;
+  border: 1px solid rgba(220,226,240,.5) !important;
+}
+html.dark .kcol {
+  background: rgba(14,20,36,.8) !important;
+  border: 1px solid rgba(255,255,255,.05) !important;
+}
+.qa-card {
+  background: rgba(255,255,255,.92) !important;
+  border: 1px solid rgba(220,226,240,.6) !important;
+}
+html.dark .qa-card {
+  background: rgba(22,30,50,.92) !important;
+  border: 1px solid rgba(255,255,255,.08) !important;
+}
+.filter-bar {
+  background: rgba(255,255,255,.82) !important;
+  border: 1px solid rgba(220,226,240,.6) !important;
+}
+.veh-card {
+  background: rgba(255,255,255,.9) !important;
+  border: 1px solid rgba(220,226,240,.6) !important;
+  backdrop-filter: none !important;
+}
+html.dark .veh-card {
+  background: rgba(20,28,48,.94) !important;
+}
+.tbl-card, .tbl-card2 {
+  background: rgba(255,255,255,.88) !important;
+  border: 1px solid rgba(220,226,240,.6) !important;
+}
+html.dark .tbl-card, html.dark .tbl-card2 {
+  background: rgba(18,26,46,.94) !important;
+}
+
+/* 4. Keep blur ONLY on elements that truly need the frosted-glass depth:
+      topbar, sidebar, modals, overlays, notification panel, search, demo drawer */
+#topbar, #sidebar, .modal-box, #notif-panel,
+#search-overlay .search-modal,
+#demo-drawer, .login-card {
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+}
+
+/* 5. KILL calligraphic parallax — SVG stays, JS scroll transform disabled */
+.bg-calli { transform: none !important; will-change: auto !important; }
+
+/* 6. CONTAIN layout thrashing — screens don't affect each other */
+.screen {
+  contain: layout style !important;
+}
+
+/* 7. Slow down orb animations — reduces repaint frequency */
+.bg-orb-1 { animation-duration: 45s !important; }
+.bg-orb-2 { animation-duration: 38s !important; }
+.bg-orb-3 { animation-duration: 55s !important; }
+
+/* 8. Promote only the elements that animate to their own layer */
+#bg-layer { will-change: auto; }
+.bg-orb   { will-change: transform; }
+
+/* 9. Remove expensive box-shadows from bulk cards — keep on hover only */
+.card     { box-shadow: 0 1px 4px rgba(15,28,51,.06) !important; }
+.card:hover { box-shadow: 0 4px 16px rgba(15,28,51,.10) !important; }
+.stat     { box-shadow: 0 1px 4px rgba(15,28,51,.06) !important; }
+.kcard    { box-shadow: 0 1px 3px rgba(15,28,51,.06) !important; }
+.kcard:hover { box-shadow: 0 4px 14px rgba(15,28,51,.11) !important; }
+
+/* 10. Faster, cheaper screen transitions */
+.screen.active {
+  animation: screenFade .12s ease !important;
+}
+@keyframes screenFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* 11. No transition on large surfaces */
+#sidebar, #topbar, #workspace { transition: none !important; }
+

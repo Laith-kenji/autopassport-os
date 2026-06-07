@@ -255,6 +255,8 @@ function showScreen(id){
   var el = document.getElementById('screen-'+id);
   if(el) el.classList.add('active');
   document.getElementById('workspace').scrollTop = 0;
+  /* Notify workflows.js via event (avoids nav() wrapper stacking) */
+  document.dispatchEvent(new CustomEvent('ap:screenchange', {detail:{id:id}}));
 }
 function nav(item){
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
@@ -1122,64 +1124,26 @@ if(typeof updateSidebarRoleBadge === 'function') updateSidebarRoleBadge('recepti
    Cursor reactive background · Card tilt · Stats counter · Advanced sub-tabs
    ══════════════════════════════════════════════════════════════════════════ */
 
-/* ── Cursor-reactive background spotlight ── */
+/* ── Cursor-reactive spotlight: throttled to 100ms, skipped on mobile ── */
 (function() {
+  if (window.matchMedia('(pointer: coarse)').matches) return; // skip on touch
   var bgLayer = document.getElementById('bg-layer');
   if (!bgLayer) return;
-  var lastX = 0, lastY = 0, rafId;
+  var lastX = 0, lastY = 0, ticking = false;
   document.addEventListener('mousemove', function(e) {
     lastX = e.clientX; lastY = e.clientY;
-    if (rafId) return;
-    rafId = requestAnimationFrame(function() {
-      rafId = null;
+    if (ticking) return;
+    ticking = true;
+    setTimeout(function() {
       bgLayer.style.setProperty('--cx', lastX + 'px');
       bgLayer.style.setProperty('--cy', lastY + 'px');
-    });
+      ticking = false;
+    }, 100);
   }, {passive: true});
 })();
 
-/* ── Cursor-reactive glow on quick-action cards ── */
-(function() {
-  function attachCardGlow(card) {
-    card.addEventListener('mousemove', function(e) {
-      var rect = this.getBoundingClientRect();
-      var x = e.clientX - rect.left;
-      var y = e.clientY - rect.top;
-      this.style.setProperty('--mx', x + 'px');
-      this.style.setProperty('--my', y + 'px');
-    });
-  }
-  document.querySelectorAll('.qa-card').forEach(attachCardGlow);
-
-  /* Re-attach for dynamically added cards */
-  var obs = new MutationObserver(function(mutations) {
-    mutations.forEach(function(m) {
-      m.addedNodes.forEach(function(n) {
-        if (n.classList && n.classList.contains('qa-card')) attachCardGlow(n);
-        if (n.querySelectorAll) n.querySelectorAll('.qa-card').forEach(attachCardGlow);
-      });
-    });
-  });
-  obs.observe(document.body, {childList: true, subtree: true});
-})();
-
-/* ── Subtle 3D card tilt on quick-action cards ── */
-(function() {
-  function attachTilt(card) {
-    card.addEventListener('mousemove', function(e) {
-      var rect = this.getBoundingClientRect();
-      var cx = rect.left + rect.width / 2;
-      var cy = rect.top + rect.height / 2;
-      var dx = (e.clientX - cx) / (rect.width / 2);
-      var dy = (e.clientY - cy) / (rect.height / 2);
-      this.style.transform = 'translateY(-4px) perspective(800px) rotateY(' + (dx * 4) + 'deg) rotateX(' + (-dy * 4) + 'deg)';
-    });
-    card.addEventListener('mouseleave', function() {
-      this.style.transform = '';
-    });
-  }
-  document.querySelectorAll('.qa-card').forEach(attachTilt);
-})();
+/* ── Card glow: CSS-only hover, no mousemove listeners ── */
+/* (3D tilt and per-card mousemove removed — was firing on every mouse pixel) */
 
 /* ── Animated KPI counter on dashboard ── */
 function animateStatCounters() {
@@ -1422,28 +1386,9 @@ document.addEventListener('keydown', function(e){
   }
   updateDateLine();
 
-  /* Subtle parallax on calligraphic curves on scroll */
-  var calli = document.querySelector('.bg-calli');
-  if (calli && window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
-    var lastY = 0;
-    window.addEventListener('scroll', function() {
-      var y = window.scrollY || 0;
-      if (Math.abs(y - lastY) > 2) {
-        calli.style.transform = 'translateY(' + (y * 0.04) + 'px)';
-        lastY = y;
-      }
-    }, { passive: true });
-  }
+  /* Parallax removed — scroll listener caused jank */
 
-  /* Stat card: champagne shimmer on hover */
-  document.querySelectorAll('.stat').forEach(function(card) {
-    card.addEventListener('mouseenter', function() {
-      this.style.boxShadow = '0 10px 40px rgba(184,151,90,.1), 0 4px 24px rgba(15,28,51,.1)';
-    });
-    card.addEventListener('mouseleave', function() {
-      this.style.boxShadow = '';
-    });
-  });
+  /* Stat hover: CSS handles this now via .stat:hover rule */
 
   /* Premium number ticker for stat values when dashboard becomes visible */
   function tickerForStats() {
@@ -1468,11 +1413,9 @@ document.addEventListener('keydown', function(e){
     });
   }
 
-  /* Wrap nav() to also run tickers */
-  var _prevNav4 = typeof nav === 'function' ? nav : null;
-  nav = function(el) {
-    if (_prevNav4) _prevNav4(el);
-    setTimeout(tickerForStats, 60);
-  };
+  /* Tickers run on screenchange event, no nav() wrapping needed */
+  document.addEventListener('ap:screenchange', function(e) {
+    if (e.detail && e.detail.id === 'dashboard') setTimeout(tickerForStats, 80);
+  });
 
 })();
