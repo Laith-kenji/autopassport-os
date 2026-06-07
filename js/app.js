@@ -1387,3 +1387,92 @@ document.addEventListener('keydown', function(e){
   }
 }, {capture: true});
 
+
+/* ══════════════════════════════════════════════════════════════════
+   Phase 4: Luxury final refinements
+   Dynamic greeting · Champagne hover effects · Background enhancement
+   ══════════════════════════════════════════════════════════════════ */
+
+(function() {
+  'use strict';
+
+  /* Dynamic time-aware greeting */
+  function updateGreeting() {
+    var greetEl = document.querySelector('.dash-greeting');
+    if (!greetEl) return;
+    var hr = new Date().getHours();
+    var prefix = hr < 12 ? 'Good morning' : hr < 18 ? 'Good afternoon' : 'Good evening';
+    greetEl.textContent = prefix + ', Rami';
+  }
+  updateGreeting();
+
+  /* Update date in sub line */
+  function updateDateLine() {
+    var subEl = document.getElementById('vertTagline');
+    if (!subEl) return;
+    var days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    var d = new Date();
+    var dayName = days[d.getDay()];
+    var dateStr = dayName + ', ' + d.getDate() + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
+    var firstText = subEl.childNodes[0];
+    if (firstText && firstText.nodeType === 3) {
+      firstText.textContent = 'Al-Rawabi Auto Care · Workshop · ' + dateStr + ' ';
+    }
+  }
+  updateDateLine();
+
+  /* Subtle parallax on calligraphic curves on scroll */
+  var calli = document.querySelector('.bg-calli');
+  if (calli && window.matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+    var lastY = 0;
+    window.addEventListener('scroll', function() {
+      var y = window.scrollY || 0;
+      if (Math.abs(y - lastY) > 2) {
+        calli.style.transform = 'translateY(' + (y * 0.04) + 'px)';
+        lastY = y;
+      }
+    }, { passive: true });
+  }
+
+  /* Stat card: champagne shimmer on hover */
+  document.querySelectorAll('.stat').forEach(function(card) {
+    card.addEventListener('mouseenter', function() {
+      this.style.boxShadow = '0 10px 40px rgba(184,151,90,.1), 0 4px 24px rgba(15,28,51,.1)';
+    });
+    card.addEventListener('mouseleave', function() {
+      this.style.boxShadow = '';
+    });
+  });
+
+  /* Premium number ticker for stat values when dashboard becomes visible */
+  function tickerForStats() {
+    document.querySelectorAll('.stat .v[data-target]').forEach(function(el) {
+      var target = parseFloat(el.getAttribute('data-target'));
+      if (isNaN(target)) return;
+      var prefix = el.getAttribute('data-prefix') || '';
+      var suffix = el.getAttribute('data-suffix') || '';
+      var dec    = parseInt(el.getAttribute('data-dec') || '0');
+      var start  = 0;
+      var duration = 900;
+      var startTime = null;
+      function step(ts) {
+        if (!startTime) startTime = ts;
+        var prog = Math.min((ts - startTime) / duration, 1);
+        var ease = 1 - Math.pow(1 - prog, 3);
+        var val  = start + (target - start) * ease;
+        el.textContent = prefix + val.toFixed(dec) + suffix;
+        if (prog < 1) requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    });
+  }
+
+  /* Wrap nav() to also run tickers */
+  var _prevNav4 = typeof nav === 'function' ? nav : null;
+  nav = function(el) {
+    if (_prevNav4) _prevNav4(el);
+    setTimeout(tickerForStats, 60);
+  };
+
+})();

@@ -4317,3 +4317,646 @@ html.dark .search-modal-esc {
   [data-tooltip]::before { transition: none !important; }
 }
 
+
+/* ══════════════════════════════════════════════════════════════════════════
+   AUTOPASSPORT OS — Phase 4: Luxury Final Refinement
+   Premium palette · Calligraphic curves · Warm light mode · Deep dark mode
+   Typography scale · Section polish · Label consistency · Eye comfort
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Extended luxury design tokens ── */
+:root {
+  /* Luxury accent additions */
+  --champagne:      #b8975a;
+  --champagne-2:    #d4af72;
+  --champagne-soft: rgba(184,151,90,.1);
+  --champagne-glow: rgba(212,175,114,.15);
+  --petrol:         #0c7490;
+  --petrol-soft:    rgba(12,116,144,.1);
+  --graphite:       #374151;
+  --silver:         #94a3b8;
+  --silver-soft:    rgba(148,163,184,.08);
+  --slate-deep:     #1e293b;
+
+  /* Typography scale */
+  --text-xs:   11px;
+  --text-sm:   12.5px;
+  --text-base: 13.5px;
+  --text-md:   15px;
+  --text-lg:   18px;
+  --text-xl:   22px;
+  --text-2xl:  28px;
+
+  /* Premium spacing rhythm */
+  --gap-xs:  6px;
+  --gap-sm:  10px;
+  --gap-md:  16px;
+  --gap-lg:  24px;
+  --gap-xl:  32px;
+
+  /* Champagne gradient for premium surfaces */
+  --grad-champagne: linear-gradient(135deg, rgba(184,151,90,.12) 0%, rgba(212,175,114,.06) 100%);
+  --grad-petrol:    linear-gradient(135deg, rgba(12,116,144,.12) 0%, rgba(14,165,168,.06) 100%);
+  --grad-premium:   linear-gradient(135deg, #0f1c33 0%, #1e3055 60%, #0c2640 100%);
+}
+
+/* ── WARM PREMIUM LIGHT MODE BACKGROUND ── */
+#bg-layer {
+  background:
+    radial-gradient(ellipse 90% 70% at -5% -10%, rgba(184,151,90,.09) 0%, transparent 50%),
+    radial-gradient(ellipse 70% 60% at 105% 110%, rgba(12,116,144,.1) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 40% at 55% 50%, rgba(37,99,235,.05) 0%, transparent 60%),
+    linear-gradient(162deg,
+      #f5f3ef 0%,
+      #eff2f7 25%,
+      #f0eff8 55%,
+      #eef3f5 80%,
+      #f4f2ee 100%) !important;
+}
+
+/* ── CALLIGRAPHIC / AERODYNAMIC CURVE LAYER ── */
+.bg-calli {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 1;
+}
+.bg-calli svg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+}
+
+/* ── REFINED DARK MODE BACKGROUND ── */
+html.dark #bg-layer {
+  background:
+    radial-gradient(ellipse 80% 60% at 0% 5%, rgba(12,116,144,.14) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 50% at 100% 95%, rgba(37,99,235,.1) 0%, transparent 50%),
+    radial-gradient(ellipse 40% 30% at 50% 50%, rgba(184,151,90,.04) 0%, transparent 60%),
+    linear-gradient(162deg,
+      #0e1420 0%,
+      #111826 25%,
+      #0f1624 55%,
+      #0d1520 80%,
+      #111520 100%) !important;
+}
+html.dark .bg-calli { opacity: .4; }
+
+/* ── CHAMPAGNE ACCENT DETAILS ── */
+
+/* Brand mark gets champagne-tinted premium gradient */
+.brand .mark, .login-brand .mark {
+  background: linear-gradient(135deg,
+    #0ea5a8 0%,
+    #1d6eb5 45%,
+    #1d4ed8 75%,
+    #5b21b6 100%) !important;
+  box-shadow: 0 3px 14px rgba(37,99,235,.32), 0 1px 0 rgba(255,255,255,.15) inset !important;
+}
+
+/* Quick action card – champagne shimmer on hover */
+.qa-card::before {
+  background: linear-gradient(
+    125deg,
+    transparent 0%,
+    rgba(255,255,255,.0) 35%,
+    rgba(255,255,255,.28) 50%,
+    rgba(255,255,255,.0) 65%,
+    transparent 100%) !important;
+}
+
+/* Active nav item glow – champagne tint */
+.nav-item.active {
+  background: linear-gradient(90deg,
+    rgba(14,165,168,.22),
+    rgba(37,99,235,.12)) !important;
+  box-shadow: inset 3px 0 0 var(--accent),
+    0 0 24px rgba(14,165,168,.08) !important;
+}
+
+/* ── REFINED STAT CARDS ── */
+.stat {
+  position: relative !important;
+  overflow: hidden !important;
+}
+/* Champagne accent line at top */
+.stat::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--champagne) 30%,
+    var(--champagne-2) 70%,
+    transparent 100%);
+  opacity: 0;
+  transition: opacity .3s;
+}
+.stat:hover::before { opacity: .5; }
+
+/* ── PREMIUM SECTION DIVIDERS ── */
+.section-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 22px 0 14px;
+}
+.section-head h2 {
+  font-size: 13.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: .04em !important;
+  text-transform: uppercase !important;
+  color: var(--muted) !important;
+  margin: 0 !important;
+}
+.section-head::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--line), transparent);
+}
+
+/* ── DASHBOARD DEMO BADGE ── */
+.demo-data-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(184,151,90,.12);
+  border: 1px solid rgba(184,151,90,.3);
+  border-radius: 20px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--champagne);
+  letter-spacing: .04em;
+  white-space: nowrap;
+}
+html.dark .demo-data-badge {
+  background: rgba(184,151,90,.1);
+  border-color: rgba(184,151,90,.25);
+}
+
+/* ── REFINED TOPBAR ── */
+#topbar {
+  background: rgba(255,255,255,.85) !important;
+  border-bottom: 1px solid rgba(255,255,255,.65) !important;
+  box-shadow:
+    0 1px 0 rgba(15,28,51,.04),
+    0 2px 12px rgba(15,28,51,.04) !important;
+}
+html.dark #topbar {
+  background: rgba(14,20,36,.9) !important;
+  border-bottom: 1px solid rgba(255,255,255,.06) !important;
+}
+
+/* Search bar — warmer feel */
+.search {
+  background: rgba(245,243,239,.85) !important;
+  border: 1px solid rgba(226,222,214,.9) !important;
+}
+.search:focus {
+  background: rgba(255,255,255,.98) !important;
+  border-color: rgba(37,99,235,.4) !important;
+}
+
+/* ── REFINED SIDEBAR ── */
+#sidebar {
+  background: linear-gradient(180deg,
+    rgba(14,20,38,.96) 0%,
+    rgba(10,16,32,.98) 100%) !important;
+  border-inline-end: 1px solid rgba(255,255,255,.05) !important;
+}
+
+/* Sidebar nav section label */
+.nav-section-new {
+  font-size: 9px !important;
+  letter-spacing: .14em !important;
+  color: rgba(148,163,184,.4) !important;
+  padding: 16px 14px 4px !important;
+}
+
+/* Sidebar nav item */
+.nav-item {
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  letter-spacing: -.005em !important;
+  transition: all .15s !important;
+}
+.nav-item:hover {
+  background: rgba(255,255,255,.06) !important;
+}
+.nav-item.active {
+  font-weight: 600 !important;
+}
+
+/* Nav badge */
+.nav-badge {
+  background: rgba(14,165,168,.25) !important;
+  color: var(--accent) !important;
+  border: 1px solid rgba(14,165,168,.3) !important;
+}
+
+/* ── PREMIUM KANBAN COLUMNS ── */
+.kcol {
+  background: rgba(241,243,248,.55) !important;
+  border: 1px solid rgba(255,255,255,.5) !important;
+}
+html.dark .kcol {
+  background: rgba(16,22,38,.6) !important;
+  border: 1px solid rgba(255,255,255,.04) !important;
+}
+.kcol h4 {
+  color: var(--muted) !important;
+  font-weight: 800 !important;
+  font-size: 9.5px !important;
+  letter-spacing: .1em !important;
+  padding-bottom: 10px !important;
+}
+.kcard {
+  border-radius: 12px !important;
+  padding: 11px 12px !important;
+}
+.kcard:hover {
+  box-shadow: 0 6px 24px rgba(15,28,51,.12) !important;
+}
+.kcard .car {
+  color: var(--ink) !important;
+  font-size: 12.5px !important;
+}
+
+/* Primary action button — champagne tint on teal variant */
+.kcard-primary-btn {
+  background: linear-gradient(135deg, #1d6eb5 0%, #2563eb 100%) !important;
+  box-shadow: 0 2px 8px rgba(37,99,235,.25) !important;
+  letter-spacing: -.01em !important;
+}
+.kcard-primary-btn:hover {
+  box-shadow: 0 4px 14px rgba(37,99,235,.35) !important;
+}
+
+/* ── FILTER BAR REFINEMENT ── */
+.filter-bar {
+  padding: 8px 12px !important;
+  gap: 8px !important;
+  background: rgba(255,255,255,.6) !important;
+  border: 1px solid rgba(255,255,255,.55) !important;
+}
+.filter-bar select,
+.filter-bar input[type="date"] {
+  font-size: 12px !important;
+  padding: 5px 9px !important;
+  background: rgba(255,255,255,.8) !important;
+  border: 1px solid rgba(226,232,240,.7) !important;
+  color: var(--ink) !important;
+  border-radius: 8px !important;
+}
+
+/* ── ALERTS PANEL REFINEMENT ── */
+.alerts-panel {
+  padding: 14px 16px !important;
+}
+.alerts-panel .ap-title {
+  font-size: 12.5px !important;
+  font-weight: 700 !important;
+}
+.alert-row {
+  gap: 10px !important;
+  align-items: center !important;
+  font-size: 13px !important;
+}
+
+/* ── VEHICLE RECORD PREMIUM ── */
+.veh-header {
+  gap: 20px !important;
+  margin-bottom: 18px !important;
+}
+.veh-hero {
+  border-radius: var(--radius-card) !important;
+  background: linear-gradient(135deg,
+    rgba(205,215,235,.7),
+    rgba(220,230,250,.5)) !important;
+  box-shadow: var(--gl-shadow) !important;
+  border: 1px solid rgba(255,255,255,.6) !important;
+}
+html.dark .veh-hero {
+  background: linear-gradient(135deg,
+    rgba(25,35,60,.8),
+    rgba(18,28,52,.6)) !important;
+  border-color: rgba(255,255,255,.06) !important;
+}
+
+/* ── INSIGHTS KPI ROW ── */
+.kpi-row {
+  gap: 16px !important;
+}
+.kpi {
+  background: var(--gl-bg);
+  backdrop-filter: var(--gl-blur-2);
+  -webkit-backdrop-filter: var(--gl-blur-2);
+  border: 1px solid rgba(255,255,255,.65);
+  border-radius: 12px;
+  padding: 14px 16px;
+  box-shadow: var(--gl-shadow);
+}
+.kpi .v {
+  font-size: 22px !important;
+  font-weight: 900 !important;
+  letter-spacing: -.03em !important;
+}
+.kpi .k {
+  font-size: 11.5px !important;
+  color: var(--muted) !important;
+  margin-top: 1px !important;
+}
+html.dark .kpi {
+  background: rgba(28,36,54,.75);
+  border-color: rgba(255,255,255,.07);
+}
+
+/* ── EV / TIMELINE DOTS ── */
+.ev .dot {
+  background: rgba(37,99,235,.1) !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(255,255,255,.6) !important;
+}
+html.dark .ev .dot {
+  background: rgba(37,99,235,.15) !important;
+  border-color: rgba(255,255,255,.07) !important;
+}
+
+/* ── FORM STEP CARD GLASS ── */
+#stepBody {
+  background: var(--gl-bg) !important;
+  backdrop-filter: var(--gl-blur) !important;
+  -webkit-backdrop-filter: var(--gl-blur) !important;
+  border: 1px solid rgba(255,255,255,.7) !important;
+  box-shadow: var(--gl-shadow-md) !important;
+  border-radius: var(--radius-card) !important;
+  padding: 22px 24px !important;
+}
+html.dark #stepBody {
+  background: rgba(28,36,54,.8) !important;
+  border-color: rgba(255,255,255,.08) !important;
+}
+
+/* ── BOOKING WIZARD GLASS ── */
+.wiz-step-card {
+  background: var(--gl-bg) !important;
+  backdrop-filter: var(--gl-blur) !important;
+  -webkit-backdrop-filter: var(--gl-blur) !important;
+  border: 1px solid rgba(255,255,255,.72) !important;
+  border-radius: var(--radius-card) !important;
+  box-shadow: var(--gl-shadow-md) !important;
+  padding: 24px !important;
+  margin-bottom: 16px !important;
+}
+
+/* ── PHOTO GRID GLASS ── */
+.photo-slot {
+  background: rgba(240,244,255,.6) !important;
+  border: 1.5px dashed rgba(37,99,235,.2) !important;
+  border-radius: 12px !important;
+  transition: all .18s !important;
+}
+.photo-slot:hover {
+  background: rgba(239,246,255,.8) !important;
+  border-color: rgba(37,99,235,.4) !important;
+}
+.photo-slot.filled {
+  background: rgba(255,255,255,.75) !important;
+  border: 1.5px solid rgba(255,255,255,.7) !important;
+  box-shadow: var(--gl-shadow) !important;
+}
+html.dark .photo-slot {
+  background: rgba(255,255,255,.04) !important;
+  border-color: rgba(255,255,255,.1) !important;
+}
+
+/* ── IMPROVED TRUST / QUALITY RING ── */
+.trust-score {
+  background: linear-gradient(135deg,
+    rgba(15,28,51,.96),
+    rgba(22,36,64,.92)) !important;
+}
+
+/* ── PREMIUM DAMAGE MAP ── */
+.damage-map {
+  background: linear-gradient(135deg,
+    rgba(240,244,255,.6),
+    rgba(220,230,250,.4)) !important;
+  border: 1px solid rgba(255,255,255,.6) !important;
+  border-radius: var(--radius-card) !important;
+}
+html.dark .damage-map {
+  background: linear-gradient(135deg,
+    rgba(20,28,50,.6),
+    rgba(15,22,42,.4)) !important;
+  border-color: rgba(255,255,255,.07) !important;
+}
+
+/* ── IMPROVED NOTES BOX ── */
+.note-box {
+  background: rgba(248,250,255,.8) !important;
+  border: 1px solid rgba(226,232,240,.7) !important;
+  border-radius: 12px !important;
+  backdrop-filter: var(--gl-blur-sm) !important;
+}
+.note-box.internal {
+  background: rgba(255,251,235,.8) !important;
+  border-color: rgba(217,119,6,.2) !important;
+}
+html.dark .note-box {
+  background: rgba(255,255,255,.04) !important;
+  border-color: rgba(255,255,255,.07) !important;
+}
+
+/* ── DARK MODE DEEP PASS — REMAINING SURFACES ── */
+html.dark .bar {
+  background: rgba(255,255,255,.08) !important;
+}
+html.dark .photo-slot.filled {
+  background: rgba(28,36,54,.85) !important;
+  border-color: rgba(255,255,255,.1) !important;
+}
+html.dark .filter-bar select,
+html.dark .filter-bar input[type="date"] {
+  background: rgba(255,255,255,.06) !important;
+  border-color: rgba(255,255,255,.08) !important;
+  color: var(--ink) !important;
+}
+html.dark .kcard-plate {
+  background: rgba(255,255,255,.08) !important;
+  color: #a0b4cc !important;
+}
+html.dark .kpi {
+  background: rgba(28,36,54,.75) !important;
+  border-color: rgba(255,255,255,.07) !important;
+}
+html.dark .alerts-panel {
+  background: rgba(40,28,10,.75) !important;
+  border-color: rgba(217,119,6,.18) !important;
+}
+html.dark .search {
+  background: rgba(255,255,255,.06) !important;
+  border-color: rgba(255,255,255,.08) !important;
+}
+
+/* ── CHAMPAGNE BRAND ACCENT ON KEY ELEMENTS ── */
+/* Demo badge accent */
+.tb-demo-btn {
+  border-color: rgba(184,151,90,.5) !important;
+  background: rgba(184,151,90,.07) !important;
+  color: var(--champagne) !important;
+}
+.tb-demo-btn:hover {
+  background: rgba(184,151,90,.12) !important;
+  border-color: var(--champagne) !important;
+}
+.tb-demo-btn .ic svg { stroke: var(--champagne) !important; }
+
+/* Champagne accent on active tab */
+.tab.active, [aria-selected="true"].tab {
+  color: var(--accent-2) !important;
+  font-weight: 700 !important;
+}
+
+/* ── TYPOGRAPHY IMPROVEMENTS ── */
+body {
+  font-size: var(--text-base) !important;
+  line-height: 1.62 !important;
+  letter-spacing: -.012em !important;
+}
+.nav-label { font-size: 13px !important; letter-spacing: -.01em !important; }
+.card h3 { font-size: 14px !important; font-weight: 700 !important; letter-spacing: -.018em !important; }
+.stat .k { font-size: 10.5px !important; letter-spacing: .05em !important; }
+table.tbl td { font-size: 13px !important; line-height: 1.5 !important; }
+table.tbl th { font-size: 10.5px !important; letter-spacing: .06em !important; }
+
+/* ── OPS STATUS STRIP ── */
+.ops-status-item {
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+.ops-status-item.active { color: var(--good) !important; }
+.ops-status-item.warn { color: var(--warn) !important; }
+.ops-status-item.bad { color: var(--bad) !important; }
+.osdot {
+  width: 7px !important; height: 7px !important;
+  border-radius: 50% !important;
+  background: currentColor !important;
+  display: inline-block !important;
+  flex: none !important;
+}
+
+/* ── RESPONSIVE: KANBAN AT TABLET ── */
+@media(max-width:1100px) {
+  .kanban { grid-template-columns: repeat(4,1fr) !important; }
+}
+@media(max-width:860px) {
+  .kanban { display: none !important; }
+  .kanban-mobile { display: flex !important; }
+}
+@media(max-width:540px) {
+  .dash-welcome { padding: 14px 16px !important; }
+  .dash-greeting { font-size: 18px !important; }
+}
+
+/* ── SCROLL SNAP FOR KANBAN (horizontal on small) ── */
+@media(min-width:641px) and (max-width:1100px) {
+  .kanban {
+    display: flex !important;
+    overflow-x: auto !important;
+    scroll-snap-type: x mandatory !important;
+    -webkit-overflow-scrolling: touch !important;
+    gap: 10px !important;
+    padding-bottom: 8px !important;
+  }
+  .kcol {
+    min-width: 220px !important;
+    flex: none !important;
+    scroll-snap-align: start !important;
+  }
+}
+
+/* ── PRINT MEDIA ── */
+@media print {
+  #bg-layer, .bg-calli, .bg-grain, #login-screen { display: none !important; }
+  body { background: white !important; color: black !important; }
+  .card { box-shadow: none !important; border: 1px solid #ddd !important; }
+}
+
+/* ── FINAL POLISH: CONSISTENT BORDER-RADIUS ── */
+.pill { border-radius: 20px !important; }
+.prov { border-radius: 5px !important; padding: 2px 7px !important; }
+.seg button { font-size: 12.5px !important; }
+.check-row { padding: 9px 0 !important; }
+.two-col { gap: 16px !important; }
+
+/* ── SEARCH OVERLAY ANIMATION ── */
+#search-overlay {
+  transition: opacity .2s ease !important;
+}
+#search-overlay.open {
+  display: flex !important;
+  opacity: 1 !important;
+  animation: searchIn .18s ease !important;
+}
+@keyframes searchIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.search-modal {
+  animation: searchModalIn .22s var(--ease-expo) !important;
+}
+@keyframes searchModalIn {
+  from { opacity: 0; transform: translateY(-12px) scale(.97); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ── NOTIFICATION PANEL ANIMATION ── */
+#notif-panel.open {
+  animation: notifIn .2s var(--ease-expo) !important;
+}
+@keyframes notifIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ── DEMO DRAWER SMOOTH ── */
+#demo-drawer {
+  will-change: transform !important;
+}
+
+/* ── SELECTION: CHAMPAGNE TINT ── */
+::selection {
+  background: rgba(37,99,235,.18) !important;
+  color: var(--ink) !important;
+}
+
+/* ── RTL FINAL PASS ── */
+html[dir="rtl"] .brand { direction: ltr; }
+html[dir="rtl"] .ops-status-strip { direction: rtl; }
+html[dir="rtl"] .kcard-plate { direction: ltr; letter-spacing: .04em; }
+html[dir="rtl"] .alert-row { text-align: start; }
+html[dir="rtl"] .section-head::after {
+  background: linear-gradient(270deg, var(--line), transparent);
+}
+html[dir="rtl"] #demo-drawer {
+  right: auto !important;
+  left: 0 !important;
+}
+
+/* ── REDUCED MOTION FINAL ── */
+@media(prefers-reduced-motion:reduce) {
+  #search-overlay.open, .search-modal, #notif-panel.open { animation: none !important; }
+  .stat::before { transition: none !important; }
+  .bg-orb { animation: none !important; }
+  .bg-calli svg { display: none !important; }
+}
+
