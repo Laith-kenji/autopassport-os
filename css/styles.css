@@ -575,8 +575,7 @@ table.tbl tbody tr:hover{background:#f8fafd;}
 
 /* ── Screens ── */
 .screen{display:none;}
-.screen.active{display:block;animation:fade .18s ease;}
-@keyframes fade{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:none;}}
+.screen.active{display:block;}
 
 /* ── Tabs ── */
 .tabs{display:flex;gap:2px;border-bottom:1px solid var(--line);margin:5px 0 18px;overflow-x:auto;}
@@ -2444,12 +2443,6 @@ table.tbl tbody tr:hover{background:#f6f9fe;}
   letter-spacing:.01em;
 }
 
-/* ══ SMOOTH SCREEN FADE ══ */
-.screen.active{animation:screen-fade .2s cubic-bezier(.4,0,.2,1);}
-@keyframes screen-fade{
-  from{opacity:0;transform:translateY(6px);}
-  to{opacity:1;transform:translateY(0);}
-}
 
 /* ══ TRUST SCORE → RECORD QUALITY BADGE ══ */
 .record-quality-ring{
@@ -3391,12 +3384,7 @@ html.dark #toast { background: rgba(240,244,255,.12) !important; border-color: r
 
 /* ══ MICRO-INTERACTIONS ══ */
 
-/* Screen entrance animation */
-@keyframes screenIn {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: none; }
-}
-.screen.active { animation: screenIn .22s var(--ease-expo) !important; }
+/* Screen entrance animation — handled by Perf Patch @keyframes screenFade */
 
 /* Skeleton loader pulse */
 @keyframes skeletonPulse {
@@ -4299,20 +4287,7 @@ html.dark .search-modal-esc {
 }
 
 /* ── SMOOTH CARD REVEAL ── */
-@keyframes cardReveal {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: none; }
-}
-.card { animation: cardReveal .28s var(--ease-expo) both; }
-.qa-card:nth-child(1) { animation-delay: .04s; }
-.qa-card:nth-child(2) { animation-delay: .08s; }
-.qa-card:nth-child(3) { animation-delay: .12s; }
-.qa-card:nth-child(4) { animation-delay: .16s; }
-.stat:nth-child(1) { animation-delay: .05s; }
-.stat:nth-child(2) { animation-delay: .1s; }
-.stat:nth-child(3) { animation-delay: .15s; }
-.stat:nth-child(4) { animation-delay: .2s; }
-.stat:nth-child(5) { animation-delay: .25s; }
+/* cardReveal + stagger delays removed — killed by Perf Pass 2 P2-1 */
 
 /* ── SELECTION COLOR ── */
 ::selection { background: rgba(37,99,235,.2); color: var(--ink); }
