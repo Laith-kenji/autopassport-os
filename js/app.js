@@ -250,7 +250,21 @@ function applyI18n(){
 }
 
 /* ── Navigation ── */
+function _injectScreen(id){
+  var ws = document.getElementById('workspace');
+  if (!ws || document.getElementById('screen-'+id)) return;
+  var tmpl = typeof SCREENS !== 'undefined' && SCREENS['screen-'+id];
+  if (!tmpl) return;
+  var tmp = document.createElement('div');
+  tmp.innerHTML = tmpl;
+  var sec = tmp.firstElementChild;
+  if (sec) {
+    ws.appendChild(sec);
+    if (LANG !== 'en') applyI18n();
+  }
+}
 function showScreen(id){
+  _injectScreen(id);
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   var el = document.getElementById('screen-'+id);
   if(el) el.classList.add('active');
@@ -1410,7 +1424,8 @@ function enterApp(e){
   if(!ls) return;
   ls.classList.add('hidden');
   setTimeout(function(){ ls.style.display = 'none'; }, 420);
-  /* Trigger card entrance animations by re-adding active class */
+  /* Lazy-inject dashboard then trigger entrance */
+  _injectScreen('dashboard');
   var dash = document.getElementById('screen-dashboard');
   if(dash){
     dash.classList.remove('active');
