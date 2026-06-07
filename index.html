@@ -157,7 +157,7 @@
   </div>
 
   <!-- Branch selector -->
-  <button class="tb-branch" onclick="showToast('Branch switching — concept')" aria-label="Current branch">
+  <button class="tb-branch" onclick="WF.switchBranch()" aria-label="Current branch">
     <span class="ic ic-sm"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span>
     <span>Al-Rawabi Main</span>
     <span class="ic ic-sm" style="opacity:.5"><svg viewBox="0 0 24 24"><use href="#ic-chevron-down"/></svg></span>
@@ -190,7 +190,7 @@
     <span class="tb-btn-label">Demo</span>
   </button>
 
-  <div class="avatar" onclick="showToast('Profile — Rami Al-Ahmad · Reception Advisor')" title="Rami Al-Ahmad" aria-label="User profile">RA</div>
+  <div class="avatar" onclick="WF.openUserProfile()" title="Rami Al-Ahmad" aria-label="User profile">RA</div>
 </div>
 
 <!-- ============ MOBILE HEADER ============ -->
@@ -421,7 +421,7 @@
       <div class="alerts-panel">
         <div class="ap-head">
           <div class="ap-title"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-alert-triangle"/></svg></span><span data-i18n="alerts_title">Attention Required</span></div>
-          <button class="ap-view" onclick="showToast('Full alert log (concept)')" data-i18n="view_all">View All</button>
+          <button class="ap-view" onclick="go('reports')" data-i18n="view_all">View All</button>
         </div>
         <div class="alert-row">
           <span class="alert-priority high"></span>
@@ -527,7 +527,7 @@
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
           <h3 style="margin:0" id="boardTitle">Today's Jobs <span class="card-sub">· live overview</span></h3>
           <div style="display:flex;gap:6px;">
-            <button class="btn sm ghost" onclick="showToast('Full board view (concept)')">Expand</button>
+            <button class="btn sm ghost" onclick="go('calendar')">Expand</button>
           </div>
         </div>
         <div class="kanban">
@@ -541,7 +541,7 @@
                 <button class="kcard-primary-btn" onclick="event.stopPropagation();go('intake')">
                   <span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-camera"/></svg></span> Check In
                 </button>
-                <div class="kcard-menu-wrap"><button class="kcard-menu-btn" onclick="event.stopPropagation();toggleKcardMenu(this)">⋯</button><div class="kcard-menu"><button onclick="openVehicle()"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-car"/></svg></span>Vehicle Passport</button><button onclick="showToast('Tech assigned (concept)')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-users"/></svg></span>Assign Tech</button><div class="kcard-menu-sep"></div><button onclick="showToast('WhatsApp update sent (concept)')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-message"/></svg></span>Send WhatsApp</button></div></div>
+                <div class="kcard-menu-wrap"><button class="kcard-menu-btn" onclick="event.stopPropagation();toggleKcardMenu(this)">⋯</button><div class="kcard-menu"><button onclick="openVehicle()"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-car"/></svg></span>Vehicle Passport</button><button onclick="WF.assignTech('WO-2041')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-users"/></svg></span>Assign Tech</button><div class="kcard-menu-sep"></div><button onclick="WF.simulateWhatsApp('Customer','+962 79 555 0101')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-message"/></svg></span>Send WhatsApp</button></div></div>
               </div>
             </div>
             <div class="kcard" onclick="go('customers')">
@@ -552,7 +552,7 @@
                 <button class="kcard-primary-btn" onclick="event.stopPropagation();go('intake')">
                   <span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-camera"/></svg></span> Check In
                 </button>
-                <div class="kcard-menu-wrap"><button class="kcard-menu-btn" onclick="event.stopPropagation();toggleKcardMenu(this)">⋯</button><div class="kcard-menu"><button onclick="go('customers')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-file-text"/></svg></span>View Details</button><button onclick="showToast('WhatsApp sent')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-message"/></svg></span>Send WhatsApp</button></div></div>
+                <div class="kcard-menu-wrap"><button class="kcard-menu-btn" onclick="event.stopPropagation();toggleKcardMenu(this)">⋯</button><div class="kcard-menu"><button onclick="go('customers')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-file-text"/></svg></span>View Details</button><button onclick="WF.simulateWhatsApp('Customer','+962 79 555 0101')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-message"/></svg></span>Send WhatsApp</button></div></div>
               </div>
             </div>
           </div>
@@ -566,7 +566,7 @@
                 <button class="kcard-primary-btn warn" onclick="event.stopPropagation();go('intake')" style="background:var(--warn)">
                   <span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-camera"/></svg></span> Add Photos
                 </button>
-                <div class="kcard-menu-wrap"><button class="kcard-menu-btn" onclick="event.stopPropagation();toggleKcardMenu(this)">⋯</button><div class="kcard-menu"><button onclick="showToast('Tech assigned')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-users"/></svg></span>Assign Tech</button><button onclick="showToast('WhatsApp sent')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-message"/></svg></span>Send WhatsApp</button></div></div>
+                <div class="kcard-menu-wrap"><button class="kcard-menu-btn" onclick="event.stopPropagation();toggleKcardMenu(this)">⋯</button><div class="kcard-menu"><button onclick="WF.assignTech('WO-2041')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-users"/></svg></span>Assign Tech</button><button onclick="WF.simulateWhatsApp('Customer','+962 79 555 0101')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-message"/></svg></span>Send WhatsApp</button></div></div>
               </div>
             </div>
             <div class="kcard" onclick="go('intake')">
@@ -577,7 +577,7 @@
                 <button class="kcard-primary-btn teal" onclick="event.stopPropagation();go('intake')">
                   Start Intake
                 </button>
-                <div class="kcard-menu-wrap"><button class="kcard-menu-btn" onclick="event.stopPropagation();toggleKcardMenu(this)">⋯</button><div class="kcard-menu"><button onclick="showToast('Bay assigned')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-tools"/></svg></span>Assign Bay</button></div></div>
+                <div class="kcard-menu-wrap"><button class="kcard-menu-btn" onclick="event.stopPropagation();toggleKcardMenu(this)">⋯</button><div class="kcard-menu"><button onclick="WF.assignTech('WO-2042')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-tools"/></svg></span>Assign Bay</button></div></div>
               </div>
             </div>
           </div>
@@ -591,7 +591,7 @@
                 <button class="kcard-primary-btn teal" onclick="event.stopPropagation();go('workorder')">
                   Open Job
                 </button>
-                <div class="kcard-menu-wrap"><button class="kcard-menu-btn" onclick="event.stopPropagation();toggleKcardMenu(this)">⋯</button><div class="kcard-menu"><button onclick="showToast('WhatsApp sent')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-message"/></svg></span>Message Customer</button><button onclick="go('estimate')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-file-text"/></svg></span>Request Approval</button></div></div>
+                <div class="kcard-menu-wrap"><button class="kcard-menu-btn" onclick="event.stopPropagation();toggleKcardMenu(this)">⋯</button><div class="kcard-menu"><button onclick="WF.simulateWhatsApp('Customer','+962 79 555 0101')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-message"/></svg></span>Message Customer</button><button onclick="go('estimate')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-file-text"/></svg></span>Request Approval</button></div></div>
               </div>
             </div>
             <div class="kcard kcard-late" onclick="go('workorder')" style="border-color:var(--bad);">
@@ -602,7 +602,7 @@
                 <button class="kcard-primary-btn" style="background:var(--bad)" onclick="event.stopPropagation();go('workorder')">
                   Open Job
                 </button>
-                <div class="kcard-menu-wrap"><button class="kcard-menu-btn" onclick="event.stopPropagation();toggleKcardMenu(this)">⋯</button><div class="kcard-menu"><button onclick="showToast('WhatsApp sent')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-message"/></svg></span>Message Customer</button></div></div>
+                <div class="kcard-menu-wrap"><button class="kcard-menu-btn" onclick="event.stopPropagation();toggleKcardMenu(this)">⋯</button><div class="kcard-menu"><button onclick="WF.simulateWhatsApp('Customer','+962 79 555 0101')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-message"/></svg></span>Message Customer</button></div></div>
               </div>
             </div>
           </div>
@@ -617,7 +617,7 @@
                 <button class="kcard-primary-btn" style="background:var(--warn)" onclick="event.stopPropagation();go('estimate')">
                   Review Approval
                 </button>
-                <div class="kcard-menu-wrap"><button class="kcard-menu-btn" onclick="event.stopPropagation();toggleKcardMenu(this)">⋯</button><div class="kcard-menu"><button onclick="showToast('Reminder sent')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-message"/></svg></span>Send Reminder</button></div></div>
+                <div class="kcard-menu-wrap"><button class="kcard-menu-btn" onclick="event.stopPropagation();toggleKcardMenu(this)">⋯</button><div class="kcard-menu"><button onclick="WF.simulateWhatsApp('Customer','+962 79 555 0142')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-message"/></svg></span>Send Reminder</button></div></div>
               </div>
             </div>
           </div>
@@ -708,7 +708,7 @@
         </div>
         <div class="head-actions">
           <button class="btn" onclick="openSearchOverlay()"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-search"/></svg></span> Search</button>
-          <button class="btn primary" onclick="showToast('Add Vehicle flow — concept')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-plus"/></svg></span> Add Vehicle</button>
+          <button class="btn primary" onclick="WF._addVehicleForCustomer()"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-plus"/></svg></span> Add Vehicle</button>
         </div>
       </div>
       <div class="veh-grid" id="vehGrid"></div>
@@ -750,7 +750,7 @@
               <button onclick="go('workorder')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-tools"/></svg></span> Open Work Order</button>
               <div class="wo-sec-menu-sep"></div>
               <button onclick="openShareModal()"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-share"/></svg></span> Share Passport</button>
-              <button onclick="showToast('PDF preview generated (concept)')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-download"/></svg></span> Export PDF</button>
+              <button onclick="WF.printInvoice('INV-4401')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-download"/></svg></span> Export PDF</button>
             </div>
           </div>
         </div>
@@ -950,7 +950,7 @@
             <button class="btn sm primary">＋ Add warranty</button>
           </div>
           <table class="tbl"><thead><tr><th>Item</th><th>Provider</th><th>Branch</th><th>Coverage</th><th>Expires</th><th>Days left</th><th>Status</th><th>Action</th></tr></thead><tbody>
-            <tr><td>🔋 Battery (Bosch S5)</td><td>Al-Rawabi</td><td>Main</td><td>24 months · replacement</td><td>Nov 2027</td><td>531</td><td><span class="pill good">Active</span></td><td><button class="btn sm" onclick="showToast('Warranty claim opened (concept)')">Claim</button></td></tr>
+            <tr><td>🔋 Battery (Bosch S5)</td><td>Al-Rawabi</td><td>Main</td><td>24 months · replacement</td><td>Nov 2027</td><td>531</td><td><span class="pill good">Active</span></td><td><button class="btn sm" onclick="showToast('Warranty claim filed · ref WRN-' + Math.floor(Math.random()*1000+100))">Claim</button></td></tr>
             <tr><td>✨ Ceramic coating</td><td>Al-Rawabi</td><td>Main</td><td>12 months · re-application</td><td>Aug 2026</td><td>77</td><td><span class="pill warn">Expiring</span></td><td><button class="btn sm" onclick="showToast('Renewal reminder sent')">Renew</button></td></tr>
             <tr><td>🛑 Brake pads · service promise</td><td>Al-Rawabi</td><td>Main</td><td>6 months · re-service</td><td>Sep 2026</td><td>112</td><td><span class="pill good">Active</span></td><td><button class="btn sm">View</button></td></tr>
             <tr><td>🛞 Tire warranty (Michelin)</td><td>Michelin MENA</td><td>—</td><td>5 yr / 80k km</td><td>Jan 2028</td><td>578</td><td><span class="pill good">Active</span></td><td><button class="btn sm">View</button></td></tr>
@@ -979,7 +979,7 @@
             </div>
             <div class="di-meta" style="margin-top:4px">Tech note: Front pulling slightly right. Alignment off by ~2mm. Not critical yet but should be done by next service.</div>
             <div class="di-actions">
-              <button class="btn sm primary" onclick="showToast('Booking flow opened (concept)')">📅 Convert to booking</button>
+              <button class="btn sm primary" onclick="openBookingWizard()">📅 Convert to booking</button>
               <button class="btn sm" onclick="showToast('WhatsApp reminder sent')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-message"/></svg></span> Send reminder</button>
               <button class="btn sm" onclick="showToast('Added to budget plan')">💰 Add to budget plan</button>
             </div>
@@ -1015,7 +1015,7 @@
                 <label><input type="checkbox"> Hide owner identity</label>
                 <label><input type="checkbox"> Hide payment amounts</label>
               </div></div>
-              <button class="btn primary" style="margin-top:8px" onclick="showToast('PDF preview generated (concept)')">📄 Generate PDF preview</button>
+              <button class="btn primary" style="margin-top:8px" onclick="WF.printInvoice('INV-4401')">📄 Generate PDF preview</button>
             </div>
             <div>
               <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">Dossier readiness</div>
@@ -1037,9 +1037,9 @@
               <div class="ts"><div class="tc">6</div><div class="tl">Complete</div></div>
             </div>
             <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <button class="btn teal" onclick="showToast('Buyer invitation sent (concept)')">📨 Send buyer invitation</button>
+              <button class="btn teal" onclick="WF.simulateWhatsApp('Buyer','+962 79 000 0000')">📨 Send buyer invitation</button>
               <button class="btn" onclick="openShareModal()"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-link"/></svg></span> Generate buyer link</button>
-              <button class="btn" onclick="showToast('Ownership transfer initiated (concept)')">🔄 Transfer ownership</button>
+              <button class="btn" onclick="showToast('Ownership transfer · legal document generated (simulation)')">🔄 Transfer ownership</button>
             </div>
           </div>
         </div>
@@ -1090,7 +1090,7 @@
           <div class="card">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
               <h3 style="margin:0">Resale Report <span class="record-badge customer" style="margin-inline-start:6px;font-size:9px;">🌐 Buyer Shareable</span></h3>
-              <button class="btn sm primary" onclick="showToast('PDF preview generated (concept)')">📄 Generate PDF</button>
+              <button class="btn sm primary" onclick="WF.printInvoice('INV-4401')">📄 Generate PDF</button>
             </div>
             <div class="kpi-row" style="margin-bottom:16px;">
               <div class="kpi"><div class="v" style="color:var(--accent-2)">74%</div><div class="k">History completeness</div><div class="bar"><i style="width:74%"></i></div></div>
@@ -1099,9 +1099,9 @@
               <div class="kpi"><div class="v" style="color:var(--good)">3</div><div class="k">Active warranties</div><div class="bar"><i style="width:75%"></i></div></div>
             </div>
             <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <button class="btn teal" onclick="showToast('Buyer invitation sent (concept)')">📨 Send buyer invitation</button>
+              <button class="btn teal" onclick="WF.simulateWhatsApp('Buyer','+962 79 000 0000')">📨 Send buyer invitation</button>
               <button class="btn" onclick="openShareModal()"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-link"/></svg></span> Generate buyer link</button>
-              <button class="btn" onclick="showToast('Ownership transfer initiated (concept)')">🔄 Transfer ownership</button>
+              <button class="btn" onclick="showToast('Ownership transfer · legal document generated (simulation)')">🔄 Transfer ownership</button>
             </div>
           </div>
         </div>
@@ -1112,8 +1112,8 @@
             <div class="declined-item">
               <div class="di-head"><div><div class="di-name">Wheel Alignment</div><div class="di-meta">Recommended: 12 Mar 2026 · WO-2042</div></div><span class="pill warn">Safety · Recommended soon</span></div>
               <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;">
-                <button class="btn sm primary" onclick="showToast('Booking opened (concept)')">📅 Convert to booking</button>
-                <button class="btn sm" onclick="showToast('WhatsApp sent')">Send reminder</button>
+                <button class="btn sm primary" onclick="openBookingWizard()">📅 Convert to booking</button>
+                <button class="btn sm" onclick="WF.simulateWhatsApp('Customer','+962 79 555 0101')">Send reminder</button>
               </div>
             </div>
           </div>
@@ -1173,10 +1173,11 @@
         <div class="step" data-step="5" onclick="goStep(5)"><div class="n">5</div><div class="lbl">Required photos</div></div>
         <div class="step" data-step="6" onclick="goStep(6)"><div class="n">6</div><div class="lbl">Acknowledgement</div></div>
       </div>
-      <div class="card" id="stepBody"></div>
+      <div class="card" id="stepBody"><div style="text-align:center;padding:32px;color:var(--muted);">Select a vehicle to begin check-in.</div></div>
       <div style="display:flex;gap:8px;margin-top:12px;justify-content:flex-end">
-        <button class="btn" onclick="stepPrev()">‹ Back</button>
-        <button class="btn primary" onclick="stepNext()">Next ›</button>
+        <button class="btn" onclick="typeof INTAKE_STEP!=='undefined'?WF.intakePrev():stepPrev()">‹ Back</button>
+        <button class="btn primary" id="intakeNextBtn" onclick="typeof INTAKE_STEP!=='undefined'?WF.intakeNext():stepNext()">Next ›</button>
+        <button class="btn primary good" id="intakeConfirmBtn" style="display:none;" onclick="WF.confirmIntake()">✓ Confirm Check-In</button>
       </div>
     </section>
 
@@ -1196,21 +1197,21 @@
         <div><h1>Work Order · WO-2041</h1><div class="sub">Mercedes C200 2019 · Lara Haddad · <span class="pill teal">In Service</span></div></div>
         <div class="head-actions">
           <!-- Primary actions -->
-          <button class="btn" onclick="showToast('Job paused (concept)')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><polyline points="6 4 6 20"/><polyline points="18 4 18 20"/></svg></span> Pause</button>
-          <button class="btn" onclick="showToast('Moved to QC (concept)')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-check-circle"/></svg></span> Move to QC</button>
-          <button class="btn" onclick="go('estimate')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-file-text"/></svg></span> Request Approval</button>
-          <button class="btn primary" onclick="showToast('Job closed → verified passport event added (concept)')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-check-circle"/></svg></span> Close Job</button>
+          <button class="btn" onclick="WF.pauseJob('WO-2041')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><polyline points="6 4 6 20"/><polyline points="18 4 18 20"/></svg></span> Pause</button>
+          <button class="btn" onclick="WF.moveToQC('WO-2041')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-check-circle"/></svg></span> Move to QC</button>
+          <button class="btn" onclick="WF.requestApproval('WO-2041')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-file-text"/></svg></span> Request Approval</button>
+          <button class="btn primary" onclick="WF.closeJob('WO-2041')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-check-circle"/></svg></span> Close Job</button>
           <!-- Secondary actions -->
           <div class="wo-sec-wrap">
             <button class="btn" onclick="toggle3dot(this)"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-more"/></svg></span></button>
             <div class="wo-sec-menu">
-              <button onclick="showToast('Line item added (concept)')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-plus"/></svg></span> Add Item</button>
-              <button onclick="showToast('Labor added (concept)')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-clock"/></svg></span> Add Labor</button>
-              <button onclick="showToast('Photo upload opened (concept)')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-camera"/></svg></span> Add Photo</button>
-              <button onclick="showToast('Tech note added (concept)')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-file-text"/></svg></span> Add Tech Note</button>
+              <button onclick="WF.addItemToWO('WO-2041')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-plus"/></svg></span> Add Item</button>
+              <button onclick="WF.addItemToWO('WO-2041')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-clock"/></svg></span> Add Labor</button>
+              <button onclick="WF._addPhoto('During Service');showToast('Photo added to WO-2041')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-camera"/></svg></span> Add Photo</button>
+              <button onclick="WF.addTechNote('WO-2041')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-file-text"/></svg></span> Add Tech Note</button>
               <div class="wo-sec-menu-sep"></div>
-              <button onclick="showToast('Parts request sent (concept)')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-package"/></svg></span> Request Part</button>
-              <button onclick="showToast('Calling customer (concept)')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-phone"/></svg></span> Contact Customer</button>
+              <button onclick="WF.reorderPart('P001')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-package"/></svg></span> Request Part</button>
+              <button onclick="WF.contactCustomer('Lara Haddad','+962 79 555 0101')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-phone"/></svg></span> Contact Customer</button>
             </div>
           </div>
         </div>
@@ -1265,7 +1266,11 @@
     <section class="screen" id="screen-estimate">
       <div class="page-head">
         <div><h1>Estimate · EST-558</h1><div class="sub">Toyota Land Cruiser 2023 · <span class="pill warn">Awaiting customer</span></div></div>
-        <div class="head-actions"><button class="btn teal" onclick="copyLink()"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-link"/></svg></span> Copy WhatsApp approval link</button></div>
+        <div class="head-actions">
+          <button class="btn" onclick="WF.simulateApproval('EST-558')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-check-circle"/></svg></span> Simulate Response</button>
+          <button class="btn teal" onclick="copyLink()"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-link"/></svg></span> Copy WhatsApp link</button>
+          <button class="btn primary" onclick="WF.createInvoiceFromWO('WO-2042')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-file-text"/></svg></span> Create Invoice</button>
+        </div>
       </div>
       <div class="card" style="margin-bottom:14px;"><h3>Line-item Approval</h3>
         <div class="appr-row"><div><strong>Front brake pads + rotors</strong><div style="color:var(--muted);font-size:12px">Safety-critical · recommended</div></div><div style="font-weight:700">JOD 145</div><span class="pill good">Approved ✓</span></div>
@@ -1287,7 +1292,7 @@
     <!-- ===== INVOICES ===== -->
     <section class="screen" id="screen-invoices">
       <div class="page-head"><div><h1>Invoices &amp; Payments</h1><div class="sub">Issue invoices, take payment, sync to accounting</div></div>
-        <div class="head-actions"><button class="btn primary"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-plus"/></svg></span> New Invoice</button></div>
+        <div class="head-actions"><button class="btn primary" onclick="WF.createInvoiceFromWO('WO-2041')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-plus"/></svg></span> New Invoice</button></div>
       </div>
       <div class="tbl-card">
         <div class="tbl-toolbar2">
@@ -1535,7 +1540,10 @@
     <!-- ===== INVENTORY & PURCHASING ===== -->
     <section class="screen" id="screen-inventory">
       <div class="page-head"><div><h1>Inventory &amp; Purchasing</h1><div class="sub">Parts, consumables, purchase orders &amp; vendors</div></div>
-        <div class="head-actions"><button class="btn primary">＋ New PO</button></div>
+        <div class="head-actions">
+          <button class="btn" onclick="WF.addInventoryItem()"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-plus"/></svg></span> Add Item</button>
+          <button class="btn primary" onclick="showToast('Auto-PO drafted · 2 low-stock items')">＋ Auto-PO</button>
+        </div>
       </div>
 
       <div class="tabs" id="invTabs">
@@ -1554,15 +1562,11 @@
               <select class="tf"><option>All Categories</option><option>Brakes</option><option>Lubricants</option><option>Electrical</option><option>Detailing</option><option>Tires</option></select>
               <select class="tf"><option>All Statuses</option><option>OK</option><option>Low</option><option>Critical</option></select>
               <span class="tbl-count">6 SKUs</span>
-              <button class="btn sm primary" style="margin-inline-start:8px" onclick="showToast('Auto-PO drafted (concept)')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-plus"/></svg></span> Auto-PO</button>
+              <button class="btn sm primary" style="margin-inline-start:8px" onclick="WF.reorderPart('P004')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-plus"/></svg></span> Auto-PO</button>
             </div>
             <div class="tbl-wrap2" style="overflow-x:auto">
-              <table class="tbl2"><thead><tr><th>Part / Consumable</th><th>SKU</th><th>Category</th><th>Stock</th><th>Reorder At</th><th>Unit Cost</th><th>Status</th><th>Actions</th></tr></thead><tbody>
-                <tr><td data-label="Part" class="td-main">Brake pad set (C200)</td><td data-label="SKU" class="td-mono">BP-C200-F</td><td data-label="Category" class="td-m">Brakes</td><td data-label="Stock">4</td><td data-label="Reorder" class="td-m">5</td><td data-label="Cost" class="td-m">JOD 48</td><td data-label="Status"><span class="pill warn">Low</span></td><td><div class="row-act"><button class="btn sm primary" onclick="showToast('PO created (concept)')">Order</button><div class="row3-wrap"><button class="row3btn" onclick="toggle3dot(this)">⋯</button><div class="row3-menu"><button onclick="showToast('Editing SKU')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-edit"/></svg></span> Edit</button><button onclick="showToast('Stock adjusted')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-plus"/></svg></span> Adjust Stock</button></div></div></div></td></tr>
-                <tr><td data-label="Part" class="td-main">Engine oil 5W-30</td><td data-label="SKU" class="td-mono">OIL-5W30</td><td data-label="Category" class="td-m">Lubricants</td><td data-label="Stock">40 L</td><td data-label="Reorder" class="td-m">20 L</td><td data-label="Cost" class="td-m">JOD 6/L</td><td data-label="Status"><span class="pill good">OK</span></td><td><div class="row-act"><button class="btn sm" onclick="showToast('Viewing SKU')">View</button></div></td></tr>
-                <tr><td data-label="Part" class="td-main">Battery Bosch S5</td><td data-label="SKU" class="td-mono">BAT-S5</td><td data-label="Category" class="td-m">Electrical</td><td data-label="Stock">7</td><td data-label="Reorder" class="td-m">3</td><td data-label="Cost" class="td-m">JOD 72</td><td data-label="Status"><span class="pill good">OK</span></td><td><div class="row-act"><button class="btn sm" onclick="showToast('Viewing SKU')">View</button></div></td></tr>
-                <tr><td data-label="Part" class="td-main">Shampoo concentrate</td><td data-label="SKU" class="td-mono">SHAM-C</td><td data-label="Category" class="td-m">Wash</td><td data-label="Stock">2 L</td><td data-label="Reorder" class="td-m">5 L</td><td data-label="Cost" class="td-m">JOD 3/L</td><td data-label="Status"><span class="pill bad">Critical</span></td><td><div class="row-act"><button class="btn sm primary" onclick="showToast('PO created')">Order</button></div></td></tr>
-                <tr><td data-label="Part" class="td-main">Michelin LTX 265/70R17</td><td data-label="SKU" class="td-mono">TYR-MLX-265</td><td data-label="Category" class="td-m">Tires</td><td data-label="Stock">8</td><td data-label="Reorder" class="td-m">4</td><td data-label="Cost" class="td-m">JOD 90</td><td data-label="Status"><span class="pill good">OK</span></td><td><div class="row-act"><button class="btn sm" onclick="showToast('Viewing SKU')">View</button></div></td></tr>
+              <table class="tbl"><thead><tr><th>Item</th><th>SKU</th><th>Category</th><th>Stock</th><th>Min</th><th>Price</th><th>Supplier</th><th>Actions</th></tr></thead><tbody id="invTableBody">
+                <tr><td colspan="8" style="text-align:center;padding:24px;color:var(--muted);">Loading inventory…</td></tr>
               </tbody></table>
             </div>
           </div>
@@ -1761,8 +1765,8 @@
           <div class="tw-photo-grid">
             <div class="tw-p twdone" onclick="openEvidenceModal('Old brake pads','During','Today 11:20','Samir H.','timestamped')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-check-circle"/></svg></span><span style="font-size:10px">Old pads</span></div>
             <div class="tw-p twdone" onclick="openEvidenceModal('Rotor surface','During','Today 11:35','Samir H.','timestamped')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-check-circle"/></svg></span><span style="font-size:10px">Rotor</span></div>
-            <div class="tw-p" onclick="showToast('Camera opened (concept)')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-camera"/></svg></span><span style="font-size:10px">After</span></div>
-            <div class="tw-p" onclick="showToast('Camera opened (concept)')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-plus"/></svg></span><span style="font-size:10px">Add</span></div>
+            <div class="tw-p" onclick="WF._addPhoto('Service');showToast('Photo added')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-camera"/></svg></span><span style="font-size:10px">After</span></div>
+            <div class="tw-p" onclick="WF._addPhoto('Service');showToast('Photo added')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-plus"/></svg></span><span style="font-size:10px">Add</span></div>
           </div>
           <div style="padding:4px 14px 10px;font-size:11.5px;color:var(--muted)">Photo Evidence History: 2 timestamped · 1 pending</div>
         </div>
@@ -1771,7 +1775,7 @@
         <div class="tw-card">
           <div class="tw-card-head">
             <h3 data-i18n="tw_parts">Parts Used</h3>
-            <button class="btn sm" onclick="showToast('Part request sent (concept)')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-plus"/></svg></span> Request</button>
+            <button class="btn sm" onclick="WF.reorderPart('P001')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-plus"/></svg></span> Request</button>
           </div>
           <div class="tw-part-row"><div style="flex:1"><div style="font-weight:600">Brake pad set (OEM)</div><div style="font-size:11.5px;color:var(--muted)">BP-C200-F · 1 set</div></div><span class="pill good">Issued</span></div>
           <div class="tw-part-row"><div style="flex:1"><div style="font-weight:600">Engine oil 5W-30</div><div style="font-size:11.5px;color:var(--muted)">OIL-5W30 · 6 L</div></div><span class="pill good">Issued</span></div>
@@ -1797,7 +1801,7 @@
       <div class="tw-card">
         <div class="tw-card-head">
           <h3 data-i18n="tw_notes">Tech Notes</h3>
-          <button class="btn sm" onclick="showToast('Note saved (concept)')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-plus"/></svg></span> Add</button>
+          <button class="btn sm" onclick="WF.addTechNote('WO-2041')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-plus"/></svg></span> Add</button>
         </div>
         <div style="padding:10px 14px;">
           <textarea class="tw-note-input" placeholder="Add a note for this job…" rows="2"></textarea>
@@ -1843,7 +1847,7 @@
           </select>
           <div style="margin-inline-start:auto;display:flex;align-items:center;gap:8px;">
             <span class="tbl-count">243 members</span>
-            <button class="btn sm primary" onclick="showToast('New member form opened (concept)')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-plus"/></svg></span> Add Member</button>
+            <button class="btn sm primary" onclick="showToast('Membership module · add member via Customer profile')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-plus"/></svg></span> Add Member</button>
           </div>
         </div>
         <div style="overflow-x:auto;">
@@ -1986,9 +1990,9 @@
           <h3 style="margin:0">Insights · Beta</h3>
           <span class="beta-label">✦ Simulated Beta Insight · mock data only</span>
         </div>
-        <div class="insight-item"><div class="ii-ic"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-trending-up"/></svg></span></div><div class="ii-body"><div class="ii-t">Suggested service upsell · 12 vehicles due for major service</div><div class="ii-m">Predicted by mileage trend · est. revenue opportunity: JOD 2,400</div></div><button class="btn sm" onclick="showToast('Campaign created (concept)')">Create campaign</button></div>
+        <div class="insight-item"><div class="ii-ic"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-trending-up"/></svg></span></div><div class="ii-body"><div class="ii-t">Suggested service upsell · 12 vehicles due for major service</div><div class="ii-m">Predicted by mileage trend · est. revenue opportunity: JOD 2,400</div></div><button class="btn sm" onclick="showToast('Campaign drafted · 12 customers queued for follow-up')">Create campaign</button></div>
         <div class="insight-item"><div class="ii-ic"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-alert-triangle"/></svg></span></div><div class="ii-body"><div class="ii-t">Returning Issue Risk alert · 3 vehicles</div><div class="ii-m">Two consecutive visits with same complaint · manager review recommended</div></div><button class="btn sm" onclick="go('aftercare')">Review</button></div>
-        <div class="insight-item"><div class="ii-ic"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-package"/></svg></span></div><div class="ii-body"><div class="ii-t">Low-stock forecast · Brake pad set C200 · 3 days</div><div class="ii-m">Current: 4 units · 3 active WOs requiring this SKU this week</div></div><button class="btn sm primary" onclick="showToast('PO drafted (concept)')">Auto-PO</button></div>
+        <div class="insight-item"><div class="ii-ic"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-package"/></svg></span></div><div class="ii-body"><div class="ii-t">Low-stock forecast · Brake pad set C200 · 3 days</div><div class="ii-m">Current: 4 units · 3 active WOs requiring this SKU this week</div></div><button class="btn sm primary" onclick="WF.reorderPart('P001')">Auto-PO</button></div>
         <div class="insight-item"><div class="ii-ic"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-bar-chart"/></svg></span></div><div class="ii-body"><div class="ii-t">Bay 4 underutilized vs branch average</div><div class="ii-m">58% utilization this week · Branch avg: 71% · Consider reassignment</div></div></div>
         <div class="insight-item"><div class="ii-ic"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-users"/></svg></span></div><div class="ii-body"><div class="ii-t">Technician workload imbalance · Feras N. at 90%</div><div class="ii-m">Samir H. at 82%, Omar at 68% · rebalance recommended for PM shift</div></div></div>
         <div class="insight-item"><div class="ii-ic"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-sync"/></svg></span></div><div class="ii-body"><div class="ii-t">Declined-work recovery opportunity · JOD 880 total</div><div class="ii-m">5 customers with postponed work overdue for follow-up</div></div><button class="btn sm" onclick="go('aftercare')">Follow up</button></div>
@@ -2056,7 +2060,7 @@
             <h3>VIN &amp; Vehicle Data</h3>
             <table class="tbl"><thead><tr><th>Provider</th><th>Tier</th><th>Status</th><th>Coverage</th><th>Action</th></tr></thead><tbody>
               <tr><td>Baseline VIN Decode</td><td>Included</td><td><span class="pill good">Active</span></td><td>Make, model, year, fuel</td><td>—</td></tr>
-              <tr><td>Premium trim &amp; options enrichment</td><td>Add-on</td><td><span class="pill warn">Not enabled</span></td><td>Trim level, color, options, market</td><td><button class="btn sm primary" onclick="showToast('Upgrade opened (concept)')">Upgrade</button></td></tr>
+              <tr><td>Premium trim &amp; options enrichment</td><td>Add-on</td><td><span class="pill warn">Not enabled</span></td><td>Trim level, color, options, market</td><td><button class="btn sm primary" onclick="showToast('Upgrade to Pro plan to enable · contact support')">Upgrade</button></td></tr>
             </tbody></table>
           </div>
         </div>
@@ -2219,7 +2223,7 @@
               <div class="import-stat"><span class="isk">Missing VIN</span><span class="isv" style="color:var(--bad)">2</span></div>
             </div>
             <div style="display:flex;gap:8px;flex-wrap:wrap;">
-              <button class="btn" onclick="showToast('Warning report downloaded (concept)')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-download"/></svg></span> Download warning report</button>
+              <button class="btn" onclick="showToast('Warning report downloading… (simulated)')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-download"/></svg></span> Download warning report</button>
               <button class="btn" onclick="showToast('Test import run (concept)')">🔄 Run test import</button>
               <button class="btn primary" onclick="showToast('Import confirmed (concept) — no actual files imported')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-check-circle"/></svg></span> Confirm import</button>
             </div>
@@ -2387,7 +2391,7 @@
         <!-- Book -->
         <div class="app-pane" data-apane="book">
           <div style="font-weight:700;font-size:13px;margin-bottom:8px">Book a service</div>
-          <div class="app-progress" style="cursor:pointer" onclick="showToast('Booking flow opened (concept)')">
+          <div class="app-progress" style="cursor:pointer" onclick="openBookingWizard()">
             <div style="font-weight:700;font-size:12px">Oil change · 73,000 km</div>
             <div style="color:var(--muted);font-size:11px">Recommended: Aug 2026 · Est: JOD 45</div>
             <button class="app-btn" style="margin-top:8px">Book now</button>
@@ -2402,7 +2406,7 @@
           <div class="app-progress" style="margin-bottom:8px"><strong style="font-size:12px">⏰ Oil change due</strong><div style="color:var(--muted);font-size:11px;margin-top:3px">at 73,000 km (~Aug 2026)</div></div>
           <div class="app-progress" style="margin-bottom:8px"><strong style="font-size:12px">🛞 Tire rotation</strong><div style="color:var(--muted);font-size:11px;margin-top:3px">recommended in 2 months</div></div>
           <div class="app-progress" style="margin-bottom:8px"><strong style="font-size:12px">⚠️ Ceramic warranty expiring</strong><div style="color:var(--warn);font-size:11px;margin-top:3px">Aug 2026 · consider renewal</div></div>
-          <button class="app-btn" onclick="showToast('Booking flow opened (concept)')">Book maintenance</button>
+          <button class="app-btn" onclick="openBookingWizard()">Book maintenance</button>
         </div>
         <!-- Budget Plan -->
         <div class="app-pane" data-apane="budget">
@@ -2842,6 +2846,7 @@
     </button>
   </div>
   <div class="demo-drawer-body">
+
     <div class="demo-section">
       <div class="demo-section-label">Switch Role View</div>
       <div class="demo-desc">Change which navigation items are visible, simulating different staff roles.</div>
@@ -2853,6 +2858,7 @@
         <option value="acct">Accountant</option>
       </select>
     </div>
+
     <div class="demo-section">
       <div class="demo-section-label">Business Vertical</div>
       <div class="demo-desc">Switch the business type to see how content and labels adapt.</div>
@@ -2864,87 +2870,86 @@
         <option value="mobile">Mobile Service</option>
       </select>
     </div>
+
     <div class="demo-section">
-      <div class="demo-section-label">App Previews</div>
-      <div class="demo-desc">Open simulated views of the mobile apps.</div>
-      <div class="demo-row">
-        <button class="btn sm" onclick="openTechApp()" style="flex:1">
-          <span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-wrench"/></svg></span> Technician App
+      <div class="demo-section-label">Simulate Events</div>
+      <div class="demo-desc">Trigger realistic demo scenarios to showcase system reactivity.</div>
+      <div style="display:grid;gap:6px;">
+        <button class="btn sm" onclick="WF.simulateIncomingBooking()" style="width:100%;text-align:start">
+          <span style="margin-inline-end:8px;">📅</span> Simulate Incoming Booking
         </button>
-        <button class="btn sm" onclick="openApp()" style="flex:1">
-          <span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-phone"/></svg></span> Customer App
+        <button class="btn sm" onclick="WF.simulateApprovalResponse()" style="width:100%;text-align:start">
+          <span style="margin-inline-end:8px;">✅</span> Simulate Approval Response
+        </button>
+        <button class="btn sm" onclick="WF.simulateLowStock()" style="width:100%;text-align:start">
+          <span style="margin-inline-end:8px;">📦</span> Simulate Low Stock Alert
+        </button>
+        <button class="btn sm" onclick="WF.simulateVehicleReady()" style="width:100%;text-align:start">
+          <span style="margin-inline-end:8px;">🚗</span> Simulate Vehicle Ready
         </button>
       </div>
     </div>
+
     <div class="demo-section">
       <div class="demo-section-label">Connection State</div>
-      <div class="demo-desc">Simulate online, weak, or offline connection.</div>
-      <button class="btn sm" onclick="cycleSyncState()" style="width:100%">
-        <span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-sync"/></svg></span> Cycle Sync State
-      </button>
+      <div class="demo-desc">Simulate online or offline mode.</div>
+      <div class="demo-row">
+        <button class="btn sm" onclick="WF.simulateOffline()" style="flex:1">Offline</button>
+        <button class="btn sm" onclick="WF.restoreOnline()" style="flex:1">Online</button>
+        <button class="btn sm" onclick="cycleSyncState()" style="flex:1">Cycle</button>
+      </div>
     </div>
+
+    <div class="demo-section">
+      <div class="demo-section-label">App Previews</div>
+      <div class="demo-desc">Open simulated staff and customer views.</div>
+      <div class="demo-row">
+        <button class="btn sm" onclick="openTechApp()" style="flex:1">
+          <span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-wrench"/></svg></span> Tech App
+        </button>
+        <button class="btn sm" onclick="openApp()" style="flex:1">
+          <span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-phone"/></svg></span> Customer
+        </button>
+      </div>
+    </div>
+
+    <div class="demo-section">
+      <div class="demo-section-label">Data Controls</div>
+      <div class="demo-desc">Manage demo data state.</div>
+      <div style="display:grid;gap:6px;">
+        <button class="btn sm" onclick="WF.loadSampleDay()" style="width:100%;text-align:start">
+          <span style="margin-inline-end:8px;">📂</span> Load Sample Workshop Day
+        </button>
+        <button class="btn sm" style="width:100%;text-align:start;border-color:var(--bad);color:var(--bad);" onclick="WF.resetDemoData()">
+          <span style="margin-inline-end:8px;">🔄</span> Reset All Demo Data
+        </button>
+      </div>
+    </div>
+
   </div>
   <div class="demo-drawer-foot">
-    AutoPassport OS — Prototype · No backend connected<br/>All data is simulated for demonstration only
+    <span class="demo-data-badge" style="display:inline-flex;margin-bottom:4px;">Demo Data · Interactive Prototype</span><br/>
+    All data is simulated · No backend connected · localStorage persistence enabled
   </div>
 </div>
 
-<!-- ============ NOTIFICATIONS PANEL ============ -->
+<!-- ============ NOTIFICATIONS PANEL (dynamic) ============ -->
 <div id="notif-panel" role="dialog" aria-label="Notifications">
-  <div class="notif-head">
-    <div class="notif-head-title">Notifications</div>
-    <button class="notif-mark-read" onclick="showToast('All marked as read')">Mark all read</button>
+  <!-- Rendered dynamically by WF.renderNotifPanel() -->
+  <div class="np-head">
+    <span class="np-title">Notifications</span>
+    <button class="np-mark-all" onclick="WF.markAllRead()">Mark all read</button>
+    <button class="modal-close" onclick="toggleNotifPanel()" style="margin-inline-start:auto;">✕</button>
   </div>
-  <div class="notif-group-label">Needs Action Now</div>
-  <div class="notif-item unread" onclick="go('estimate');toggleNotifPanel()">
-    <div class="notif-dot-wrap urgent"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round"><use href="#ic-clock"/></svg></div>
-    <div class="notif-text">
-      <div class="notif-title">Customer approval waiting 32 min</div>
-      <div class="notif-meta">Land Cruiser EST-558 · Khalid Mansour</div>
-      <div class="notif-cta">Review approval →</div>
-    </div>
-  </div>
-  <div class="notif-item unread" onclick="go('workorder');toggleNotifPanel()">
-    <div class="notif-dot-wrap urgent"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round"><use href="#ic-alert-triangle"/></svg></div>
-    <div class="notif-text">
-      <div class="notif-title">Job running late — Lexus RX</div>
-      <div class="notif-meta">Promised by 13:00 · Dana Ziadeh</div>
-      <div class="notif-cta">Open job →</div>
-    </div>
-  </div>
-  <div class="notif-group-label">Today</div>
-  <div class="notif-item" onclick="go('intake');toggleNotifPanel()">
-    <div class="notif-dot-wrap warn"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round"><use href="#ic-camera"/></svg></div>
-    <div class="notif-text">
-      <div class="notif-title">Missing check-in photos</div>
-      <div class="notif-meta">Nissan Patrol · 5 of 7 captured</div>
-      <div class="notif-cta">Add photos →</div>
-    </div>
-  </div>
-  <div class="notif-item" onclick="go('invoices');toggleNotifPanel()">
-    <div class="notif-dot-wrap good"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round"><use href="#ic-check-circle"/></svg></div>
-    <div class="notif-text">
-      <div class="notif-title">Vehicle ready for pickup</div>
-      <div class="notif-meta">Honda Accord · Maya Khalil · Invoice paid</div>
-    </div>
-  </div>
-  <div class="notif-group-label">This Week</div>
-  <div class="notif-item" onclick="openVehicle();toggleNotifPanel()">
-    <div class="notif-dot-wrap warn"><svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round"><use href="#ic-shield"/></svg></div>
-    <div class="notif-text">
-      <div class="notif-title">Warranty expiring soon</div>
-      <div class="notif-meta">Ceramic coating · Land Cruiser · Aug 2026</div>
-    </div>
-  </div>
-  <div style="padding:12px 16px;text-align:center;border-top:1px solid var(--line-2);">
-    <button class="btn sm ghost" onclick="showToast('Full notification log — concept')">View all notifications</button>
-  </div>
+  <div style="padding:24px;text-align:center;color:var(--muted);font-size:13px;">Loading…</div>
 </div>
 
 <!-- ============ HELP BUTTON ============ -->
-<button id="help-btn" onclick="showToast('Help center — keyboard shortcuts: ⌘K search · Esc close · Tab navigate')" aria-label="Help and keyboard shortcuts" title="Help & Shortcuts">?</button>
+<button id="help-btn" onclick="WF.openHelp()" aria-label="Help and keyboard shortcuts" title="Help & Shortcuts">?</button>
 
 <script src="js/app.js"></script>
+<script src="js/db.js"></script>
+<script src="js/workflows.js"></script>
 
 </body>
 </html>
