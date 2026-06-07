@@ -474,90 +474,13 @@ html.dark .login-demo-btn{border-color:rgba(255,255,255,.15)!important;color:var
 </div>
 
 <!-- ============ SHARE PASSPORT MODAL ============ -->
-<div class="modal-overlay" id="shareModal" onclick="if(event.target===this)closeShareModal()">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="shareModalTitle">
-    <div class="modal-head"><h3 id="shareModalTitle">Share Vehicle Passport</h3><button onclick="closeShareModal()" aria-label="Close">✕</button></div>
-    <div class="modal-body">
-      <p style="color:var(--muted);font-size:13px;margin:0 0 14px">Customer controls access. Choose who can see what and for how long.</p>
-      <div class="field"><label>Share type</label>
-        <select><option>Buyer</option><option>Insurer</option><option>Workshop</option><option>Fleet manager</option><option>Custom</option></select>
-      </div>
-      <div class="field"><label>Link expiry</label>
-        <select><option>24 hours</option><option>7 days</option><option>30 days</option></select>
-      </div>
-      <div class="field"><label>Permissions</label>
-        <div class="check-list">
-          <label><input type="checkbox" checked> Service timeline</label>
-          <label><input type="checkbox" checked> Evidence photos</label>
-          <label><input type="checkbox"> Documents</label>
-          <label><input type="checkbox" checked> Warranties</label>
-          <label><input type="checkbox"> Mileage history</label>
-          <label><input type="checkbox"> Ownership history</label>
-          <label><input type="checkbox"> Declined work</label>
-        </div>
-      </div>
-      <div class="field"><label>Privacy</label>
-        <div class="check-list">
-          <label><input type="checkbox" checked> Hide owner identity</label>
-          <label><input type="checkbox" checked> Hide payment details</label>
-          <label><input type="checkbox"> Hide private notes</label>
-        </div>
-      </div>
-    </div>
-    <div class="modal-foot">
-      <button class="btn" onclick="closeShareModal()">Cancel</button>
-      <button class="btn primary" onclick="doShare()"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-share"/></svg></span> Generate secure link</button>
-    </div>
-  </div>
-</div>
+
 
 <!-- ============ EVIDENCE DETAIL MODAL ============ -->
-<div class="modal-overlay" id="evidenceModal" onclick="if(event.target===this)closeEvidenceModal()">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="evidenceModalTitle">
-    <div class="modal-head"><h3 id="evidenceModalTitle">Evidence Detail</h3><button onclick="closeEvidenceModal()" aria-label="Close">✕</button></div>
-    <div class="modal-body">
-      <div style="height:140px;background:linear-gradient(135deg,#dbe4f3,#eef2f8);border-radius:var(--radius-sm);display:grid;place-items:center;color:#8b99b3;font-size:14px;margin-bottom:12px;">📷 Photo placeholder · <span id="evLabel"></span></div>
-      <table class="tbl">
-        <tr><td>Stage</td><td id="evStage"></td></tr>
-        <tr><td>Timestamp</td><td id="evTime"></td></tr>
-        <tr><td>Captured by</td><td id="evBy"></td></tr>
-        <tr><td>Evidence ref</td><td id="evRef"></td></tr>
-        <tr><td>Integrity</td><td id="evHash"></td></tr>
-      </table>
-      <div style="margin-top:12px;">
-        <div class="field"><label>Visibility</label>
-          <select><option>Private</option><option>Customer visible</option><option selected>Shared in resale dossier</option></select>
-        </div>
-      </div>
-    </div>
-    <div class="modal-foot">
-      <button class="btn" onclick="showToast('Note added to evidence record')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-edit"/></svg></span> Add note</button>
-      <button class="btn primary" onclick="closeEvidenceModal()">Done</button>
-    </div>
-  </div>
-</div>
+
 
 <!-- ============ COMEBACK MODAL ============ -->
-<div class="modal-overlay" id="comebackModal" onclick="if(event.target===this)closeComebackModal()">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="comebackModalTitle">
-    <div class="modal-head"><h3 id="comebackModalTitle">Returning Issue</h3><button onclick="closeComebackModal()" aria-label="Close">✕</button></div>
-    <div class="modal-body">
-      <table class="tbl" style="margin-bottom:12px;">
-        <tr><td>Vehicle</td><td>Honda Accord 2021 · Maya Khalil</td></tr>
-        <tr><td>Original WO</td><td>WO-2038 · 28 May 2026</td></tr>
-        <tr><td>Complaint</td><td>AC intermittent · same issue as WO-2031</td></tr>
-        <tr><td>Warranty coverage</td><td><span class="pill warn">Partial — labor only</span></td></tr>
-        <tr><td>Assigned manager</td><td>Rami A.</td></tr>
-        <tr><td>Resolution status</td><td><span class="pill warn">In review</span></td></tr>
-      </table>
-      <div class="note-box">Customer called twice — frustrated. Offered complimentary re-inspection. AC compressor may need replacement (est. JOD 220). Awaiting manager sign-off.</div>
-    </div>
-    <div class="modal-foot">
-      <button class="btn" onclick="showToast('Case notes updated')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-edit"/></svg></span> Update notes</button>
-      <button class="btn teal" onclick="showToast('Case closed — event logged to passport')"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-check-circle"/></svg></span> Close case</button>
-    </div>
-  </div>
-</div>
+
 
 <!-- ============ CUSTOMER APP (drawer right) — lazy-injected by openApp() ============ -->
 <div id="app-overlay" onclick="closeApp()"></div>
@@ -566,157 +489,7 @@ html.dark .login-demo-btn{border-color:rgba(255,255,255,.15)!important;color:var
 <div id="tech-overlay" onclick="closeTechApp()"></div>
 
 <!-- ============ NEW BOOKING WIZARD ============ -->
-<div class="wizard-overlay" id="bookingWizard">
-  <div class="wizard-modal">
-    <!-- Wizard head -->
-    <div class="wizard-head">
-      <h2><span class="ic ic-sm" style="margin-inline-end:8px"><svg viewBox="0 0 24 24"><use href="#ic-calendar"/></svg></span><span data-i18n="wiz_title">New Booking</span></h2>
-      <button class="wizard-close" onclick="closeBookingWizard()" aria-label="Close"><span class="ic"><svg viewBox="0 0 24 24"><use href="#ic-x"/></svg></span></button>
-    </div>
-    <!-- Step indicators -->
-    <div class="wizard-steps-row">
-      <div class="wiz-step active" id="wiz-step-1"><div class="wsc">1</div><div class="wsl" data-i18n="wiz_step1">Customer</div></div>
-      <div class="wiz-step" id="wiz-step-2"><div class="wsc">2</div><div class="wsl" data-i18n="wiz_step2">Vehicle</div></div>
-      <div class="wiz-step" id="wiz-step-3"><div class="wsc">3</div><div class="wsl" data-i18n="wiz_step3">Service</div></div>
-      <div class="wiz-step" id="wiz-step-4"><div class="wsc">4</div><div class="wsl" data-i18n="wiz_step4">Confirm</div></div>
-    </div>
-    <!-- Wizard body -->
-    <div class="wizard-body">
 
-      <!-- Step 1: Customer -->
-      <div class="wizard-pane active" id="wiz-pane-1">
-        <div class="wiz-field">
-          <label data-i18n="wiz_search_cust">Search existing customer</label>
-          <input type="text" id="custSearch" placeholder="Name, phone or plate…" oninput="showCustResults(this.value)" autocomplete="off"/>
-          <div id="custResults" class="wiz-search-results" style="display:none">
-            <div class="wiz-result" onclick="document.getElementById('custSearch').value='Khalid Mansour';document.getElementById('custResults').style.display='none'"><div class="wr-name">Khalid Mansour</div><div class="wr-meta">+962 79 555 0142 · Land Cruiser 2023</div></div>
-            <div class="wiz-result" onclick="document.getElementById('custSearch').value='Lara Haddad';document.getElementById('custResults').style.display='none'"><div class="wr-name">Lara Haddad</div><div class="wr-meta">+962 79 421 8830 · Mercedes C200</div></div>
-            <div class="wiz-result" onclick="document.getElementById('custSearch').value='Saeed Al-Otaibi';document.getElementById('custResults').style.display='none'"><div class="wr-name">Saeed Al-Otaibi</div><div class="wr-meta">+962 79 222 8841 · Nissan Patrol</div></div>
-          </div>
-        </div>
-        <div style="text-align:center;padding:8px 0 12px;font-size:12px;color:var(--muted)" data-i18n="wiz_or_new">— or add new customer —</div>
-        <div class="wiz-row">
-          <div class="wiz-field"><label data-i18n="wiz_name">Full Name</label><input type="text" placeholder="e.g. Ahmad Al-Rashid"/></div>
-          <div class="wiz-field"><label data-i18n="wiz_phone">Phone</label><input type="tel" placeholder="+962 7X XXX XXXX"/></div>
-        </div>
-        <div class="wiz-field"><label data-i18n="wiz_email">Email (optional)</label><input type="email" placeholder="email@example.com"/></div>
-        <div class="wiz-row">
-          <div class="wiz-field">
-            <label data-i18n="wiz_cust_type">Customer Type</label>
-            <select><option data-i18n="wiz_individual">Individual</option><option data-i18n="wiz_fleet">Fleet</option><option data-i18n="wiz_corporate">Corporate</option></select>
-          </div>
-          <div class="wiz-field">
-            <label data-i18n="wiz_lang">Preferred Language</label>
-            <select><option>English</option><option>العربية</option></select>
-          </div>
-        </div>
-        <div class="wiz-field">
-          <label style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--ink)">
-            <input type="checkbox" checked style="width:15px;height:15px"/>
-            <span data-i18n="wiz_wa_optin">WhatsApp opt-in</span>
-          </label>
-        </div>
-      </div>
-
-      <!-- Step 2: Vehicle -->
-      <div class="wizard-pane" id="wiz-pane-2">
-        <div class="wiz-row">
-          <div class="wiz-field"><label data-i18n="wiz_vin">VIN</label><input type="text" id="vinInput" placeholder="e.g. JTMHV05J204871" style="font-family:ui-monospace,monospace;letter-spacing:.04em"/></div>
-          <div class="wiz-field"><label data-i18n="wiz_plate">Plate Number</label><input type="text" placeholder="22-41-988"/></div>
-        </div>
-        <div class="vin-decode-area">
-          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-            <button class="btn primary" id="vinDecodeBtn" onclick="simulateVinDecode()"><span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-search"/></svg></span><span data-i18n="wiz_decode">Simulate VIN Decode</span></button>
-            <span id="vinStatus" style="font-size:12px;color:var(--muted);display:none"></span>
-          </div>
-          <p class="vin-note" data-i18n="wiz_decode_note">Prototype only · VIN decoding is simulated</p>
-          <div class="vin-filled" id="vinFilled" style="display:none">
-            <div class="vf-title" data-i18n="wiz_decoded">VIN Decoded ✓</div>
-            <div class="vin-filled-grid">
-              <div class="spec"><div class="k">Make</div><div class="v">Toyota</div></div>
-              <div class="spec"><div class="k">Model</div><div class="v">Land Cruiser</div></div>
-              <div class="spec"><div class="k">Year</div><div class="v">2023</div></div>
-              <div class="spec"><div class="k">Trim</div><div class="v">VXR</div></div>
-              <div class="spec"><div class="k">Fuel</div><div class="v">Petrol</div></div>
-              <div class="spec"><div class="k">Engine</div><div class="v">3.5L V6</div></div>
-            </div>
-          </div>
-        </div>
-        <div class="wiz-field" style="margin-top:12px"><label data-i18n="wiz_mileage">Current Mileage (km)</label><input type="number" placeholder="68,420"/></div>
-        <div style="background:var(--accent-soft);border:1px solid #b8dfe0;border-radius:var(--radius-sm);padding:10px 14px;font-size:12.5px;color:#0a7a80;margin-top:10px">
-          <strong>Existing Passport Found</strong> — Land Cruiser 2023 · 7 verified events · Record Quality 86
-        </div>
-      </div>
-
-      <!-- Step 3: Service -->
-      <div class="wizard-pane" id="wiz-pane-3">
-        <div class="wiz-row">
-          <div class="wiz-field">
-            <label data-i18n="wiz_vertical">Vertical</label>
-            <select class="vert-select-sync" onchange="setVertical(this.value)"><option value="workshop">Workshop</option><option value="detailing">Detailing</option><option value="wash">Car Wash</option><option value="tire">Tire &amp; Battery</option><option value="mobile">Mobile Service</option></select>
-          </div>
-          <div class="wiz-field">
-            <label data-i18n="wiz_category">Service Category</label>
-            <select><option>Major Service</option><option>Minor Service</option><option>AC Repair</option><option>Brakes</option><option>Electrical</option><option>Tires</option><option>Detailing</option><option>Other</option></select>
-          </div>
-        </div>
-        <div class="wiz-field">
-          <label data-i18n="wiz_package">Package</label>
-          <select><option>60,000 km Major Service</option><option>30,000 km Minor Service</option><option>Brake Overhaul</option><option>Full Detailing + Ceramic</option><option>Custom</option></select>
-        </div>
-        <div class="wiz-row">
-          <div class="wiz-field"><label data-i18n="wiz_branch">Branch</label><select><option>Al-Rawabi Main</option><option>Al-Rawabi North</option></select></div>
-          <div class="wiz-field"><label data-i18n="wiz_date">Date</label><input type="date" value="2026-06-05"/></div>
-        </div>
-        <div class="wiz-row">
-          <div class="wiz-field"><label data-i18n="wiz_time">Time</label><select><option>08:00</option><option>08:30</option><option>09:00</option><option>09:30</option><option>10:00</option><option>10:30</option><option>11:00</option><option>11:30</option><option>13:00</option><option>14:00</option><option>15:00</option></select></div>
-          <div class="wiz-field"><label data-i18n="wiz_bay">Bay</label><select><option>Bay 1 (Free)</option><option>Bay 2 (Free)</option><option>Bay 3 (Busy)</option><option>Bay 4 (Free)</option></select></div>
-        </div>
-        <div class="wiz-row">
-          <div class="wiz-field"><label data-i18n="wiz_tech">Technician (optional)</label><select><option value="">— Assign later —</option><option>Samir H.</option><option>Omar F.</option><option>Feras N.</option></select></div>
-          <div class="wiz-field"><label data-i18n="wiz_est_duration">Est. Duration</label><select><option>1 hour</option><option>1.5 hours</option><option>2 hours</option><option>3 hours</option><option>4 hours</option><option>Full day</option></select></div>
-        </div>
-        <div class="wiz-row">
-          <div class="wiz-field"><label style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--ink)"><input type="checkbox" style="width:15px;height:15px"/> <span data-i18n="wiz_pickup_opt">Add pickup / drop-off</span></label></div>
-          <div class="wiz-field"><label style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--ink)"><input type="checkbox" style="width:15px;height:15px"/> Mobile service job</label></div>
-        </div>
-        <div class="wiz-field"><label data-i18n="wiz_notes">Notes</label><textarea rows="2" placeholder="Special instructions or customer requests…" style="width:100%;border:1px solid var(--line);border-radius:9px;padding:8px 12px;font-size:13px;font-family:inherit;resize:vertical;background:var(--bg)"></textarea></div>
-      </div>
-
-      <!-- Step 4: Confirm -->
-      <div class="wizard-pane" id="wiz-pane-4">
-        <h3 style="margin-bottom:14px" data-i18n="wiz_confirm_title">Booking Summary</h3>
-        <div class="confirm-summary">
-          <div class="confirm-row"><span class="ck">Customer</span><span class="cv">Khalid Mansour · +962 79 555 0142</span></div>
-          <div class="confirm-row"><span class="ck">Vehicle</span><span class="cv">Toyota Land Cruiser 2023 · 22-41-988</span></div>
-          <div class="confirm-row"><span class="ck">Service</span><span class="cv">60,000 km Major Service</span></div>
-          <div class="confirm-row"><span class="ck">Branch</span><span class="cv">Al-Rawabi Main</span></div>
-          <div class="confirm-row"><span class="ck">Date &amp; Time</span><span class="cv">Friday, 5 June 2026 · 09:00</span></div>
-          <div class="confirm-row"><span class="ck">Duration</span><span class="cv">3 hours (est.)</span></div>
-          <div class="confirm-row"><span class="ck">Bay</span><span class="cv">Bay 1</span></div>
-          <div class="confirm-row"><span class="ck">Technician</span><span class="cv">Samir H.</span></div>
-          <div class="confirm-row"><span class="ck">Est. Amount</span><span class="cv" style="font-weight:700;color:var(--ink)">JOD 185 – 220</span></div>
-        </div>
-        <label style="display:flex;align-items:center;gap:10px;padding:14px 0;font-size:13px;cursor:pointer;">
-          <input type="checkbox" checked style="width:16px;height:16px;"/>
-          <span data-i18n="wiz_whatsapp_confirm">Send WhatsApp confirmation to customer</span>
-        </label>
-        <div style="background:var(--good-soft);border:1px solid #b8e0cc;border-radius:var(--radius-sm);padding:10px 14px;font-size:12.5px;color:var(--good);margin-bottom:4px">
-          Passport match found — this booking will be added to the vehicle's history automatically.
-        </div>
-      </div>
-
-    </div><!-- /wizard-body -->
-
-    <!-- Wizard footer -->
-    <div class="wizard-foot">
-      <button class="btn" id="wizBack" onclick="wizBack()" style="display:none" data-i18n="wiz_back">Back</button>
-      <div style="flex:1"></div>
-      <button class="btn" onclick="closeBookingWizard()" data-i18n="btn_cancel">Cancel</button>
-      <button class="btn primary" id="wizNext" onclick="wizNext()" data-i18n="wiz_next">Next</button>
-    </div>
-  </div>
-</div>
 
 <!-- ============ MOBILE NAV OVERLAY ============ -->
 <div id="mnav-overlay"></div>
@@ -854,104 +627,7 @@ html.dark .login-demo-btn{border-color:rgba(255,255,255,.15)!important;color:var
 </div>
 
 <!-- ============ DEMO CONTROLS DRAWER ============ -->
-<div id="demo-drawer-overlay" onclick="closeDemoDrawer()"></div>
-<div id="demo-drawer" role="dialog" aria-label="Demo controls">
-  <div class="demo-drawer-head">
-    <div class="demo-drawer-title">
-      <span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-settings"/></svg></span>
-      Demo Controls <span class="dd-badge">PROTOTYPE</span>
-    </div>
-    <button class="demo-drawer-close" onclick="closeDemoDrawer()" aria-label="Close demo controls">
-      <svg viewBox="0 0 24 24" style="width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-    </button>
-  </div>
-  <div class="demo-drawer-body">
 
-    <div class="demo-section">
-      <div class="demo-section-label">Switch Role View</div>
-      <div class="demo-desc">Change which navigation items are visible, simulating different staff roles.</div>
-      <select class="field-input role-select-sync" onchange="setRole(this.value); updateSidebarRoleBadge(this.value);" aria-label="Select role">
-        <option value="owner">Owner / GM — full access</option>
-        <option value="branch">Branch Manager</option>
-        <option value="reception" selected>Reception Advisor</option>
-        <option value="tech">Technician</option>
-        <option value="acct">Accountant</option>
-      </select>
-    </div>
-
-    <div class="demo-section">
-      <div class="demo-section-label">Business Vertical</div>
-      <div class="demo-desc">Switch the business type to see how content and labels adapt.</div>
-      <select class="field-input vert-select-sync" onchange="setVertical(this.value)" aria-label="Select vertical">
-        <option value="workshop">Workshop / Mechanic</option>
-        <option value="detailing">Detailing &amp; Polishing</option>
-        <option value="wash">Car Wash</option>
-        <option value="tire">Tire &amp; Battery</option>
-        <option value="mobile">Mobile Service</option>
-      </select>
-    </div>
-
-    <div class="demo-section">
-      <div class="demo-section-label">Simulate Events</div>
-      <div class="demo-desc">Trigger realistic demo scenarios to showcase system reactivity.</div>
-      <div style="display:grid;gap:6px;">
-        <button class="btn sm" onclick="WF.simulateIncomingBooking()" style="width:100%;text-align:start">
-          <span style="margin-inline-end:8px;">📅</span> Simulate Incoming Booking
-        </button>
-        <button class="btn sm" onclick="WF.simulateApprovalResponse()" style="width:100%;text-align:start">
-          <span style="margin-inline-end:8px;">✅</span> Simulate Approval Response
-        </button>
-        <button class="btn sm" onclick="WF.simulateLowStock()" style="width:100%;text-align:start">
-          <span style="margin-inline-end:8px;">📦</span> Simulate Low Stock Alert
-        </button>
-        <button class="btn sm" onclick="WF.simulateVehicleReady()" style="width:100%;text-align:start">
-          <span style="margin-inline-end:8px;">🚗</span> Simulate Vehicle Ready
-        </button>
-      </div>
-    </div>
-
-    <div class="demo-section">
-      <div class="demo-section-label">Connection State</div>
-      <div class="demo-desc">Simulate online or offline mode.</div>
-      <div class="demo-row">
-        <button class="btn sm" onclick="WF.simulateOffline()" style="flex:1">Offline</button>
-        <button class="btn sm" onclick="WF.restoreOnline()" style="flex:1">Online</button>
-        <button class="btn sm" onclick="cycleSyncState()" style="flex:1">Cycle</button>
-      </div>
-    </div>
-
-    <div class="demo-section">
-      <div class="demo-section-label">App Previews</div>
-      <div class="demo-desc">Open simulated staff and customer views.</div>
-      <div class="demo-row">
-        <button class="btn sm" onclick="openTechApp()" style="flex:1">
-          <span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-wrench"/></svg></span> Tech App
-        </button>
-        <button class="btn sm" onclick="openApp()" style="flex:1">
-          <span class="ic ic-sm"><svg viewBox="0 0 24 24"><use href="#ic-phone"/></svg></span> Customer
-        </button>
-      </div>
-    </div>
-
-    <div class="demo-section">
-      <div class="demo-section-label">Data Controls</div>
-      <div class="demo-desc">Manage demo data state.</div>
-      <div style="display:grid;gap:6px;">
-        <button class="btn sm" onclick="WF.loadSampleDay()" style="width:100%;text-align:start">
-          <span style="margin-inline-end:8px;">📂</span> Load Sample Workshop Day
-        </button>
-        <button class="btn sm" style="width:100%;text-align:start;border-color:var(--bad);color:var(--bad);" onclick="WF.resetDemoData()">
-          <span style="margin-inline-end:8px;">🔄</span> Reset All Demo Data
-        </button>
-      </div>
-    </div>
-
-  </div>
-  <div class="demo-drawer-foot">
-    <span class="demo-data-badge" style="display:inline-flex;margin-bottom:4px;">Demo Data · Interactive Prototype</span><br/>
-    All data is simulated · No backend connected · localStorage persistence enabled
-  </div>
-</div>
 
 <!-- ============ NOTIFICATIONS PANEL (dynamic) ============ -->
 <div id="notif-panel" role="dialog" aria-label="Notifications">
@@ -967,10 +643,8 @@ html.dark .login-demo-btn{border-color:rgba(255,255,255,.15)!important;color:var
 <!-- ============ HELP BUTTON ============ -->
 <button id="help-btn" onclick="WF.openHelp()" aria-label="Help and keyboard shortcuts" title="Help & Shortcuts">?</button>
 
-<script src="js/screens.js" defer></script>
-<script src="js/app.js" defer></script>
-<script src="js/db.js" defer></script>
-<script src="js/workflows.js" defer></script>
+<!-- boot.js: ~3KB, login only. All heavy scripts load after user clicks Enter. -->
+<script src="js/boot.js"></script>
 
 </body>
 </html>

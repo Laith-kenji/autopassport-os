@@ -1524,31 +1524,34 @@ function markAllRead() {
 }
 
 /* ═══════════════════════ INIT ══════════════════════════════════ */
-document.addEventListener('DOMContentLoaded', function() {
+/* _wfInit is called by boot.js/_appReady after dynamic loading.
+   DOMContentLoaded already fired by then, so we expose this directly. */
+window._wfInit = function () {
+  _initNotifBadge();
   refreshNotifBadge();
-  renderCustomerGrid();
-  renderInvoiceList();
-  renderInventory();
-  renderSettings();
   renderNotifPanel();
+  /* Only render screens that are already in the DOM */
+  if (document.getElementById('screen-customers')) renderCustomerGrid();
+  if (document.getElementById('screen-invoices')) renderInvoiceList();
+  if (document.getElementById('screen-inventory')) renderInventory();
+  if (document.getElementById('screen-settings')) renderSettings();
   refreshDashboard();
 
-  // Re-render after any db change
   document.addEventListener('db:change', function(e) {
     if (!e.detail) return;
     var col = e.detail.col;
     if (col === 'notifications') { refreshNotifBadge(); renderNotifPanel(); }
-    if (col === 'vehicles') renderCustomerGrid();
-    if (col === 'invoices') renderInvoiceList();
-    if (col === 'inventory') renderInventory();
+    if (col === 'vehicles' && document.getElementById('screen-customers')) renderCustomerGrid();
+    if (col === 'invoices' && document.getElementById('screen-invoices')) renderInvoiceList();
+    if (col === 'inventory' && document.getElementById('screen-inventory')) renderInventory();
   });
 
   document.addEventListener('db:reset', function() {
     refreshNotifBadge();
-    renderCustomerGrid();
-    renderInvoiceList();
-    renderInventory();
-    renderSettings();
+    if (document.getElementById('screen-customers')) renderCustomerGrid();
+    if (document.getElementById('screen-invoices')) renderInvoiceList();
+    if (document.getElementById('screen-inventory')) renderInventory();
+    if (document.getElementById('screen-settings')) renderSettings();
     renderNotifPanel();
     refreshDashboard();
   });
@@ -1557,7 +1560,18 @@ document.addEventListener('DOMContentLoaded', function() {
     refreshNotifBadge();
     renderNotifPanel();
   });
-});
+
+  /* Re-render screen data when it is first navigated to */
+  document.addEventListener('ap:screenchange', function(e) {
+    if (!e.detail) return;
+    var id = e.detail.id;
+    if (id === 'customers' && document.getElementById('screen-customers')) renderCustomerGrid();
+    if (id === 'invoices' && document.getElementById('screen-invoices')) renderInvoiceList();
+    if (id === 'inventory' && document.getElementById('screen-inventory')) renderInventory();
+    if (id === 'settings' && document.getElementById('screen-settings')) renderSettings();
+    if (id === 'dashboard') refreshDashboard();
+  });
+};
 
 /* ═══════════════════════ PUBLIC NAMESPACE ══════════════════════ */
 var WF = {
@@ -1933,8 +1947,9 @@ intakeNext = function() {
   };
 })();
 
-/* ── Team screen: add containers if missing ─────────────────────── */
-document.addEventListener('DOMContentLoaded', function() {
+/* ── Team screen: add containers when team screen is first opened ── */
+document.addEventListener('ap:screenchange', function(e) {
+  if (!e.detail || e.detail.id !== 'team') return;
   var teamScreen = document.getElementById('screen-team');
   if (teamScreen && !teamScreen.querySelector('.team-grid')) {
     var ph = teamScreen.querySelector('.page-head');
@@ -1952,7 +1967,10 @@ document.addEventListener('DOMContentLoaded', function() {
       renderTeam();
     }
   }
-  // Initial notification badge
+});
+
+/* ── Notif badge init — called from _wfInit ── */
+function _initNotifBadge() {
   var notifBtn = document.getElementById('notifBtn');
   if (notifBtn && !notifBtn.querySelector('.tb-notif-badge')) {
     var badge = document.createElement('span');
@@ -1961,4 +1979,4 @@ document.addEventListener('DOMContentLoaded', function() {
     notifBtn.appendChild(badge);
     refreshNotifBadge();
   }
-});
+}
